@@ -1,0 +1,3 @@
+A makeover of the Plan B Jena bouldering gym [website](https://planb-jena.de/). It includes an interactive map of the gym where staff can add information about current boulders for customers to view.
+
+More to come...
