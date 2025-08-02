@@ -469,6 +469,7 @@ section#celebrate .blurb h2 {
   .nav__right ul {
     border: none !important;
     background: none !important;
+    box-shadow: none !important;
 
     li {
       width: max-content !important;
