@@ -30,6 +30,7 @@ function StaticView({
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  console.log(isPopupOpen, setters);
   const clusters = useMemo(() => {
     const out: { [key in Location]?: TCluster[] } = {};
     Object.values(Location).map((l) => {

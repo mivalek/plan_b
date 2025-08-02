@@ -328,16 +328,21 @@ section {
       top: 0;
     } */
 
-    img {
+    .next-image {
+      --scale: 1.05;
+
       display: none;
-      object-fit: cover;
       animation: scroll linear, scale linear;
       animation-timeline: --scroll-image;
-      translate: 0 -100%;
+      animation-duration: auto, auto;
+      transform: translateY(-100vh);
       min-width: 100%;
-      height: 100dvh;
+      height: 100vh;
       transform-origin: bottom;
-      --scale: 1.05;
+
+      img {
+        object-fit: cover;
+      }
     }
     .section-image {
       height: 100%;
@@ -694,7 +699,7 @@ dialog {
 
 @keyframes scroll {
   to {
-    translate: 0 300px;
+    transform: translateY(300px);
   }
 }
 
@@ -703,7 +708,7 @@ dialog {
     display: none !important;
   }
 
-  .image-container img {
-    display: initial !important;
+  .next-image {
+    display: block !important;
   }
 }

@@ -35,13 +35,11 @@ export const HOLD_COLORS = {
   yellow,
   orange,
   rainbow: `linear-gradient(0,
-  ${purple} 16%,
-  ${blue} 16%, ${blue} 33%,
-  ${green} 33%, ${green} 50%,
-  ${yellow} 50%, ${yellow} 67%,
-  ${orange} 67%, ${orange} 84%,
-  ${red} 84%, ${red} 100%
-)`,
+  ${blue} 16%, ${blue} 33%, 
+  ${green} 33%, ${green} 50%, 
+  ${yellow} 50%, ${yellow} 67%, 
+  ${orange} 67%, ${orange} 84%, 
+  ${red} 84%, ${red} 100%)`,
 };
 
 export const TAGS = [

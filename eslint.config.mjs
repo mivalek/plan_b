@@ -11,6 +11,16 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      // "@next/next/no-img-element": "off",
+    },
+    ignores: [
+      // for non-global ignores a full glob pattern is required
+      "src/app/generated",
+    ],
+    ignoreDuringBuilds: ["src/app/generated"],
+  },
 ];
 
 export default eslintConfig;

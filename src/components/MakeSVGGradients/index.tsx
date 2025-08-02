@@ -8,8 +8,11 @@ function MakeSVGGradients() {
       const [label, value] = col;
       const gradientElements = value
         .replace(/^.*?\((.*?)\)$/, "$1")
+        .replaceAll("\n", "")
         .split(/,\s*/);
-      const stops = gradientElements.slice(1).map((elem) => elem.split(" "));
+      const stops = gradientElements
+        .slice(1)
+        .map((elem) => elem.replace(")", "").split(" "));
 
       if (value.startsWith("linear")) {
         return (

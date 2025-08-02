@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { TBoulder, TPosition } from "@/lib/types";
 
 export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
+  const position = [boulder.position.x, boulder.position.y];
   await prisma.boulder.upsert({
     where: {
       id: boulder.id,
@@ -14,7 +15,7 @@ export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
       setterId: boulder.setter,
       room: boulder.room,
       location: boulder.location,
-      position: [boulder.position.x, boulder.position.y],
+      position,
       difficulty: boulder.difficulty!,
       holdColors: boulder.holdColors,
       tags: boulder.tags,
@@ -29,22 +30,23 @@ export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
       },
       room: boulder.room,
       location: boulder.location,
-      position: [boulder.position.x, boulder.position.y],
+      position,
       difficulty: boulder.difficulty!,
       holdColors: boulder.holdColors,
       tags: boulder.tags,
     },
   });
-  revalidatePath("/");
+  revalidatePath("/boulders");
 }
 
-export async function dbUpdateBoulderPosition(id: string, position: TPosition) {
+export async function dbUpdateBoulderPosition(id: string, position: number[]) {
   await prisma.boulder.update({
     where: {
       id: id,
     },
-    data: { position: [position.x, position.y] },
+    data: { position },
   });
+  revalidatePath("/boulders");
 }
 
 export async function dbDeleteBoulder(id: string) {
@@ -67,7 +69,7 @@ export async function createSetter(formData: FormData) {
     },
   });
 
-  revalidatePath("/");
+  revalidatePath("/boulders");
 }
 
 export async function auth(key: string | null) {
