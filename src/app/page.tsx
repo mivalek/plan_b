@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import PriceList from "@/components/PriceList";
 import SectionImage from "@/components/SectionImage";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Home() {
@@ -46,7 +47,7 @@ export default function Home() {
               <p>
                 The boulders are regularly changed by our creative team of
                 setters. For an up-to-date list of boulders, see our&nbsp;
-                <a href="">interactive gym map</a>.
+                <Link href="/boulders">interactive gym map</Link>.
               </p>
             </div>
           </div>
@@ -101,8 +102,8 @@ export default function Home() {
                 and other joyful occasions with their friends and family.
               </p>
               <p>
-                You can book a weekend spot in our <a href="">events section</a>
-                .
+                You can book a weekend spot in our{" "}
+                <Link href="/events">events section</Link>.
               </p>
             </div>
           </div>
