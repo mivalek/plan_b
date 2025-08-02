@@ -13,6 +13,7 @@ import MakeSVGGradients from "../MakeSVGGradients";
 import {
   LAYOUT_DIMS,
   PAN_BORDER,
+  PINCH_ZOOM_DAMPER,
   // SVG_RATIO,
   SVG_VIEWBOX_LANDSCAPE,
   SVG_VIEWBOX_PORTRAIT,
@@ -23,6 +24,10 @@ import EditableView from "../EditableView";
 import StaticView from "../StaticView";
 import Filters from "../Filters";
 import Header from "../Header";
+
+const allDiffs = Object.entries(Difficulty)
+  .filter(([key, _]) => isNaN(Number(key)))
+  .map(([_, val]) => val) as Difficulty[];
 
 function AppContainer({
   boulderData,
@@ -43,7 +48,8 @@ function AppContainer({
   const [zoomFlag, setZoomFlag] = useState(true);
   const [panFlag, setPanFlag] = useState(false);
   const [circleRadius, setCircleRadius] = useState(25);
-  const [difficultyFilter, setDifficultyFilter] = useState<Difficulty[]>();
+  const [difficultyFilter, setDifficultyFilter] =
+    useState<Difficulty[]>(allDiffs);
   const [navMenuOpen, setNavMenuOpen] = useState(false);
 
   function closeNavOnClickOut() {
@@ -116,7 +122,7 @@ function AppContainer({
       <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
       <div
         id="boulder-app"
-        className="w-full flex justify-center flex-col lg:flex-row items-center p-4 gap-4"
+        className="w-full flex justify-center flex-col lg:flex-row items-center p-4 pt-8 gap-6"
       >
         {!isAdmin && (
           <Filters
@@ -191,7 +197,8 @@ function AppContainer({
                 svgRef.current!,
                 Math.max(deltaX, deltaY),
                 zoomOrigin.x,
-                zoomOrigin.y
+                zoomOrigin.y,
+                PINCH_ZOOM_DAMPER
               );
               setZoomScale(
                 1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!))
