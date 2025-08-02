@@ -24,8 +24,11 @@
   --primary: 73, 116, 190;
   --secondary: 1, 35, 80;
   --html-backdrop: 0, 0, 0;
-  --logo-color-1: var(--inverse-color);
-  --logo-color-2: var(--primary);
+  --logo-color-1: var(--primary);
+  --logo-color-2: var(--secondary);
+  --nav-color-1: var(--primary);
+  --nav-color-2: var(--primary);
+  --blurb-heading-color: var(--bg);
   --shadow-color: #0008;
   --theme: light;
   --parallax-x: 0;
@@ -44,11 +47,16 @@
     --bg: 20 20 20;
     --font-color: 255 255 255;
     --inverse-color: 255 255 255;
+    --blurb-heading-color: var(--font-color);
     --theme: dark;
     --primary: 220, 120, 20;
     --secondary: 20, 20, 20;
     --primary-complement: 20, 130, 230;
     --outside-walls: #fff;
+    --logo-color-1: var(--inverse-color);
+
+    --logo-color-2: var(--primary);
+    --nav-color-2: var(--inverse-color);
   }
 }
 
@@ -116,7 +124,7 @@ button.btn-primary,
   border: none;
   border-radius: var(--button-radius);
   background: rgb(var(--primary));
-  color: rgb(var(--font-color));
+  color: rgb(var(--blurb-heading-color));
   font-size: 1.1rem;
   font-weight: 600;
   text-decoration: none;
@@ -148,8 +156,9 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgb(var(--bg));
-    border-bottom: solid 1px rgb(var(--inverse-color));
+    background: transparent;
+    border-bottom: solid 1px rgb(var(--nav-color-2));
+    backdrop-filter: blur(30px) grayscale(0.6);
 
     & > * {
       /* display: flex; */
@@ -163,17 +172,17 @@ header {
         padding-inline: 0.5rem;
         height: 100%;
         font-weight: 500;
-        color: rgb(var(--inverse-color));
+        color: rgb(var(--nav-color-2));
       }
       .icon {
         height: 2rem;
         width: 2rem;
-        fill: rgb(var(--inverse-color));
+        fill: rgb(var(--nav-color-2));
       }
     }
 
     .nav__right ul {
-      border-color: rgb(var(--inverse-color));
+      border-color: rgb(var(--nav-color-2));
       background: rgb(var(--bg));
 
       li {
@@ -238,7 +247,7 @@ header {
     }
 
     .subtitle {
-      color: rgb(var(--inverse-color));
+      color: rgb(var(--blurb-heading-color));
       font-weight: 600;
       /* font-size: 1.5rem; */
       background: rgb(var(--secondary));
@@ -374,7 +383,7 @@ section {
       top: -3rem;
       left: -3rem;
       font-size: 2rem;
-      color: rgb(var(--inverse-color));
+      color: rgb(var(--blurb-heading-color));
       width: fit-content;
       background-image: url(/assets/heading_bg_1_light.svg);
       background-repeat: no-repeat;
@@ -416,22 +425,21 @@ section#celebrate .blurb h2 {
 }
 .parallax nav,
 .image-container nav {
-  background: transparent;
-  border-bottom: solid 1px rgb(var(--primary));
-  backdrop-filter: blur(10px);
+  border-bottom: solid 1px rgb(var(--nav-color-1));
+  backdrop-filter: blur(20px) grayscale(0.2);
 
   .nav__right,
   .nav__mobile {
     a {
-      color: rgb(var(--primary));
+      color: rgb(var(--nav-color-1));
     }
     .icon {
-      fill: rgba(var(--primary));
+      fill: rgba(var(--nav-color-1));
     }
   }
 
   .nav__right ul {
-    border-color: rgb(var(--primary));
+    border-color: rgb(var(--nav-color-1));
     background: rgb(var(--inverse-color));
   }
 }
