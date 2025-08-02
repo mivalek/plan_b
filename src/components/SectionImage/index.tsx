@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Header from "../Header";
+import Image from "next/image";
 
 function SectionImage({
   imageUrl,
@@ -16,7 +17,9 @@ function SectionImage({
         className="section-image"
         style={{ backgroundImage: `url(${imageUrl})` }}
       ></div>
-      <img src={imageUrl} alt="" />
+      <div className="next-image h-screen relative">
+        <Image quality={100} fill={true} src={imageUrl} alt="" />
+      </div>
       <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
     </div>
   );

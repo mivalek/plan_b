@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "public"."User" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "MyBoulder" (
+CREATE TABLE "public"."MyBoulder" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "boulderId" TEXT NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE "MyBoulder" (
 );
 
 -- CreateTable
-CREATE TABLE "Attempt" (
+CREATE TABLE "public"."Attempt" (
     "id" SERIAL NOT NULL,
     "boulderId" INTEGER NOT NULL,
     "success" BOOLEAN NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE "Attempt" (
 );
 
 -- CreateTable
-CREATE TABLE "Setter" (
+CREATE TABLE "public"."Setter" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE "Setter" (
 );
 
 -- CreateTable
-CREATE TABLE "Boulder" (
+CREATE TABLE "public"."Boulder" (
     "id" TEXT NOT NULL,
     "name" TEXT,
     "setterId" INTEGER NOT NULL,
@@ -59,19 +59,19 @@ CREATE TABLE "Boulder" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Setter_email_key" ON "Setter"("email");
+CREATE UNIQUE INDEX "Setter_email_key" ON "public"."Setter"("email");
 
 -- AddForeignKey
-ALTER TABLE "MyBoulder" ADD CONSTRAINT "MyBoulder_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."MyBoulder" ADD CONSTRAINT "MyBoulder_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MyBoulder" ADD CONSTRAINT "MyBoulder_boulderId_fkey" FOREIGN KEY ("boulderId") REFERENCES "Boulder"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."MyBoulder" ADD CONSTRAINT "MyBoulder_boulderId_fkey" FOREIGN KEY ("boulderId") REFERENCES "public"."Boulder"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attempt" ADD CONSTRAINT "Attempt_boulderId_fkey" FOREIGN KEY ("boulderId") REFERENCES "MyBoulder"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Attempt" ADD CONSTRAINT "Attempt_boulderId_fkey" FOREIGN KEY ("boulderId") REFERENCES "public"."MyBoulder"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Boulder" ADD CONSTRAINT "Boulder_setterId_fkey" FOREIGN KEY ("setterId") REFERENCES "Setter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Boulder" ADD CONSTRAINT "Boulder_setterId_fkey" FOREIGN KEY ("setterId") REFERENCES "public"."Setter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

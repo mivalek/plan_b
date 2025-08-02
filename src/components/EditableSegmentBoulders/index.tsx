@@ -97,6 +97,7 @@ function EditableSegmentBoulders({
         prev.filter((p) => p.pointerId !== ev.pointerId)
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [draggedBoulder, boulderPointers, panFlag]
   );
 

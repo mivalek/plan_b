@@ -34,9 +34,14 @@ function Boulder({
         className
       )}
       style={{ scale: "var(--boulder-scale)" }}
-      onPointerEnter={() => {}}
-      onPointerDown={() => {}}
-      onPointerUp={() => {}}
+      onPointerEnter={() => {
+        setIsPopupOpen(true);
+      }}
+      onPointerLeave={() => {
+        setIsPopupOpen(false);
+      }}
+      // onPointerDown={() => {}}
+      // onPointerUp={() => {}}
     >
       {data.difficulty !== undefined && (
         <circle

@@ -8,6 +8,7 @@ import {
   TSetterShort,
 } from "@/lib/types";
 import { unstable_cache } from "next/cache";
+import { Suspense } from "react";
 
 const getCachedBoulders = unstable_cache(
   async () => prisma.boulder.findMany(),
@@ -36,5 +37,9 @@ export default async function BoulderApp() {
       name: true,
     },
   });
-  return <AppContainer boulderData={boulderData} setters={setterData} />;
+  return (
+    <Suspense>
+      <AppContainer boulderData={boulderData} setters={setterData} />
+    </Suspense>
+  );
 }
