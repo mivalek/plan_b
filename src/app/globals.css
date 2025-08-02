@@ -30,8 +30,9 @@
   --html-backdrop: 0, 0, 0;
   --logo-color-1: var(--primary);
   --logo-color-2: var(--secondary);
-  --nav-color-1: var(--primary);
-  --nav-color-2: var(--primary);
+  --nav-color-1: var(--secondary);
+  --nav-color-2: var(--secondary);
+  --nav-mobile-menu-color: var(--bg);
   --blurb-heading-color: var(--bg);
   --shadow-color: #0008;
   --theme: light;
@@ -60,6 +61,7 @@
     --logo-color-1: var(--inverse-color);
     --logo-color-2: var(--primary);
     --nav-color-2: var(--inverse-color);
+    --nav-mobile-menu-color: var(--inverse-color);
     --diff-white-filter: #fff;
     --diff-black-filter: #333;
     --diff-white-filter-out: #bbb;
@@ -191,6 +193,7 @@ header {
     .nav__right ul {
       border-color: rgb(var(--nav-color-2));
       background: rgb(var(--bg));
+      box-shadow: -3px 5px 15px -3px #0005;
 
       li {
         width: 100%;
@@ -199,6 +202,17 @@ header {
           width: 100%;
           display: flex;
           justify-content: end;
+        }
+
+        &:hover {
+          a {
+            background: rgb(var(--primary));
+            color: rgb(var(--blurb-heading-color));
+
+            .icon {
+              fill: rgb(var(--blurb-heading-color));
+            }
+          }
         }
       }
     }
@@ -447,7 +461,7 @@ section#celebrate .blurb h2 {
 
   .nav__right ul {
     border-color: rgb(var(--nav-color-1));
-    background: rgb(var(--inverse-color));
+    background: rgb(var(--nav-mobile-menu-color));
   }
 }
 
