@@ -18,6 +18,10 @@
   --diff-red: #d01313;
   --diff-blue: #1342d0;
   --diff-purple: #8719e1;
+  --diff-white-filter: #ddd;
+  --diff-black-filter: #000;
+  --diff-white-filter-out: #ccc;
+  --diff-black-filter-out: #444;
   --bg: 255 255 255;
   --font-color: 0 0 0;
   --inverse-color: 20 20 20;
@@ -54,9 +58,12 @@
     --primary-complement: 20, 130, 230;
     --outside-walls: #fff;
     --logo-color-1: var(--inverse-color);
-
     --logo-color-2: var(--primary);
     --nav-color-2: var(--inverse-color);
+    --diff-white-filter: #fff;
+    --diff-black-filter: #333;
+    --diff-white-filter-out: #bbb;
+    --diff-black-filter-out: #555;
   }
 }
 
