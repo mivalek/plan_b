@@ -151,8 +151,10 @@ export function zoomSvg(
   target: SVGSVGElement,
   delta: number,
   offsetX: number,
-  offsetY: number
+  offsetY: number,
+  damper?: number
 ) {
+  damper = damper || 1;
   const svgBBox = target.getBoundingClientRect();
   const initialViewBox = getInitialViewBox();
 
@@ -183,7 +185,8 @@ export function zoomSvg(
     borderBBox.right < bBox.x + offsetX;
   if ((width <= MIN_VIEWPORT_WIDTH && delta > 0) || outOfBounds) return;
   const pointer = { x: offsetX, y: offsetY };
-  const zoomFactor = delta > 0 ? ZOOM_SPEED : 1 / ZOOM_SPEED;
+  const zoomFactor =
+    delta > 0 ? 1 + ZOOM_SPEED * damper : 1 / (1 + ZOOM_SPEED * damper);
   const origin = [pointer.x / bBox.width, pointer.y / bBox.height];
   const newWidth = width / zoomFactor;
   const newHeight = height / zoomFactor;

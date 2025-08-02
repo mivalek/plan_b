@@ -13,6 +13,7 @@ import MakeSVGGradients from "../MakeSVGGradients";
 import {
   LAYOUT_DIMS,
   PAN_BORDER,
+  PINCH_ZOOM_DAMPER,
   // SVG_RATIO,
   SVG_VIEWBOX_LANDSCAPE,
   SVG_VIEWBOX_PORTRAIT,
@@ -191,7 +192,8 @@ function AppContainer({
                 svgRef.current!,
                 Math.max(deltaX, deltaY),
                 zoomOrigin.x,
-                zoomOrigin.y
+                zoomOrigin.y,
+                PINCH_ZOOM_DAMPER
               );
               setZoomScale(
                 1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!))
