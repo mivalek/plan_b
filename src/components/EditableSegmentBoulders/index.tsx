@@ -82,7 +82,10 @@ function EditableSegmentBoulders({
 
       const pointer = boulderPointers.find((p) => p.pointerId === ev.pointerId);
       if (!pointer) return;
-      dbUpdateBoulderPosition(draggedBoulder.id, draggedBoulder.position);
+      dbUpdateBoulderPosition(draggedBoulder.id, [
+        draggedBoulder.position.x,
+        draggedBoulder.position.y,
+      ]);
       trgt.releasePointerCapture(ev.pointerId);
       trgt.classList.remove("grabbing");
       setBoulders((prev) => {
