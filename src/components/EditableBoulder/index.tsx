@@ -59,7 +59,7 @@ function Boulder({
       )}
       style={{ scale: "var(--boulder-scale)" }}
       onPointerEnter={(e) => {
-        svgRef.current!.appendChild(e.currentTarget);
+        e.currentTarget.parentElement!.appendChild(e.currentTarget);
       }}
       onPointerDown={(e) => {
         setPointers((prev) => prev.concat(e));

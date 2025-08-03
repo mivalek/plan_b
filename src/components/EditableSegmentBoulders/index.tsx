@@ -24,7 +24,6 @@ function EditableSegmentBoulders({
   clusters,
   setBoulders,
   setIsNewBoulder,
-  editedBoulder,
   setEditedBoulder,
   draggedBoulder,
   setDraggedBoulder,
@@ -42,7 +41,6 @@ function EditableSegmentBoulders({
   clusters: TCluster[];
   setBoulders: Dispatch<SetStateAction<TBoulder[]>>;
   setIsNewBoulder: Dispatch<SetStateAction<boolean>>;
-  editedBoulder: TBoulder | undefined;
   setEditedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
   draggedBoulder: TBoulder | undefined;
   setDraggedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
@@ -73,7 +71,7 @@ function EditableSegmentBoulders({
         !zoomFlag &&
         !boulderPointers.length
       ) {
-        addBoulder(ev);
+        setTimeout(() => addBoulder(ev), 10);
       } else if (pointer && draggedBoulder) {
         dbUpdateBoulderPosition(draggedBoulder.id, [
           draggedBoulder.position.x,
@@ -87,8 +85,8 @@ function EditableSegmentBoulders({
           next[idx].position = draggedBoulder.position!;
           return next;
         });
+        setDraggedBoulder(undefined);
       }
-      setDraggedBoulder(undefined);
       setBoulderPointers((prev) =>
         prev.filter((p) => p.pointerId !== ev.pointerId)
       );
@@ -140,9 +138,8 @@ function EditableSegmentBoulders({
     };
 
     setEditedBoulder(boulder);
-
-    setTimeout(() => setIsBoulderDialogOpen(true), 50);
     setIsNewBoulder(true);
+    setIsBoulderDialogOpen(true);
   }
 
   useEffect(() => {
@@ -183,18 +180,15 @@ function EditableSegmentBoulders({
   }, [clusters, circleRadius, zoomScale, zoomFlag]);
 
   return (
-    <g>
-      {(editedBoulder && !boulders.find((b) => b.id === editedBoulder.id)
-        ? boulders.concat(editedBoulder)
-        : boulders
-      ).map((b) => {
+    <g id={id + "-boulders"}>
+      {boulders.map((b) => {
         const isClustered = clusteredBoulders.some((cluster) =>
           cluster.members.includes(b.id)
         );
         return (
           <Boulder
             key={b.id}
-            data={editedBoulder?.id === b.id ? editedBoulder : b}
+            data={b}
             svgRef={svgRef}
             draggedBoulder={draggedBoulder}
             setDraggedBoulder={setDraggedBoulder}
