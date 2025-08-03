@@ -134,7 +134,7 @@ function BoulderForm({
       <fieldset id="hold-colors" className="mandatory flex gap-2">
         <legend className="text-xs relative pb-2 pl-1">Colour</legend>
         <div
-          className="grid gap-4 w-full"
+          className="grid gap-4 w-full justify-between"
           style={{ gridTemplateColumns: "repeat(5, auto)" }}
         >
           {Object.entries(HOLD_COLORS).map((color) => {
@@ -142,22 +142,18 @@ function BoulderForm({
             return (
               <div
                 key={"hold-" + key}
-                className={twMerge(
-                  "w-fit rounded-full border-3 ",
-                  boulder?.holdColors?.includes(key)
-                    ? " border-cyan-600 "
-                    : "border-transparent"
-                )}
-                style={{ transition: "border-color .2s ease-out" }}
+                className="w-fit"
+                style={{ transition: "outline .2s ease-out" }}
               >
                 <label
                   htmlFor={"hold-" + key}
                   style={{ background: val }}
                   className={twMerge(
-                    "h-6 w-6 rounded-full block cursor-pointer rotate-45 ",
+                    "h-6 w-6 rounded-full block cursor-pointer rotate-45 outline-0 outline-sky-600 outline-offset-2",
                     key === "white" &&
                       !boulder?.holdColors?.includes(key) &&
-                      " border-gray-400 border"
+                      " border-gray-400 border",
+                    boulder?.holdColors?.includes(key) && "outline-2"
                   )}
                 >
                   <input
@@ -169,7 +165,7 @@ function BoulderForm({
                     name="holdColor"
                     id={"hold-" + key}
                     value={key}
-                    className="invisible absolute h-0 w-0"
+                    className=" absolute h-0 w-0"
                     onChange={(e) => {
                       if (e.target.checked) {
                         setBoulderProperty(
@@ -193,52 +189,47 @@ function BoulderForm({
           })}
         </div>
       </fieldset>
-      <fieldset id="difficulty" className="mandatory flex gap-2">
+      <fieldset id="difficulty" className="mandatory">
         <legend className="text-xs relative pb-2 pl-1">Difficulty</legend>
-        {Object.entries(Difficulty)
-          .filter((d) => isNaN(Number(d[0])))
-          .map(([key, val]) => {
-            return (
-              <div
-                key={"diff-" + key}
-                className={twMerge(
-                  "rounded-full border-4 ",
-                  boulder?.difficulty === val
-                    ? " border-cyan-600 "
-                    : "border-transparent"
-                )}
-                style={{ transition: "border-color .2s ease-out" }}
-              >
-                <label
-                  htmlFor={"diff-" + key.toLowerCase()}
-                  style={{
-                    background:
-                      HOLD_COLORS[
-                        key.toLowerCase() as keyof typeof HOLD_COLORS
-                      ],
-                  }}
-                  className={twMerge(
-                    "h-6 w-6 rounded-full block cursor-pointer",
-                    key === "White" &&
-                      val !== boulder?.difficulty &&
-                      " border-gray-400 border"
-                  )}
-                >
-                  <input
-                    type="radio"
-                    name="difficulty"
-                    id={"diff-" + key.toLowerCase()}
-                    value={val}
-                    className="invisible absolute h-0 w-0"
-                    onClick={() =>
-                      setBoulderProperty("difficulty", val as Difficulty)
-                    }
-                    defaultChecked={val === boulder?.difficulty}
-                  />
-                </label>
-              </div>
-            );
-          })}
+        <div className="flex gap-2 justify-between">
+          {Object.entries(Difficulty)
+            .filter((d) => isNaN(Number(d[0])))
+            .map(([key, val]) => {
+              return (
+                <div key={"diff-" + key} className="w-fit">
+                  <label
+                    htmlFor={"diff-" + key.toLowerCase()}
+                    style={{
+                      background:
+                        HOLD_COLORS[
+                          key.toLowerCase() as keyof typeof HOLD_COLORS
+                        ],
+                    }}
+                    className={twMerge(
+                      "h-6 w-6 rounded-full block cursor-pointer outline-0 outline-sky-600 outline-offset-2",
+                      key === "White" &&
+                        val !== boulder?.difficulty &&
+                        " border-gray-400 border",
+
+                      boulder?.difficulty === val && "outline-2"
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="difficulty"
+                      id={"diff-" + key.toLowerCase()}
+                      value={val}
+                      className="invisible absolute h-0 w-0"
+                      onClick={() =>
+                        setBoulderProperty("difficulty", val as Difficulty)
+                      }
+                      defaultChecked={val === boulder?.difficulty}
+                    />
+                  </label>
+                </div>
+              );
+            })}
+        </div>
       </fieldset>
       <fieldset
         id="tags"
@@ -251,12 +242,9 @@ function BoulderForm({
               <label
                 htmlFor={"tag-" + tag.toLowerCase()}
                 className={twMerge(
-                  "rounded-sm  bg-slate-200 cursor-pointer border-2 px-1 py-px ",
-                  boulder?.tags.includes(tag)
-                    ? " border-cyan-600 "
-                    : " border-transparent"
+                  "rounded-sm  bg-slate-200 cursor-pointer px-1 py-px ",
+                  boulder?.tags.includes(tag) && " outline-sky-600 outline-2"
                 )}
-                style={{ transition: "border-color .2s ease-out" }}
               >
                 <input
                   type="checkbox"
