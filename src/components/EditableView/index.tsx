@@ -138,16 +138,12 @@ function EditableView({
             id="edit-setter-dialog"
             isOpen={isSetterDialogOpen}
             cleanup={() => {
-              // setIsBoulderDialogOpen(true);
               setIsSetterDialogOpen(false);
             }}
             closeByAny={true}
             className="w-[340px]"
           >
-            <SetterForm
-              setIsSetterDialogOpen={setIsSetterDialogOpen}
-              // submit function
-            />
+            <SetterForm setIsSetterDialogOpen={setIsSetterDialogOpen} />
           </Dialog>
         </>,
         document.getElementById("dialog-container")!

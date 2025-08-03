@@ -65,6 +65,7 @@ function Boulder({
         setPointers((prev) => prev.concat(e));
       }}
       onPointerMove={(e) => {
+        if (!e.movementX && !e.movementY) return;
         const pointer = pointers.find((p) => p.pointerId === e.pointerId);
         if (!pointer || pointers.length > 1) return;
         setDraggedBoulder(data);
@@ -74,8 +75,7 @@ function Boulder({
       onPointerUp={(e) => {
         layoutSegment?.classList.remove("grabbing");
         const pointer = pointers.find((p) => p.pointerId === e.pointerId);
-        if (!pointer || pointers.length > 1) return;
-        if (e.clientX === pointer.clientX && e.clientY === pointer.clientY) {
+        if (pointer && pointers.length == 1) {
           setEditedBoulder(data);
           setIsBoulderDialogOpen(true);
         }

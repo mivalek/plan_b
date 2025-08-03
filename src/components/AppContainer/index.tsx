@@ -142,7 +142,7 @@ function AppContainer({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="max-w-7xl"
-            onPointerDown={(e) => {
+            onPointerDownCapture={(e) => {
               setZoomFlag(false);
               if (svgPointers.length === 1) {
                 // already touching
@@ -164,18 +164,20 @@ function AppContainer({
               const idx = svgPointers.findIndex(
                 (p) => p.pointerId === e.pointerId
               );
+
               if (idx === -1) return;
               if (svgPointers.length > 2) return; // no use for 3+ multitouch yet
 
               if (svgPointers.length === 1) {
+                if (!e.movementX && !e.movementY) return;
                 setPanFlag(true);
-
+                setZoomFlag(false);
                 panSvg(svgRef.current!, e.movementX, e.movementY);
                 return;
               }
               // zoom
+              setPanFlag(false);
               setZoomFlag(true);
-
               if (idx === 1 || !zoomOrigin) return; // enough to track one finger
               const prevDistanceX = Math.abs(
                 svgPointers[0].clientX - svgPointers[1].clientX
@@ -210,7 +212,7 @@ function AppContainer({
               });
             }}
             onPointerUp={(e) => {
-              setZoomFlag(false);
+              if (svgPointers.length === 1) setZoomFlag(false);
               setPanFlag(false);
               const pointer = svgPointers.find(
                 (p) => p.pointerId === e.pointerId
