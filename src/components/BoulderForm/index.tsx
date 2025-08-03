@@ -82,6 +82,7 @@ function BoulderForm({
         handleSubmit();
       }}
       className="flex flex-col gap-4 px-4 py-6"
+      autoFocus
     >
       <input
         type="text"
