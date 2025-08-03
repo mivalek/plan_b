@@ -46,6 +46,7 @@ function AppContainer({
   const [svgPointers, setSvgPointers] = useState<React.PointerEvent[]>([]);
   const [zoomOrigin, setZoomOrigin] = useState<TPosition>();
   const [zoomFlag, setZoomFlag] = useState(true);
+  const [pinchDistance, setPinchDistance] = useState(0);
   const [panFlag, setPanFlag] = useState(false);
   const [circleRadius, setCircleRadius] = useState(25);
   const [difficultyFilter, setDifficultyFilter] =
@@ -142,10 +143,16 @@ function AppContainer({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="max-w-7xl"
-            onPointerDown={(e) => {
+            onPointerDownCapture={(e) => {
               setZoomFlag(false);
               if (svgPointers.length === 1) {
                 // already touching
+                const dist = Math.sqrt(
+                  (svgPointers[0].clientX - e.clientX) ** 2 +
+                    (svgPointers[0].clientY - e.clientY) ** 2
+                );
+                setPinchDistance(dist);
+
                 setZoomOrigin({
                   x:
                     (svgPointers[0].nativeEvent.offsetX +
@@ -160,42 +167,36 @@ function AppContainer({
               setSvgPointers((prev) => prev.concat(e));
             }}
             onPointerMove={(e) => {
+              if (!e.movementX && e.movementY) return;
               if (draggedBoulder) return;
               const idx = svgPointers.findIndex(
                 (p) => p.pointerId === e.pointerId
               );
+
               if (idx === -1) return;
               if (svgPointers.length > 2) return; // no use for 3+ multitouch yet
 
               if (svgPointers.length === 1) {
+                if (!e.movementX && !e.movementY) return;
                 setPanFlag(true);
-
+                setZoomFlag(false);
                 panSvg(svgRef.current!, e.movementX, e.movementY);
                 return;
               }
               // zoom
+              setPanFlag(false);
               setZoomFlag(true);
 
-              if (idx === 1 || !zoomOrigin) return; // enough to track one finger
-              const prevDistanceX = Math.abs(
-                svgPointers[0].clientX - svgPointers[1].clientX
+              const dist = Math.sqrt(
+                (svgPointers[0].clientX - svgPointers[1].clientX) ** 2 +
+                  (svgPointers[0].clientY - svgPointers[1].clientY) ** 2
               );
-              const prevDistanceY = Math.abs(
-                svgPointers[0].clientY - svgPointers[1].clientY
-              );
-              const currDistanceX = Math.abs(
-                e.clientX - svgPointers[1].clientX
-              );
-              const currDistanceY = Math.abs(
-                e.clientY - svgPointers[1].clientY
-              );
-
-              const deltaX = currDistanceX - prevDistanceX;
-              const deltaY = currDistanceY - prevDistanceY;
+              const delta = dist - pinchDistance;
+              if (!zoomOrigin) return;
 
               zoomSvg(
                 svgRef.current!,
-                Math.max(deltaX, deltaY),
+                delta,
                 zoomOrigin.x,
                 zoomOrigin.y,
                 PINCH_ZOOM_DAMPER
@@ -204,13 +205,14 @@ function AppContainer({
                 1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!))
               );
 
+              setPinchDistance(dist);
               setSvgPointers((prev) => {
                 prev[idx] = e;
                 return prev;
               });
             }}
             onPointerUp={(e) => {
-              setZoomFlag(false);
+              if (svgPointers.length === 1) setZoomFlag(false);
               setPanFlag(false);
               const pointer = svgPointers.find(
                 (p) => p.pointerId === e.pointerId

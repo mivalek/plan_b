@@ -24,7 +24,6 @@ function EditableSegmentBoulders({
   clusters,
   setBoulders,
   setIsNewBoulder,
-  editedBoulder,
   setEditedBoulder,
   draggedBoulder,
   setDraggedBoulder,
@@ -42,7 +41,6 @@ function EditableSegmentBoulders({
   clusters: TCluster[];
   setBoulders: Dispatch<SetStateAction<TBoulder[]>>;
   setIsNewBoulder: Dispatch<SetStateAction<boolean>>;
-  editedBoulder: TBoulder | undefined;
   setEditedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
   draggedBoulder: TBoulder | undefined;
   setDraggedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
@@ -63,49 +61,43 @@ function EditableSegmentBoulders({
     []
   );
 
-  // const clusters = useMemo(() => {
-  //   if (!boulders || boulders.length === 1) return [];
-  //   console.log(makeClusters(boulders, circleRadius));
-  //   return makeClusters(boulders, circleRadius);
-  // }, [boulders, circleRadius]);
-
   const handlePointerUp = useCallback(
     (ev: PointerEvent) => {
       const trgt = ev.currentTarget as SVGGElement;
-      if (
-        !trgt.hasPointerCapture((ev as PointerEvent).pointerId) ||
-        !draggedBoulder
-      ) {
-        if (!panFlag) addBoulder(ev);
-        return;
-      }
-
       const pointer = boulderPointers.find((p) => p.pointerId === ev.pointerId);
-      if (!pointer) return;
-      dbUpdateBoulderPosition(draggedBoulder.id, [
-        draggedBoulder.position.x,
-        draggedBoulder.position.y,
-      ]);
-      trgt.releasePointerCapture(ev.pointerId);
-      trgt.classList.remove("grabbing");
-      setBoulders((prev) => {
-        const next = [...prev];
-        const idx = next.findIndex((b) => b.id === draggedBoulder.id);
-        next[idx].position = draggedBoulder.position!;
-        return next;
-      });
-
-      setDraggedBoulder(undefined);
+      if (
+        !trgt.hasPointerCapture((ev as PointerEvent).pointerId) &&
+        !panFlag &&
+        !zoomFlag &&
+        !boulderPointers.length
+      ) {
+        setTimeout(() => addBoulder(ev), 10);
+      } else if (pointer && draggedBoulder) {
+        dbUpdateBoulderPosition(draggedBoulder.id, [
+          draggedBoulder.position.x,
+          draggedBoulder.position.y,
+        ]);
+        trgt.releasePointerCapture(ev.pointerId);
+        trgt.classList.remove("grabbing");
+        setBoulders((prev) => {
+          const next = [...prev];
+          const idx = next.findIndex((b) => b.id === draggedBoulder.id);
+          next[idx].position = draggedBoulder.position!;
+          return next;
+        });
+        setDraggedBoulder(undefined);
+      }
       setBoulderPointers((prev) =>
         prev.filter((p) => p.pointerId !== ev.pointerId)
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [draggedBoulder, boulderPointers, panFlag]
+    [draggedBoulder, boulderPointers, panFlag, zoomFlag]
   );
 
   const handlePointerMove = useCallback(
     (ev: PointerEvent) => {
+      if (!ev.movementX && !ev.movementY) return;
       if (
         !(ev.currentTarget as SVGGElement).hasPointerCapture(ev.pointerId) ||
         !draggedBoulder
@@ -146,9 +138,8 @@ function EditableSegmentBoulders({
     };
 
     setEditedBoulder(boulder);
-
-    setIsBoulderDialogOpen(true);
     setIsNewBoulder(true);
+    setIsBoulderDialogOpen(true);
   }
 
   useEffect(() => {
@@ -171,19 +162,11 @@ function EditableSegmentBoulders({
       `#${id}.clickable`
     )!;
 
-    layoutSegment.addEventListener("pointerup", handlePointerUp, {
-      capture: true,
-    });
-    layoutSegment.addEventListener("pointermove", handlePointerMove, {
-      capture: true,
-    });
+    layoutSegment.addEventListener("pointerup", handlePointerUp);
+    layoutSegment.addEventListener("pointermove", handlePointerMove);
     return () => {
-      layoutSegment.removeEventListener("pointerup", handlePointerUp, {
-        capture: true,
-      });
-      layoutSegment.removeEventListener("pointermove", handlePointerMove, {
-        capture: true,
-      });
+      layoutSegment.removeEventListener("pointerup", handlePointerUp);
+      layoutSegment.removeEventListener("pointermove", handlePointerMove);
     };
   }, [svgRef, id, handlePointerUp, handlePointerMove]);
 
@@ -197,18 +180,15 @@ function EditableSegmentBoulders({
   }, [clusters, circleRadius, zoomScale, zoomFlag]);
 
   return (
-    <g>
-      {(editedBoulder && !boulders.find((b) => b.id === editedBoulder.id)
-        ? boulders.concat(editedBoulder)
-        : boulders
-      ).map((b) => {
+    <g id={id + "-boulders"}>
+      {boulders.map((b) => {
         const isClustered = clusteredBoulders.some((cluster) =>
           cluster.members.includes(b.id)
         );
         return (
           <Boulder
             key={b.id}
-            data={editedBoulder?.id === b.id ? editedBoulder : b}
+            data={b}
             svgRef={svgRef}
             draggedBoulder={draggedBoulder}
             setDraggedBoulder={setDraggedBoulder}

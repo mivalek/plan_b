@@ -59,12 +59,13 @@ function Boulder({
       )}
       style={{ scale: "var(--boulder-scale)" }}
       onPointerEnter={(e) => {
-        svgRef.current!.appendChild(e.currentTarget);
+        e.currentTarget.parentElement!.appendChild(e.currentTarget);
       }}
       onPointerDown={(e) => {
         setPointers((prev) => prev.concat(e));
       }}
       onPointerMove={(e) => {
+        if (!e.movementX && !e.movementY) return;
         const pointer = pointers.find((p) => p.pointerId === e.pointerId);
         if (!pointer || pointers.length > 1) return;
         setDraggedBoulder(data);
@@ -74,10 +75,9 @@ function Boulder({
       onPointerUp={(e) => {
         layoutSegment?.classList.remove("grabbing");
         const pointer = pointers.find((p) => p.pointerId === e.pointerId);
-        if (!pointer || pointers.length > 1) return;
-        if (e.clientX === pointer.clientX && e.clientY === pointer.clientY) {
+        if (pointer && pointers.length == 1) {
           setEditedBoulder(data);
-          setIsBoulderDialogOpen(true);
+          setTimeout(() => setIsBoulderDialogOpen(true), 50);
         }
         setPointers((prev) => prev.filter((p) => p.pointerId !== e.pointerId));
         setDraggedBoulder(undefined);

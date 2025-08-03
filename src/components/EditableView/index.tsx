@@ -86,10 +86,8 @@ function EditableView({
     <>
       {Object.values(Location).map((l) => {
         const bldrs = boulders.filter((b) => b.location === l);
-        const editedBldr =
-          editedBoulder && editedBoulder.location === l
-            ? editedBoulder
-            : undefined;
+        if (editedBoulder && editedBoulder.location === l)
+          bldrs.push(editedBoulder);
         return (
           bldrs && (
             <EditableSegmentBoulders
@@ -99,7 +97,6 @@ function EditableView({
               boulders={bldrs}
               clusters={clusters[l]!}
               setBoulders={setBoulders}
-              editedBoulder={editedBldr}
               setEditedBoulder={setEditedBoulder}
               draggedBoulder={draggedBoulder}
               setDraggedBoulder={setDraggedBoulder}
@@ -138,16 +135,12 @@ function EditableView({
             id="edit-setter-dialog"
             isOpen={isSetterDialogOpen}
             cleanup={() => {
-              // setIsBoulderDialogOpen(true);
               setIsSetterDialogOpen(false);
             }}
             closeByAny={true}
             className="w-[340px]"
           >
-            <SetterForm
-              setIsSetterDialogOpen={setIsSetterDialogOpen}
-              // submit function
-            />
+            <SetterForm setIsSetterDialogOpen={setIsSetterDialogOpen} />
           </Dialog>
         </>,
         document.getElementById("dialog-container")!
