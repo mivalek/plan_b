@@ -77,7 +77,7 @@ function Boulder({
         const pointer = pointers.find((p) => p.pointerId === e.pointerId);
         if (pointer && pointers.length == 1) {
           setEditedBoulder(data);
-          setIsBoulderDialogOpen(true);
+          setTimeout(() => setIsBoulderDialogOpen(true), 50);
         }
         setPointers((prev) => prev.filter((p) => p.pointerId !== e.pointerId));
         setDraggedBoulder(undefined);

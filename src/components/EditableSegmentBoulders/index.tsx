@@ -141,7 +141,7 @@ function EditableSegmentBoulders({
 
     setEditedBoulder(boulder);
 
-    setIsBoulderDialogOpen(true);
+    setTimeout(() => setIsBoulderDialogOpen(true), 50);
     setIsNewBoulder(true);
   }
 

@@ -82,20 +82,21 @@ function BoulderForm({
         handleSubmit();
       }}
       className="flex flex-col gap-4 px-4 py-6"
-      autoFocus
     >
       <input
         type="text"
         name="id"
         id="id"
         defaultValue={boulder?.id}
-        className="hidden"
+        readOnly={true}
+        className="h-0 w-0 absolute"
       />
       <div className="relative">
         <label htmlFor="boulder-name" className="absolute text-xs left-1">
           Boulder name
         </label>
         <input
+          autoFocus={false}
           type="text"
           name="name"
           id="boulder-name"
