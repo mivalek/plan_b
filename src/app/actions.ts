@@ -3,6 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import { TBoulder, TPosition } from "@/lib/types";
+import { segment } from "./generated/prisma";
 
 export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
   const position = [boulder.position.x, boulder.position.y];
@@ -13,8 +14,7 @@ export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
     update: {
       name: boulder.name,
       setterId: boulder.setter,
-      room: boulder.room,
-      location: boulder.location,
+      segmentName: boulder.segment.toUpperCase() as segment,
       position,
       difficulty: boulder.difficulty!,
       holdColors: boulder.holdColors,
@@ -28,8 +28,11 @@ export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
           id: boulder.setter,
         },
       },
-      room: boulder.room,
-      location: boulder.location,
+      segment: {
+        connect: {
+          name: boulder.segment.toUpperCase() as segment,
+        },
+      },
       position,
       difficulty: boulder.difficulty!,
       holdColors: boulder.holdColors,
@@ -70,6 +73,22 @@ export async function createSetter(formData: FormData) {
   });
 
   revalidatePath("/boulders");
+}
+
+export async function dbUpdateSegmentDates(
+  name: string,
+  downDate: Date,
+  upDate?: Date
+) {
+  await prisma.segment.update({
+    where: {
+      name: name.toUpperCase() as segment,
+    },
+    data: upDate
+      ? { upDate: upDate, downDate: downDate }
+      : { downDate: downDate },
+  });
+  revalidateTag("segment-cache");
 }
 
 export async function auth(key: string | null) {

@@ -38,6 +38,45 @@ export type Setter = $Result.DefaultSelection<Prisma.$SetterPayload>
  * 
  */
 export type Boulder = $Result.DefaultSelection<Prisma.$BoulderPayload>
+/**
+ * Model Segment
+ * 
+ */
+export type Segment = $Result.DefaultSelection<Prisma.$SegmentPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const room: {
+  BIG: 'BIG',
+  SMALL: 'SMALL'
+};
+
+export type room = (typeof room)[keyof typeof room]
+
+
+export const segment: {
+  LARGE_BLOCK: 'LARGE_BLOCK',
+  SMALL_BLOCK: 'SMALL_BLOCK',
+  CAVE: 'CAVE',
+  SLAB: 'SLAB',
+  BLOCK: 'BLOCK',
+  U_WALL: 'U_WALL',
+  CORNER: 'CORNER'
+};
+
+export type segment = (typeof segment)[keyof typeof segment]
+
+}
+
+export type room = $Enums.room
+
+export const room: typeof $Enums.room
+
+export type segment = $Enums.segment
+
+export const segment: typeof $Enums.segment
 
 /**
  * ##  Prisma Client ʲˢ
@@ -213,6 +252,16 @@ export class PrismaClient<
     * ```
     */
   get boulder(): Prisma.BoulderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.segment`: Exposes CRUD operations for the **Segment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Segments
+    * const segments = await prisma.segment.findMany()
+    * ```
+    */
+  get segment(): Prisma.SegmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -657,7 +706,8 @@ export namespace Prisma {
     MyBoulder: 'MyBoulder',
     Attempt: 'Attempt',
     Setter: 'Setter',
-    Boulder: 'Boulder'
+    Boulder: 'Boulder',
+    Segment: 'Segment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -676,7 +726,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "myBoulder" | "attempt" | "setter" | "boulder"
+      modelProps: "user" | "myBoulder" | "attempt" | "setter" | "boulder" | "segment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1050,6 +1100,80 @@ export namespace Prisma {
           }
         }
       }
+      Segment: {
+        payload: Prisma.$SegmentPayload<ExtArgs>
+        fields: Prisma.SegmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SegmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SegmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>
+          }
+          findFirst: {
+            args: Prisma.SegmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SegmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>
+          }
+          findMany: {
+            args: Prisma.SegmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>[]
+          }
+          create: {
+            args: Prisma.SegmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>
+          }
+          createMany: {
+            args: Prisma.SegmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SegmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>[]
+          }
+          delete: {
+            args: Prisma.SegmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>
+          }
+          update: {
+            args: Prisma.SegmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.SegmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SegmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SegmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.SegmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SegmentPayload>
+          }
+          aggregate: {
+            args: Prisma.SegmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSegment>
+          }
+          groupBy: {
+            args: Prisma.SegmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SegmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SegmentCountArgs<ExtArgs>
+            result: $Utils.Optional<SegmentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1147,6 +1271,7 @@ export namespace Prisma {
     attempt?: AttemptOmit
     setter?: SetterOmit
     boulder?: BoulderOmit
+    segment?: SegmentOmit
   }
 
   /* Types for Logging */
@@ -1362,6 +1487,37 @@ export namespace Prisma {
    */
   export type BoulderCountOutputTypeCountClimbersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MyBoulderWhereInput
+  }
+
+
+  /**
+   * Count Type SegmentCountOutputType
+   */
+
+  export type SegmentCountOutputType = {
+    boulders: number
+  }
+
+  export type SegmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    boulders?: boolean | SegmentCountOutputTypeCountBouldersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SegmentCountOutputType without action
+   */
+  export type SegmentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SegmentCountOutputType
+     */
+    select?: SegmentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SegmentCountOutputType without action
+   */
+  export type SegmentCountOutputTypeCountBouldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BoulderWhereInput
   }
 
 
@@ -5847,9 +6003,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     setterId: number | null
-    location: string | null
-    room: string | null
+    segmentName: $Enums.segment | null
     difficulty: number | null
+    active: boolean | null
     createdAt: Date | null
   }
 
@@ -5857,9 +6013,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     setterId: number | null
-    location: string | null
-    room: string | null
+    segmentName: $Enums.segment | null
     difficulty: number | null
+    active: boolean | null
     createdAt: Date | null
   }
 
@@ -5868,11 +6024,11 @@ export namespace Prisma {
     name: number
     setterId: number
     position: number
-    location: number
-    room: number
+    segmentName: number
     difficulty: number
     holdColors: number
     tags: number
+    active: number
     createdAt: number
     _all: number
   }
@@ -5894,9 +6050,9 @@ export namespace Prisma {
     id?: true
     name?: true
     setterId?: true
-    location?: true
-    room?: true
+    segmentName?: true
     difficulty?: true
+    active?: true
     createdAt?: true
   }
 
@@ -5904,9 +6060,9 @@ export namespace Prisma {
     id?: true
     name?: true
     setterId?: true
-    location?: true
-    room?: true
+    segmentName?: true
     difficulty?: true
+    active?: true
     createdAt?: true
   }
 
@@ -5915,11 +6071,11 @@ export namespace Prisma {
     name?: true
     setterId?: true
     position?: true
-    location?: true
-    room?: true
+    segmentName?: true
     difficulty?: true
     holdColors?: true
     tags?: true
+    active?: true
     createdAt?: true
     _all?: true
   }
@@ -6015,11 +6171,11 @@ export namespace Prisma {
     name: string | null
     setterId: number
     position: number[]
-    location: string
-    room: string
+    segmentName: $Enums.segment
     difficulty: number
     holdColors: string[]
     tags: string[]
+    active: boolean
     createdAt: Date
     _count: BoulderCountAggregateOutputType | null
     _avg: BoulderAvgAggregateOutputType | null
@@ -6047,13 +6203,14 @@ export namespace Prisma {
     name?: boolean
     setterId?: boolean
     position?: boolean
-    location?: boolean
-    room?: boolean
+    segmentName?: boolean
     difficulty?: boolean
     holdColors?: boolean
     tags?: boolean
+    active?: boolean
     createdAt?: boolean
     setter?: boolean | SetterDefaultArgs<ExtArgs>
+    segment?: boolean | SegmentDefaultArgs<ExtArgs>
     climbers?: boolean | Boulder$climbersArgs<ExtArgs>
     _count?: boolean | BoulderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["boulder"]>
@@ -6063,13 +6220,14 @@ export namespace Prisma {
     name?: boolean
     setterId?: boolean
     position?: boolean
-    location?: boolean
-    room?: boolean
+    segmentName?: boolean
     difficulty?: boolean
     holdColors?: boolean
     tags?: boolean
+    active?: boolean
     createdAt?: boolean
     setter?: boolean | SetterDefaultArgs<ExtArgs>
+    segment?: boolean | SegmentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["boulder"]>
 
   export type BoulderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6077,13 +6235,14 @@ export namespace Prisma {
     name?: boolean
     setterId?: boolean
     position?: boolean
-    location?: boolean
-    room?: boolean
+    segmentName?: boolean
     difficulty?: boolean
     holdColors?: boolean
     tags?: boolean
+    active?: boolean
     createdAt?: boolean
     setter?: boolean | SetterDefaultArgs<ExtArgs>
+    segment?: boolean | SegmentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["boulder"]>
 
   export type BoulderSelectScalar = {
@@ -6091,31 +6250,35 @@ export namespace Prisma {
     name?: boolean
     setterId?: boolean
     position?: boolean
-    location?: boolean
-    room?: boolean
+    segmentName?: boolean
     difficulty?: boolean
     holdColors?: boolean
     tags?: boolean
+    active?: boolean
     createdAt?: boolean
   }
 
-  export type BoulderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "setterId" | "position" | "location" | "room" | "difficulty" | "holdColors" | "tags" | "createdAt", ExtArgs["result"]["boulder"]>
+  export type BoulderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "setterId" | "position" | "segmentName" | "difficulty" | "holdColors" | "tags" | "active" | "createdAt", ExtArgs["result"]["boulder"]>
   export type BoulderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     setter?: boolean | SetterDefaultArgs<ExtArgs>
+    segment?: boolean | SegmentDefaultArgs<ExtArgs>
     climbers?: boolean | Boulder$climbersArgs<ExtArgs>
     _count?: boolean | BoulderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BoulderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     setter?: boolean | SetterDefaultArgs<ExtArgs>
+    segment?: boolean | SegmentDefaultArgs<ExtArgs>
   }
   export type BoulderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     setter?: boolean | SetterDefaultArgs<ExtArgs>
+    segment?: boolean | SegmentDefaultArgs<ExtArgs>
   }
 
   export type $BoulderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Boulder"
     objects: {
       setter: Prisma.$SetterPayload<ExtArgs>
+      segment: Prisma.$SegmentPayload<ExtArgs>
       climbers: Prisma.$MyBoulderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6123,11 +6286,11 @@ export namespace Prisma {
       name: string | null
       setterId: number
       position: number[]
-      location: string
-      room: string
+      segmentName: $Enums.segment
       difficulty: number
       holdColors: string[]
       tags: string[]
+      active: boolean
       createdAt: Date
     }, ExtArgs["result"]["boulder"]>
     composites: {}
@@ -6524,6 +6687,7 @@ export namespace Prisma {
   export interface Prisma__BoulderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     setter<T extends SetterDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SetterDefaultArgs<ExtArgs>>): Prisma__SetterClient<$Result.GetResult<Prisma.$SetterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    segment<T extends SegmentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SegmentDefaultArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     climbers<T extends Boulder$climbersArgs<ExtArgs> = {}>(args?: Subset<T, Boulder$climbersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MyBoulderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6558,11 +6722,11 @@ export namespace Prisma {
     readonly name: FieldRef<"Boulder", 'String'>
     readonly setterId: FieldRef<"Boulder", 'Int'>
     readonly position: FieldRef<"Boulder", 'Int[]'>
-    readonly location: FieldRef<"Boulder", 'String'>
-    readonly room: FieldRef<"Boulder", 'String'>
+    readonly segmentName: FieldRef<"Boulder", 'segment'>
     readonly difficulty: FieldRef<"Boulder", 'Int'>
     readonly holdColors: FieldRef<"Boulder", 'String[]'>
     readonly tags: FieldRef<"Boulder", 'String[]'>
+    readonly active: FieldRef<"Boulder", 'Boolean'>
     readonly createdAt: FieldRef<"Boulder", 'DateTime'>
   }
     
@@ -7003,6 +7167,1110 @@ export namespace Prisma {
 
 
   /**
+   * Model Segment
+   */
+
+  export type AggregateSegment = {
+    _count: SegmentCountAggregateOutputType | null
+    _avg: SegmentAvgAggregateOutputType | null
+    _sum: SegmentSumAggregateOutputType | null
+    _min: SegmentMinAggregateOutputType | null
+    _max: SegmentMaxAggregateOutputType | null
+  }
+
+  export type SegmentAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type SegmentSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type SegmentMinAggregateOutputType = {
+    id: number | null
+    name: $Enums.segment | null
+    room: $Enums.room | null
+    upDate: Date | null
+    downDate: Date | null
+  }
+
+  export type SegmentMaxAggregateOutputType = {
+    id: number | null
+    name: $Enums.segment | null
+    room: $Enums.room | null
+    upDate: Date | null
+    downDate: Date | null
+  }
+
+  export type SegmentCountAggregateOutputType = {
+    id: number
+    name: number
+    room: number
+    upDate: number
+    downDate: number
+    _all: number
+  }
+
+
+  export type SegmentAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type SegmentSumAggregateInputType = {
+    id?: true
+  }
+
+  export type SegmentMinAggregateInputType = {
+    id?: true
+    name?: true
+    room?: true
+    upDate?: true
+    downDate?: true
+  }
+
+  export type SegmentMaxAggregateInputType = {
+    id?: true
+    name?: true
+    room?: true
+    upDate?: true
+    downDate?: true
+  }
+
+  export type SegmentCountAggregateInputType = {
+    id?: true
+    name?: true
+    room?: true
+    upDate?: true
+    downDate?: true
+    _all?: true
+  }
+
+  export type SegmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Segment to aggregate.
+     */
+    where?: SegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Segments to fetch.
+     */
+    orderBy?: SegmentOrderByWithRelationInput | SegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Segments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Segments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Segments
+    **/
+    _count?: true | SegmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SegmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SegmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SegmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SegmentMaxAggregateInputType
+  }
+
+  export type GetSegmentAggregateType<T extends SegmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateSegment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSegment[P]>
+      : GetScalarType<T[P], AggregateSegment[P]>
+  }
+
+
+
+
+  export type SegmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SegmentWhereInput
+    orderBy?: SegmentOrderByWithAggregationInput | SegmentOrderByWithAggregationInput[]
+    by: SegmentScalarFieldEnum[] | SegmentScalarFieldEnum
+    having?: SegmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SegmentCountAggregateInputType | true
+    _avg?: SegmentAvgAggregateInputType
+    _sum?: SegmentSumAggregateInputType
+    _min?: SegmentMinAggregateInputType
+    _max?: SegmentMaxAggregateInputType
+  }
+
+  export type SegmentGroupByOutputType = {
+    id: number
+    name: $Enums.segment
+    room: $Enums.room
+    upDate: Date | null
+    downDate: Date | null
+    _count: SegmentCountAggregateOutputType | null
+    _avg: SegmentAvgAggregateOutputType | null
+    _sum: SegmentSumAggregateOutputType | null
+    _min: SegmentMinAggregateOutputType | null
+    _max: SegmentMaxAggregateOutputType | null
+  }
+
+  type GetSegmentGroupByPayload<T extends SegmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SegmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SegmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SegmentGroupByOutputType[P]>
+            : GetScalarType<T[P], SegmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SegmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    room?: boolean
+    upDate?: boolean
+    downDate?: boolean
+    boulders?: boolean | Segment$bouldersArgs<ExtArgs>
+    _count?: boolean | SegmentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["segment"]>
+
+  export type SegmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    room?: boolean
+    upDate?: boolean
+    downDate?: boolean
+  }, ExtArgs["result"]["segment"]>
+
+  export type SegmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    room?: boolean
+    upDate?: boolean
+    downDate?: boolean
+  }, ExtArgs["result"]["segment"]>
+
+  export type SegmentSelectScalar = {
+    id?: boolean
+    name?: boolean
+    room?: boolean
+    upDate?: boolean
+    downDate?: boolean
+  }
+
+  export type SegmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "room" | "upDate" | "downDate", ExtArgs["result"]["segment"]>
+  export type SegmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    boulders?: boolean | Segment$bouldersArgs<ExtArgs>
+    _count?: boolean | SegmentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SegmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SegmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $SegmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Segment"
+    objects: {
+      boulders: Prisma.$BoulderPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: $Enums.segment
+      room: $Enums.room
+      upDate: Date | null
+      downDate: Date | null
+    }, ExtArgs["result"]["segment"]>
+    composites: {}
+  }
+
+  type SegmentGetPayload<S extends boolean | null | undefined | SegmentDefaultArgs> = $Result.GetResult<Prisma.$SegmentPayload, S>
+
+  type SegmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SegmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SegmentCountAggregateInputType | true
+    }
+
+  export interface SegmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Segment'], meta: { name: 'Segment' } }
+    /**
+     * Find zero or one Segment that matches the filter.
+     * @param {SegmentFindUniqueArgs} args - Arguments to find a Segment
+     * @example
+     * // Get one Segment
+     * const segment = await prisma.segment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SegmentFindUniqueArgs>(args: SelectSubset<T, SegmentFindUniqueArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Segment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SegmentFindUniqueOrThrowArgs} args - Arguments to find a Segment
+     * @example
+     * // Get one Segment
+     * const segment = await prisma.segment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SegmentFindUniqueOrThrowArgs>(args: SelectSubset<T, SegmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Segment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentFindFirstArgs} args - Arguments to find a Segment
+     * @example
+     * // Get one Segment
+     * const segment = await prisma.segment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SegmentFindFirstArgs>(args?: SelectSubset<T, SegmentFindFirstArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Segment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentFindFirstOrThrowArgs} args - Arguments to find a Segment
+     * @example
+     * // Get one Segment
+     * const segment = await prisma.segment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SegmentFindFirstOrThrowArgs>(args?: SelectSubset<T, SegmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Segments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Segments
+     * const segments = await prisma.segment.findMany()
+     * 
+     * // Get first 10 Segments
+     * const segments = await prisma.segment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const segmentWithIdOnly = await prisma.segment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SegmentFindManyArgs>(args?: SelectSubset<T, SegmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Segment.
+     * @param {SegmentCreateArgs} args - Arguments to create a Segment.
+     * @example
+     * // Create one Segment
+     * const Segment = await prisma.segment.create({
+     *   data: {
+     *     // ... data to create a Segment
+     *   }
+     * })
+     * 
+     */
+    create<T extends SegmentCreateArgs>(args: SelectSubset<T, SegmentCreateArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Segments.
+     * @param {SegmentCreateManyArgs} args - Arguments to create many Segments.
+     * @example
+     * // Create many Segments
+     * const segment = await prisma.segment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SegmentCreateManyArgs>(args?: SelectSubset<T, SegmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Segments and returns the data saved in the database.
+     * @param {SegmentCreateManyAndReturnArgs} args - Arguments to create many Segments.
+     * @example
+     * // Create many Segments
+     * const segment = await prisma.segment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Segments and only return the `id`
+     * const segmentWithIdOnly = await prisma.segment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SegmentCreateManyAndReturnArgs>(args?: SelectSubset<T, SegmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Segment.
+     * @param {SegmentDeleteArgs} args - Arguments to delete one Segment.
+     * @example
+     * // Delete one Segment
+     * const Segment = await prisma.segment.delete({
+     *   where: {
+     *     // ... filter to delete one Segment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SegmentDeleteArgs>(args: SelectSubset<T, SegmentDeleteArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Segment.
+     * @param {SegmentUpdateArgs} args - Arguments to update one Segment.
+     * @example
+     * // Update one Segment
+     * const segment = await prisma.segment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SegmentUpdateArgs>(args: SelectSubset<T, SegmentUpdateArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Segments.
+     * @param {SegmentDeleteManyArgs} args - Arguments to filter Segments to delete.
+     * @example
+     * // Delete a few Segments
+     * const { count } = await prisma.segment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SegmentDeleteManyArgs>(args?: SelectSubset<T, SegmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Segments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Segments
+     * const segment = await prisma.segment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SegmentUpdateManyArgs>(args: SelectSubset<T, SegmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Segments and returns the data updated in the database.
+     * @param {SegmentUpdateManyAndReturnArgs} args - Arguments to update many Segments.
+     * @example
+     * // Update many Segments
+     * const segment = await prisma.segment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Segments and only return the `id`
+     * const segmentWithIdOnly = await prisma.segment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SegmentUpdateManyAndReturnArgs>(args: SelectSubset<T, SegmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Segment.
+     * @param {SegmentUpsertArgs} args - Arguments to update or create a Segment.
+     * @example
+     * // Update or create a Segment
+     * const segment = await prisma.segment.upsert({
+     *   create: {
+     *     // ... data to create a Segment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Segment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SegmentUpsertArgs>(args: SelectSubset<T, SegmentUpsertArgs<ExtArgs>>): Prisma__SegmentClient<$Result.GetResult<Prisma.$SegmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Segments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentCountArgs} args - Arguments to filter Segments to count.
+     * @example
+     * // Count the number of Segments
+     * const count = await prisma.segment.count({
+     *   where: {
+     *     // ... the filter for the Segments we want to count
+     *   }
+     * })
+    **/
+    count<T extends SegmentCountArgs>(
+      args?: Subset<T, SegmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SegmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Segment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SegmentAggregateArgs>(args: Subset<T, SegmentAggregateArgs>): Prisma.PrismaPromise<GetSegmentAggregateType<T>>
+
+    /**
+     * Group by Segment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SegmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SegmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SegmentGroupByArgs['orderBy'] }
+        : { orderBy?: SegmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SegmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSegmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Segment model
+   */
+  readonly fields: SegmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Segment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SegmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    boulders<T extends Segment$bouldersArgs<ExtArgs> = {}>(args?: Subset<T, Segment$bouldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoulderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Segment model
+   */
+  interface SegmentFieldRefs {
+    readonly id: FieldRef<"Segment", 'Int'>
+    readonly name: FieldRef<"Segment", 'segment'>
+    readonly room: FieldRef<"Segment", 'room'>
+    readonly upDate: FieldRef<"Segment", 'DateTime'>
+    readonly downDate: FieldRef<"Segment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Segment findUnique
+   */
+  export type SegmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Segment to fetch.
+     */
+    where: SegmentWhereUniqueInput
+  }
+
+  /**
+   * Segment findUniqueOrThrow
+   */
+  export type SegmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Segment to fetch.
+     */
+    where: SegmentWhereUniqueInput
+  }
+
+  /**
+   * Segment findFirst
+   */
+  export type SegmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Segment to fetch.
+     */
+    where?: SegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Segments to fetch.
+     */
+    orderBy?: SegmentOrderByWithRelationInput | SegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Segments.
+     */
+    cursor?: SegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Segments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Segments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Segments.
+     */
+    distinct?: SegmentScalarFieldEnum | SegmentScalarFieldEnum[]
+  }
+
+  /**
+   * Segment findFirstOrThrow
+   */
+  export type SegmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Segment to fetch.
+     */
+    where?: SegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Segments to fetch.
+     */
+    orderBy?: SegmentOrderByWithRelationInput | SegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Segments.
+     */
+    cursor?: SegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Segments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Segments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Segments.
+     */
+    distinct?: SegmentScalarFieldEnum | SegmentScalarFieldEnum[]
+  }
+
+  /**
+   * Segment findMany
+   */
+  export type SegmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Segments to fetch.
+     */
+    where?: SegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Segments to fetch.
+     */
+    orderBy?: SegmentOrderByWithRelationInput | SegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Segments.
+     */
+    cursor?: SegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Segments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Segments.
+     */
+    skip?: number
+    distinct?: SegmentScalarFieldEnum | SegmentScalarFieldEnum[]
+  }
+
+  /**
+   * Segment create
+   */
+  export type SegmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Segment.
+     */
+    data: XOR<SegmentCreateInput, SegmentUncheckedCreateInput>
+  }
+
+  /**
+   * Segment createMany
+   */
+  export type SegmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Segments.
+     */
+    data: SegmentCreateManyInput | SegmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Segment createManyAndReturn
+   */
+  export type SegmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Segments.
+     */
+    data: SegmentCreateManyInput | SegmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Segment update
+   */
+  export type SegmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Segment.
+     */
+    data: XOR<SegmentUpdateInput, SegmentUncheckedUpdateInput>
+    /**
+     * Choose, which Segment to update.
+     */
+    where: SegmentWhereUniqueInput
+  }
+
+  /**
+   * Segment updateMany
+   */
+  export type SegmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Segments.
+     */
+    data: XOR<SegmentUpdateManyMutationInput, SegmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Segments to update
+     */
+    where?: SegmentWhereInput
+    /**
+     * Limit how many Segments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Segment updateManyAndReturn
+   */
+  export type SegmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * The data used to update Segments.
+     */
+    data: XOR<SegmentUpdateManyMutationInput, SegmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Segments to update
+     */
+    where?: SegmentWhereInput
+    /**
+     * Limit how many Segments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Segment upsert
+   */
+  export type SegmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Segment to update in case it exists.
+     */
+    where: SegmentWhereUniqueInput
+    /**
+     * In case the Segment found by the `where` argument doesn't exist, create a new Segment with this data.
+     */
+    create: XOR<SegmentCreateInput, SegmentUncheckedCreateInput>
+    /**
+     * In case the Segment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SegmentUpdateInput, SegmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Segment delete
+   */
+  export type SegmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+    /**
+     * Filter which Segment to delete.
+     */
+    where: SegmentWhereUniqueInput
+  }
+
+  /**
+   * Segment deleteMany
+   */
+  export type SegmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Segments to delete
+     */
+    where?: SegmentWhereInput
+    /**
+     * Limit how many Segments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Segment.boulders
+   */
+  export type Segment$bouldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Boulder
+     */
+    select?: BoulderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Boulder
+     */
+    omit?: BoulderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BoulderInclude<ExtArgs> | null
+    where?: BoulderWhereInput
+    orderBy?: BoulderOrderByWithRelationInput | BoulderOrderByWithRelationInput[]
+    cursor?: BoulderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BoulderScalarFieldEnum | BoulderScalarFieldEnum[]
+  }
+
+  /**
+   * Segment without action
+   */
+  export type SegmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Segment
+     */
+    select?: SegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Segment
+     */
+    omit?: SegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SegmentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -7065,15 +8333,26 @@ export namespace Prisma {
     name: 'name',
     setterId: 'setterId',
     position: 'position',
-    location: 'location',
-    room: 'room',
+    segmentName: 'segmentName',
     difficulty: 'difficulty',
     holdColors: 'holdColors',
     tags: 'tags',
+    active: 'active',
     createdAt: 'createdAt'
   };
 
   export type BoulderScalarFieldEnum = (typeof BoulderScalarFieldEnum)[keyof typeof BoulderScalarFieldEnum]
+
+
+  export const SegmentScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    room: 'room',
+    upDate: 'upDate',
+    downDate: 'downDate'
+  };
+
+  export type SegmentScalarFieldEnum = (typeof SegmentScalarFieldEnum)[keyof typeof SegmentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7151,6 +8430,34 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'segment'
+   */
+  export type EnumsegmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'segment'>
+    
+
+
+  /**
+   * Reference to a field of type 'segment[]'
+   */
+  export type ListEnumsegmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'segment[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'room'
+   */
+  export type EnumroomFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'room'>
+    
+
+
+  /**
+   * Reference to a field of type 'room[]'
+   */
+  export type ListEnumroomFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'room[]'>
     
 
 
@@ -7413,13 +8720,14 @@ export namespace Prisma {
     name?: StringNullableFilter<"Boulder"> | string | null
     setterId?: IntFilter<"Boulder"> | number
     position?: IntNullableListFilter<"Boulder">
-    location?: StringFilter<"Boulder"> | string
-    room?: StringFilter<"Boulder"> | string
+    segmentName?: EnumsegmentFilter<"Boulder"> | $Enums.segment
     difficulty?: IntFilter<"Boulder"> | number
     holdColors?: StringNullableListFilter<"Boulder">
     tags?: StringNullableListFilter<"Boulder">
+    active?: BoolFilter<"Boulder"> | boolean
     createdAt?: DateTimeFilter<"Boulder"> | Date | string
     setter?: XOR<SetterScalarRelationFilter, SetterWhereInput>
+    segment?: XOR<SegmentScalarRelationFilter, SegmentWhereInput>
     climbers?: MyBoulderListRelationFilter
   }
 
@@ -7428,13 +8736,14 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     setterId?: SortOrder
     position?: SortOrder
-    location?: SortOrder
-    room?: SortOrder
+    segmentName?: SortOrder
     difficulty?: SortOrder
     holdColors?: SortOrder
     tags?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     setter?: SetterOrderByWithRelationInput
+    segment?: SegmentOrderByWithRelationInput
     climbers?: MyBoulderOrderByRelationAggregateInput
   }
 
@@ -7446,13 +8755,14 @@ export namespace Prisma {
     name?: StringNullableFilter<"Boulder"> | string | null
     setterId?: IntFilter<"Boulder"> | number
     position?: IntNullableListFilter<"Boulder">
-    location?: StringFilter<"Boulder"> | string
-    room?: StringFilter<"Boulder"> | string
+    segmentName?: EnumsegmentFilter<"Boulder"> | $Enums.segment
     difficulty?: IntFilter<"Boulder"> | number
     holdColors?: StringNullableListFilter<"Boulder">
     tags?: StringNullableListFilter<"Boulder">
+    active?: BoolFilter<"Boulder"> | boolean
     createdAt?: DateTimeFilter<"Boulder"> | Date | string
     setter?: XOR<SetterScalarRelationFilter, SetterWhereInput>
+    segment?: XOR<SegmentScalarRelationFilter, SegmentWhereInput>
     climbers?: MyBoulderListRelationFilter
   }, "id">
 
@@ -7461,11 +8771,11 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     setterId?: SortOrder
     position?: SortOrder
-    location?: SortOrder
-    room?: SortOrder
+    segmentName?: SortOrder
     difficulty?: SortOrder
     holdColors?: SortOrder
     tags?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
     _count?: BoulderCountOrderByAggregateInput
     _avg?: BoulderAvgOrderByAggregateInput
@@ -7482,12 +8792,69 @@ export namespace Prisma {
     name?: StringNullableWithAggregatesFilter<"Boulder"> | string | null
     setterId?: IntWithAggregatesFilter<"Boulder"> | number
     position?: IntNullableListFilter<"Boulder">
-    location?: StringWithAggregatesFilter<"Boulder"> | string
-    room?: StringWithAggregatesFilter<"Boulder"> | string
+    segmentName?: EnumsegmentWithAggregatesFilter<"Boulder"> | $Enums.segment
     difficulty?: IntWithAggregatesFilter<"Boulder"> | number
     holdColors?: StringNullableListFilter<"Boulder">
     tags?: StringNullableListFilter<"Boulder">
+    active?: BoolWithAggregatesFilter<"Boulder"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Boulder"> | Date | string
+  }
+
+  export type SegmentWhereInput = {
+    AND?: SegmentWhereInput | SegmentWhereInput[]
+    OR?: SegmentWhereInput[]
+    NOT?: SegmentWhereInput | SegmentWhereInput[]
+    id?: IntFilter<"Segment"> | number
+    name?: EnumsegmentFilter<"Segment"> | $Enums.segment
+    room?: EnumroomFilter<"Segment"> | $Enums.room
+    upDate?: DateTimeNullableFilter<"Segment"> | Date | string | null
+    downDate?: DateTimeNullableFilter<"Segment"> | Date | string | null
+    boulders?: BoulderListRelationFilter
+  }
+
+  export type SegmentOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    room?: SortOrder
+    upDate?: SortOrderInput | SortOrder
+    downDate?: SortOrderInput | SortOrder
+    boulders?: BoulderOrderByRelationAggregateInput
+  }
+
+  export type SegmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    name?: $Enums.segment
+    AND?: SegmentWhereInput | SegmentWhereInput[]
+    OR?: SegmentWhereInput[]
+    NOT?: SegmentWhereInput | SegmentWhereInput[]
+    room?: EnumroomFilter<"Segment"> | $Enums.room
+    upDate?: DateTimeNullableFilter<"Segment"> | Date | string | null
+    downDate?: DateTimeNullableFilter<"Segment"> | Date | string | null
+    boulders?: BoulderListRelationFilter
+  }, "id" | "name">
+
+  export type SegmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    room?: SortOrder
+    upDate?: SortOrderInput | SortOrder
+    downDate?: SortOrderInput | SortOrder
+    _count?: SegmentCountOrderByAggregateInput
+    _avg?: SegmentAvgOrderByAggregateInput
+    _max?: SegmentMaxOrderByAggregateInput
+    _min?: SegmentMinOrderByAggregateInput
+    _sum?: SegmentSumOrderByAggregateInput
+  }
+
+  export type SegmentScalarWhereWithAggregatesInput = {
+    AND?: SegmentScalarWhereWithAggregatesInput | SegmentScalarWhereWithAggregatesInput[]
+    OR?: SegmentScalarWhereWithAggregatesInput[]
+    NOT?: SegmentScalarWhereWithAggregatesInput | SegmentScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Segment"> | number
+    name?: EnumsegmentWithAggregatesFilter<"Segment"> | $Enums.segment
+    room?: EnumroomWithAggregatesFilter<"Segment"> | $Enums.room
+    upDate?: DateTimeNullableWithAggregatesFilter<"Segment"> | Date | string | null
+    downDate?: DateTimeNullableWithAggregatesFilter<"Segment"> | Date | string | null
   }
 
   export type UserCreateInput = {
@@ -7715,13 +9082,13 @@ export namespace Prisma {
     id: string
     name?: string | null
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
     setter: SetterCreateNestedOneWithoutBouldersInput
+    segment: SegmentCreateNestedOneWithoutBouldersInput
     climbers?: MyBoulderCreateNestedManyWithoutBoulderInput
   }
 
@@ -7730,11 +9097,11 @@ export namespace Prisma {
     name?: string | null
     setterId: number
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
+    segmentName: $Enums.segment
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
     climbers?: MyBoulderUncheckedCreateNestedManyWithoutBoulderInput
   }
@@ -7743,13 +9110,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setter?: SetterUpdateOneRequiredWithoutBouldersNestedInput
+    segment?: SegmentUpdateOneRequiredWithoutBouldersNestedInput
     climbers?: MyBoulderUpdateManyWithoutBoulderNestedInput
   }
 
@@ -7758,11 +9125,11 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     setterId?: IntFieldUpdateOperationsInput | number
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
+    segmentName?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     climbers?: MyBoulderUncheckedUpdateManyWithoutBoulderNestedInput
   }
@@ -7772,11 +9139,11 @@ export namespace Prisma {
     name?: string | null
     setterId: number
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
+    segmentName: $Enums.segment
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
   }
 
@@ -7784,11 +9151,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7797,12 +9163,69 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     setterId?: IntFieldUpdateOperationsInput | number
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
+    segmentName?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SegmentCreateInput = {
+    name: $Enums.segment
+    room: $Enums.room
+    upDate?: Date | string | null
+    downDate?: Date | string | null
+    boulders?: BoulderCreateNestedManyWithoutSegmentInput
+  }
+
+  export type SegmentUncheckedCreateInput = {
+    id?: number
+    name: $Enums.segment
+    room: $Enums.room
+    upDate?: Date | string | null
+    downDate?: Date | string | null
+    boulders?: BoulderUncheckedCreateNestedManyWithoutSegmentInput
+  }
+
+  export type SegmentUpdateInput = {
+    name?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
+    room?: EnumroomFieldUpdateOperationsInput | $Enums.room
+    upDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    boulders?: BoulderUpdateManyWithoutSegmentNestedInput
+  }
+
+  export type SegmentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
+    room?: EnumroomFieldUpdateOperationsInput | $Enums.room
+    upDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    boulders?: BoulderUncheckedUpdateManyWithoutSegmentNestedInput
+  }
+
+  export type SegmentCreateManyInput = {
+    id?: number
+    name: $Enums.segment
+    room: $Enums.room
+    upDate?: Date | string | null
+    downDate?: Date | string | null
+  }
+
+  export type SegmentUpdateManyMutationInput = {
+    name?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
+    room?: EnumroomFieldUpdateOperationsInput | $Enums.room
+    upDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SegmentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
+    room?: EnumroomFieldUpdateOperationsInput | $Enums.room
+    upDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -8109,6 +9532,13 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
+  export type EnumsegmentFilter<$PrismaModel = never> = {
+    equals?: $Enums.segment | EnumsegmentFieldRefInput<$PrismaModel>
+    in?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumsegmentFilter<$PrismaModel> | $Enums.segment
+  }
+
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -8122,6 +9552,11 @@ export namespace Prisma {
     isNot?: SetterWhereInput
   }
 
+  export type SegmentScalarRelationFilter = {
+    is?: SegmentWhereInput
+    isNot?: SegmentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -8132,11 +9567,11 @@ export namespace Prisma {
     name?: SortOrder
     setterId?: SortOrder
     position?: SortOrder
-    location?: SortOrder
-    room?: SortOrder
+    segmentName?: SortOrder
     difficulty?: SortOrder
     holdColors?: SortOrder
     tags?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8150,9 +9585,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     setterId?: SortOrder
-    location?: SortOrder
-    room?: SortOrder
+    segmentName?: SortOrder
     difficulty?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8160,9 +9595,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     setterId?: SortOrder
-    location?: SortOrder
-    room?: SortOrder
+    segmentName?: SortOrder
     difficulty?: SortOrder
+    active?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -8188,6 +9623,90 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumsegmentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.segment | EnumsegmentFieldRefInput<$PrismaModel>
+    in?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumsegmentWithAggregatesFilter<$PrismaModel> | $Enums.segment
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumsegmentFilter<$PrismaModel>
+    _max?: NestedEnumsegmentFilter<$PrismaModel>
+  }
+
+  export type EnumroomFilter<$PrismaModel = never> = {
+    equals?: $Enums.room | EnumroomFieldRefInput<$PrismaModel>
+    in?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    notIn?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    not?: NestedEnumroomFilter<$PrismaModel> | $Enums.room
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type SegmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    room?: SortOrder
+    upDate?: SortOrder
+    downDate?: SortOrder
+  }
+
+  export type SegmentAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type SegmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    room?: SortOrder
+    upDate?: SortOrder
+    downDate?: SortOrder
+  }
+
+  export type SegmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    room?: SortOrder
+    upDate?: SortOrder
+    downDate?: SortOrder
+  }
+
+  export type SegmentSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumroomWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.room | EnumroomFieldRefInput<$PrismaModel>
+    in?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    notIn?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    not?: NestedEnumroomWithAggregatesFilter<$PrismaModel> | $Enums.room
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumroomFilter<$PrismaModel>
+    _max?: NestedEnumroomFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type MyBoulderCreateNestedManyWithoutUserInput = {
@@ -8396,6 +9915,12 @@ export namespace Prisma {
     connect?: SetterWhereUniqueInput
   }
 
+  export type SegmentCreateNestedOneWithoutBouldersInput = {
+    create?: XOR<SegmentCreateWithoutBouldersInput, SegmentUncheckedCreateWithoutBouldersInput>
+    connectOrCreate?: SegmentCreateOrConnectWithoutBouldersInput
+    connect?: SegmentWhereUniqueInput
+  }
+
   export type MyBoulderCreateNestedManyWithoutBoulderInput = {
     create?: XOR<MyBoulderCreateWithoutBoulderInput, MyBoulderUncheckedCreateWithoutBoulderInput> | MyBoulderCreateWithoutBoulderInput[] | MyBoulderUncheckedCreateWithoutBoulderInput[]
     connectOrCreate?: MyBoulderCreateOrConnectWithoutBoulderInput | MyBoulderCreateOrConnectWithoutBoulderInput[]
@@ -8437,6 +9962,14 @@ export namespace Prisma {
     update?: XOR<XOR<SetterUpdateToOneWithWhereWithoutBouldersInput, SetterUpdateWithoutBouldersInput>, SetterUncheckedUpdateWithoutBouldersInput>
   }
 
+  export type SegmentUpdateOneRequiredWithoutBouldersNestedInput = {
+    create?: XOR<SegmentCreateWithoutBouldersInput, SegmentUncheckedCreateWithoutBouldersInput>
+    connectOrCreate?: SegmentCreateOrConnectWithoutBouldersInput
+    upsert?: SegmentUpsertWithoutBouldersInput
+    connect?: SegmentWhereUniqueInput
+    update?: XOR<XOR<SegmentUpdateToOneWithWhereWithoutBouldersInput, SegmentUpdateWithoutBouldersInput>, SegmentUncheckedUpdateWithoutBouldersInput>
+  }
+
   export type MyBoulderUpdateManyWithoutBoulderNestedInput = {
     create?: XOR<MyBoulderCreateWithoutBoulderInput, MyBoulderUncheckedCreateWithoutBoulderInput> | MyBoulderCreateWithoutBoulderInput[] | MyBoulderUncheckedCreateWithoutBoulderInput[]
     connectOrCreate?: MyBoulderCreateOrConnectWithoutBoulderInput | MyBoulderCreateOrConnectWithoutBoulderInput[]
@@ -8451,6 +9984,10 @@ export namespace Prisma {
     deleteMany?: MyBoulderScalarWhereInput | MyBoulderScalarWhereInput[]
   }
 
+  export type EnumsegmentFieldUpdateOperationsInput = {
+    set?: $Enums.segment
+  }
+
   export type MyBoulderUncheckedUpdateManyWithoutBoulderNestedInput = {
     create?: XOR<MyBoulderCreateWithoutBoulderInput, MyBoulderUncheckedCreateWithoutBoulderInput> | MyBoulderCreateWithoutBoulderInput[] | MyBoulderUncheckedCreateWithoutBoulderInput[]
     connectOrCreate?: MyBoulderCreateOrConnectWithoutBoulderInput | MyBoulderCreateOrConnectWithoutBoulderInput[]
@@ -8463,6 +10000,56 @@ export namespace Prisma {
     update?: MyBoulderUpdateWithWhereUniqueWithoutBoulderInput | MyBoulderUpdateWithWhereUniqueWithoutBoulderInput[]
     updateMany?: MyBoulderUpdateManyWithWhereWithoutBoulderInput | MyBoulderUpdateManyWithWhereWithoutBoulderInput[]
     deleteMany?: MyBoulderScalarWhereInput | MyBoulderScalarWhereInput[]
+  }
+
+  export type BoulderCreateNestedManyWithoutSegmentInput = {
+    create?: XOR<BoulderCreateWithoutSegmentInput, BoulderUncheckedCreateWithoutSegmentInput> | BoulderCreateWithoutSegmentInput[] | BoulderUncheckedCreateWithoutSegmentInput[]
+    connectOrCreate?: BoulderCreateOrConnectWithoutSegmentInput | BoulderCreateOrConnectWithoutSegmentInput[]
+    createMany?: BoulderCreateManySegmentInputEnvelope
+    connect?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+  }
+
+  export type BoulderUncheckedCreateNestedManyWithoutSegmentInput = {
+    create?: XOR<BoulderCreateWithoutSegmentInput, BoulderUncheckedCreateWithoutSegmentInput> | BoulderCreateWithoutSegmentInput[] | BoulderUncheckedCreateWithoutSegmentInput[]
+    connectOrCreate?: BoulderCreateOrConnectWithoutSegmentInput | BoulderCreateOrConnectWithoutSegmentInput[]
+    createMany?: BoulderCreateManySegmentInputEnvelope
+    connect?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+  }
+
+  export type EnumroomFieldUpdateOperationsInput = {
+    set?: $Enums.room
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type BoulderUpdateManyWithoutSegmentNestedInput = {
+    create?: XOR<BoulderCreateWithoutSegmentInput, BoulderUncheckedCreateWithoutSegmentInput> | BoulderCreateWithoutSegmentInput[] | BoulderUncheckedCreateWithoutSegmentInput[]
+    connectOrCreate?: BoulderCreateOrConnectWithoutSegmentInput | BoulderCreateOrConnectWithoutSegmentInput[]
+    upsert?: BoulderUpsertWithWhereUniqueWithoutSegmentInput | BoulderUpsertWithWhereUniqueWithoutSegmentInput[]
+    createMany?: BoulderCreateManySegmentInputEnvelope
+    set?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    disconnect?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    delete?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    connect?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    update?: BoulderUpdateWithWhereUniqueWithoutSegmentInput | BoulderUpdateWithWhereUniqueWithoutSegmentInput[]
+    updateMany?: BoulderUpdateManyWithWhereWithoutSegmentInput | BoulderUpdateManyWithWhereWithoutSegmentInput[]
+    deleteMany?: BoulderScalarWhereInput | BoulderScalarWhereInput[]
+  }
+
+  export type BoulderUncheckedUpdateManyWithoutSegmentNestedInput = {
+    create?: XOR<BoulderCreateWithoutSegmentInput, BoulderUncheckedCreateWithoutSegmentInput> | BoulderCreateWithoutSegmentInput[] | BoulderUncheckedCreateWithoutSegmentInput[]
+    connectOrCreate?: BoulderCreateOrConnectWithoutSegmentInput | BoulderCreateOrConnectWithoutSegmentInput[]
+    upsert?: BoulderUpsertWithWhereUniqueWithoutSegmentInput | BoulderUpsertWithWhereUniqueWithoutSegmentInput[]
+    createMany?: BoulderCreateManySegmentInputEnvelope
+    set?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    disconnect?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    delete?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    connect?: BoulderWhereUniqueInput | BoulderWhereUniqueInput[]
+    update?: BoulderUpdateWithWhereUniqueWithoutSegmentInput | BoulderUpdateWithWhereUniqueWithoutSegmentInput[]
+    updateMany?: BoulderUpdateManyWithWhereWithoutSegmentInput | BoulderUpdateManyWithWhereWithoutSegmentInput[]
+    deleteMany?: BoulderScalarWhereInput | BoulderScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -8586,6 +10173,13 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedEnumsegmentFilter<$PrismaModel = never> = {
+    equals?: $Enums.segment | EnumsegmentFieldRefInput<$PrismaModel>
+    in?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumsegmentFilter<$PrismaModel> | $Enums.segment
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -8612,6 +10206,58 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumsegmentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.segment | EnumsegmentFieldRefInput<$PrismaModel>
+    in?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.segment[] | ListEnumsegmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumsegmentWithAggregatesFilter<$PrismaModel> | $Enums.segment
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumsegmentFilter<$PrismaModel>
+    _max?: NestedEnumsegmentFilter<$PrismaModel>
+  }
+
+  export type NestedEnumroomFilter<$PrismaModel = never> = {
+    equals?: $Enums.room | EnumroomFieldRefInput<$PrismaModel>
+    in?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    notIn?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    not?: NestedEnumroomFilter<$PrismaModel> | $Enums.room
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumroomWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.room | EnumroomFieldRefInput<$PrismaModel>
+    in?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    notIn?: $Enums.room[] | ListEnumroomFieldRefInput<$PrismaModel>
+    not?: NestedEnumroomWithAggregatesFilter<$PrismaModel> | $Enums.room
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumroomFilter<$PrismaModel>
+    _max?: NestedEnumroomFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type MyBoulderCreateWithoutUserInput = {
@@ -8696,13 +10342,13 @@ export namespace Prisma {
     id: string
     name?: string | null
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
     setter: SetterCreateNestedOneWithoutBouldersInput
+    segment: SegmentCreateNestedOneWithoutBouldersInput
   }
 
   export type BoulderUncheckedCreateWithoutClimbersInput = {
@@ -8710,11 +10356,11 @@ export namespace Prisma {
     name?: string | null
     setterId: number
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
+    segmentName: $Enums.segment
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
   }
 
@@ -8785,13 +10431,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setter?: SetterUpdateOneRequiredWithoutBouldersNestedInput
+    segment?: SegmentUpdateOneRequiredWithoutBouldersNestedInput
   }
 
   export type BoulderUncheckedUpdateWithoutClimbersInput = {
@@ -8799,11 +10445,11 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     setterId?: IntFieldUpdateOperationsInput | number
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
+    segmentName?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8891,12 +10537,12 @@ export namespace Prisma {
     id: string
     name?: string | null
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
+    segment: SegmentCreateNestedOneWithoutBouldersInput
     climbers?: MyBoulderCreateNestedManyWithoutBoulderInput
   }
 
@@ -8904,11 +10550,11 @@ export namespace Prisma {
     id: string
     name?: string | null
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
+    segmentName: $Enums.segment
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
     climbers?: MyBoulderUncheckedCreateNestedManyWithoutBoulderInput
   }
@@ -8947,11 +10593,11 @@ export namespace Prisma {
     name?: StringNullableFilter<"Boulder"> | string | null
     setterId?: IntFilter<"Boulder"> | number
     position?: IntNullableListFilter<"Boulder">
-    location?: StringFilter<"Boulder"> | string
-    room?: StringFilter<"Boulder"> | string
+    segmentName?: EnumsegmentFilter<"Boulder"> | $Enums.segment
     difficulty?: IntFilter<"Boulder"> | number
     holdColors?: StringNullableListFilter<"Boulder">
     tags?: StringNullableListFilter<"Boulder">
+    active?: BoolFilter<"Boulder"> | boolean
     createdAt?: DateTimeFilter<"Boulder"> | Date | string
   }
 
@@ -8971,6 +10617,26 @@ export namespace Prisma {
   export type SetterCreateOrConnectWithoutBouldersInput = {
     where: SetterWhereUniqueInput
     create: XOR<SetterCreateWithoutBouldersInput, SetterUncheckedCreateWithoutBouldersInput>
+  }
+
+  export type SegmentCreateWithoutBouldersInput = {
+    name: $Enums.segment
+    room: $Enums.room
+    upDate?: Date | string | null
+    downDate?: Date | string | null
+  }
+
+  export type SegmentUncheckedCreateWithoutBouldersInput = {
+    id?: number
+    name: $Enums.segment
+    room: $Enums.room
+    upDate?: Date | string | null
+    downDate?: Date | string | null
+  }
+
+  export type SegmentCreateOrConnectWithoutBouldersInput = {
+    where: SegmentWhereUniqueInput
+    create: XOR<SegmentCreateWithoutBouldersInput, SegmentUncheckedCreateWithoutBouldersInput>
   }
 
   export type MyBoulderCreateWithoutBoulderInput = {
@@ -9026,6 +10692,32 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SegmentUpsertWithoutBouldersInput = {
+    update: XOR<SegmentUpdateWithoutBouldersInput, SegmentUncheckedUpdateWithoutBouldersInput>
+    create: XOR<SegmentCreateWithoutBouldersInput, SegmentUncheckedCreateWithoutBouldersInput>
+    where?: SegmentWhereInput
+  }
+
+  export type SegmentUpdateToOneWithWhereWithoutBouldersInput = {
+    where?: SegmentWhereInput
+    data: XOR<SegmentUpdateWithoutBouldersInput, SegmentUncheckedUpdateWithoutBouldersInput>
+  }
+
+  export type SegmentUpdateWithoutBouldersInput = {
+    name?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
+    room?: EnumroomFieldUpdateOperationsInput | $Enums.room
+    upDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SegmentUncheckedUpdateWithoutBouldersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
+    room?: EnumroomFieldUpdateOperationsInput | $Enums.room
+    upDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type MyBoulderUpsertWithWhereUniqueWithoutBoulderInput = {
     where: MyBoulderWhereUniqueInput
     update: XOR<MyBoulderUpdateWithoutBoulderInput, MyBoulderUncheckedUpdateWithoutBoulderInput>
@@ -9040,6 +10732,58 @@ export namespace Prisma {
   export type MyBoulderUpdateManyWithWhereWithoutBoulderInput = {
     where: MyBoulderScalarWhereInput
     data: XOR<MyBoulderUpdateManyMutationInput, MyBoulderUncheckedUpdateManyWithoutBoulderInput>
+  }
+
+  export type BoulderCreateWithoutSegmentInput = {
+    id: string
+    name?: string | null
+    position?: BoulderCreatepositionInput | number[]
+    difficulty: number
+    holdColors?: BoulderCreateholdColorsInput | string[]
+    tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
+    createdAt?: Date | string
+    setter: SetterCreateNestedOneWithoutBouldersInput
+    climbers?: MyBoulderCreateNestedManyWithoutBoulderInput
+  }
+
+  export type BoulderUncheckedCreateWithoutSegmentInput = {
+    id: string
+    name?: string | null
+    setterId: number
+    position?: BoulderCreatepositionInput | number[]
+    difficulty: number
+    holdColors?: BoulderCreateholdColorsInput | string[]
+    tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
+    createdAt?: Date | string
+    climbers?: MyBoulderUncheckedCreateNestedManyWithoutBoulderInput
+  }
+
+  export type BoulderCreateOrConnectWithoutSegmentInput = {
+    where: BoulderWhereUniqueInput
+    create: XOR<BoulderCreateWithoutSegmentInput, BoulderUncheckedCreateWithoutSegmentInput>
+  }
+
+  export type BoulderCreateManySegmentInputEnvelope = {
+    data: BoulderCreateManySegmentInput | BoulderCreateManySegmentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BoulderUpsertWithWhereUniqueWithoutSegmentInput = {
+    where: BoulderWhereUniqueInput
+    update: XOR<BoulderUpdateWithoutSegmentInput, BoulderUncheckedUpdateWithoutSegmentInput>
+    create: XOR<BoulderCreateWithoutSegmentInput, BoulderUncheckedCreateWithoutSegmentInput>
+  }
+
+  export type BoulderUpdateWithWhereUniqueWithoutSegmentInput = {
+    where: BoulderWhereUniqueInput
+    data: XOR<BoulderUpdateWithoutSegmentInput, BoulderUncheckedUpdateWithoutSegmentInput>
+  }
+
+  export type BoulderUpdateManyWithWhereWithoutSegmentInput = {
+    where: BoulderScalarWhereInput
+    data: XOR<BoulderUpdateManyMutationInput, BoulderUncheckedUpdateManyWithoutSegmentInput>
   }
 
   export type MyBoulderCreateManyUserInput = {
@@ -9106,11 +10850,11 @@ export namespace Prisma {
     id: string
     name?: string | null
     position?: BoulderCreatepositionInput | number[]
-    location: string
-    room: string
+    segmentName: $Enums.segment
     difficulty: number
     holdColors?: BoulderCreateholdColorsInput | string[]
     tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
     createdAt?: Date | string
   }
 
@@ -9118,12 +10862,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    segment?: SegmentUpdateOneRequiredWithoutBouldersNestedInput
     climbers?: MyBoulderUpdateManyWithoutBoulderNestedInput
   }
 
@@ -9131,11 +10875,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
+    segmentName?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     climbers?: MyBoulderUncheckedUpdateManyWithoutBoulderNestedInput
   }
@@ -9144,11 +10888,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     position?: BoulderUpdatepositionInput | number[]
-    location?: StringFieldUpdateOperationsInput | string
-    room?: StringFieldUpdateOperationsInput | string
+    segmentName?: EnumsegmentFieldUpdateOperationsInput | $Enums.segment
     difficulty?: IntFieldUpdateOperationsInput | number
     holdColors?: BoulderUpdateholdColorsInput | string[]
     tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -9187,6 +10931,56 @@ export namespace Prisma {
     done?: BoolFieldUpdateOperationsInput | boolean
     difficulty?: IntFieldUpdateOperationsInput | number
     rating?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type BoulderCreateManySegmentInput = {
+    id: string
+    name?: string | null
+    setterId: number
+    position?: BoulderCreatepositionInput | number[]
+    difficulty: number
+    holdColors?: BoulderCreateholdColorsInput | string[]
+    tags?: BoulderCreatetagsInput | string[]
+    active?: boolean
+    createdAt?: Date | string
+  }
+
+  export type BoulderUpdateWithoutSegmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: BoulderUpdatepositionInput | number[]
+    difficulty?: IntFieldUpdateOperationsInput | number
+    holdColors?: BoulderUpdateholdColorsInput | string[]
+    tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    setter?: SetterUpdateOneRequiredWithoutBouldersNestedInput
+    climbers?: MyBoulderUpdateManyWithoutBoulderNestedInput
+  }
+
+  export type BoulderUncheckedUpdateWithoutSegmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    setterId?: IntFieldUpdateOperationsInput | number
+    position?: BoulderUpdatepositionInput | number[]
+    difficulty?: IntFieldUpdateOperationsInput | number
+    holdColors?: BoulderUpdateholdColorsInput | string[]
+    tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    climbers?: MyBoulderUncheckedUpdateManyWithoutBoulderNestedInput
+  }
+
+  export type BoulderUncheckedUpdateManyWithoutSegmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    setterId?: IntFieldUpdateOperationsInput | number
+    position?: BoulderUpdatepositionInput | number[]
+    difficulty?: IntFieldUpdateOperationsInput | number
+    holdColors?: BoulderUpdateholdColorsInput | string[]
+    tags?: BoulderUpdatetagsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

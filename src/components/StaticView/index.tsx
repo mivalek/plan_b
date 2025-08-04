@@ -1,4 +1,10 @@
-import { Location, TBoulder, TCluster, TSetterShort } from "@/lib/types";
+import {
+  Segment,
+  TBoulder,
+  TCluster,
+  TSegment,
+  TSetterShort,
+} from "@/lib/types";
 import { makeClusters } from "@/lib/utils";
 import React, {
   Dispatch,
@@ -7,11 +13,12 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import StaticSegmentBoulders from "../StaticSegmentBoulders";
+import StaticSegment from "../StaticSegment";
 
 function StaticView({
   boulderData,
   setters,
+  segments,
   circleRadius,
   svgRef,
   zoomFlag,
@@ -20,6 +27,7 @@ function StaticView({
   setZoomScale,
 }: {
   boulderData: TBoulder[];
+  segments: TSegment[];
   setters: TSetterShort[];
   circleRadius: number;
   svgRef: RefObject<SVGSVGElement | null>;
@@ -32,13 +40,13 @@ function StaticView({
 
   console.log(isPopupOpen, setters);
   const clusters = useMemo(() => {
-    const out: { [key in Location]?: TCluster[] } = {};
-    Object.values(Location).map((l) => {
-      out[l] =
+    const out: { [key in Segment]?: TCluster[] } = {};
+    segments.map((seg) => {
+      out[seg.name] =
         !boulderData || boulderData.length === 1
           ? []
           : makeClusters(
-              boulderData.filter((b) => b.location === l),
+              boulderData.filter((b) => b.segment === seg.name),
               circleRadius
             );
     });
@@ -47,17 +55,17 @@ function StaticView({
   return (
     <>
       {" "}
-      {Object.values(Location).map((l) => {
-        const bldrs = boulderData.filter((b) => b.location === l);
+      {segments.map((seg) => {
+        const bldrs = boulderData.filter((b) => b.segment === seg.name);
 
         return (
           bldrs && (
-            <StaticSegmentBoulders
-              key={l}
+            <StaticSegment
+              key={seg.name}
               svgRef={svgRef}
               //   id={l}
               boulders={bldrs}
-              clusters={clusters[l]!}
+              clusters={clusters[seg.name]!}
               setIsPopupOpen={setIsPopupOpen}
               zoomScale={zoomScale}
               setZoomScale={setZoomScale}

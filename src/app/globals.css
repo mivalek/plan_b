@@ -593,8 +593,6 @@ table {
   }
 }
 dialog {
-  /* width: 320px; */
-  min-width: 320px;
   font-size: 1rem;
   line-height: 1.6;
 
