@@ -9,9 +9,11 @@ import {
   TSegment,
 } from "@/lib/types";
 import { daysFromToday } from "@/lib/utils";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 export default async function BoulderApp() {
+  cookies(); // this disables caching on build
   const data = await prisma.boulder.findMany({
     where: { active: true },
     include: { segment: { select: { downDate: true } } },
