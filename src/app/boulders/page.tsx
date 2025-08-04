@@ -11,9 +11,14 @@ import {
 import { daysFromToday } from "@/lib/utils";
 import { unstable_cache } from "next/cache";
 import { Suspense } from "react";
+import { segment } from "../generated/prisma";
 
 const getCachedBoulders = unstable_cache(
-  async () => prisma.boulder.findMany({ where: { active: true } }),
+  async () =>
+    prisma.boulder.findMany({
+      where: { active: true },
+      include: { segment: { select: { downDate: true } } },
+    }),
   ["boulders"],
   { tags: ["boulder-cache"] }
 );
@@ -31,15 +36,33 @@ export default async function BoulderApp() {
   const data = await getCachedBoulders();
 
   const boulderData = data
-    .filter((d) => daysFromToday(new Date(d.createdAt)) > 0)
+    .filter((d) => {
+      const segDownDate = d.segment.downDate
+        ? new Date(d.segment.downDate)
+        : undefined;
+      console.log(d.segmentName);
+      console.log(segDownDate);
+      const boulderCreatedDate = new Date(d.createdAt);
+      let isActive = segDownDate !== undefined;
+      if (segDownDate) {
+        const diffInDays =
+          (segDownDate.valueOf() - boulderCreatedDate.valueOf()) /
+          (1000 * 60 * 60 * 24);
+        isActive = diffInDays > 0;
+      }
+      console.log(isActive);
+      return isActive;
+    })
     .map((d) => {
       const out: TBoulder = {
-        ...d,
+        id: d.id,
         setter: d.setterId,
         name: d.name || undefined,
         position: { x: d.position[0], y: d.position[1] },
         segment: d.segmentName.toLowerCase() as Segment,
         difficulty: d.difficulty as Difficulty,
+        holdColors: d.holdColors,
+        tags: d.tags,
       };
       return out;
     });

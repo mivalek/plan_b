@@ -232,25 +232,6 @@ export function pointerScreenToSVG(
   };
 }
 
-export function idToSegment(x: string) {
-  switch (x) {
-    case "cave":
-      return Segment.Cave;
-    case "slab":
-      return Segment.Slab;
-    case "small-block":
-      return Segment.SmallBlock;
-    case "large-block":
-      return Segment.LargeBlock;
-    case "u-wall":
-      return Segment.UWall;
-    case "corner":
-      return Segment.Corner;
-    default:
-      return Segment.Block;
-  }
-}
-
 export function difficultyToColour(x: Difficulty) {
   switch (x) {
     case Difficulty.Black:
