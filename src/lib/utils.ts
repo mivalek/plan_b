@@ -418,5 +418,6 @@ export function deadlinePhrase(date: Date | undefined) {
   });
   if (days === 0) return "TODAY!";
   if (days === 1) return "tomorrow!";
+  if (days < 7) return `in ${days} days`;
   return outDate;
 }

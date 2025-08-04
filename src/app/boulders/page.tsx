@@ -31,7 +31,7 @@ export default async function BoulderApp() {
   const data = await getCachedBoulders();
 
   const boulderData = data
-    .filter((d) => daysFromToday(d.createdAt) > 0)
+    .filter((d) => daysFromToday(new Date(d.createdAt)) > 0)
     .map((d) => {
       const out: TBoulder = {
         ...d,
@@ -53,20 +53,20 @@ export default async function BoulderApp() {
 
   const segmentData: TSegment[] = await getCachedSegments().then((res) =>
     res.map((s) => {
-      const isDown = s.downDate && daysFromToday(s.downDate) <= 0;
+      const segDownDate = s.downDate ? new Date(s.downDate) : undefined;
+      const isDown = segDownDate && daysFromToday(segDownDate) <= 0;
       const segment: TSegment = {
         id: s.id,
         name: s.name.toLowerCase() as Segment,
         room: s.room.toLowerCase() as Room,
         boulders: s.boulders.flatMap((b) => b.id),
         upDate: s.upDate && !isDown ? s.upDate : undefined,
-        downDate: s.downDate && !isDown ? s.downDate : undefined,
+        downDate: segDownDate && !isDown ? segDownDate : undefined,
       };
       return segment as TSegment;
     })
   );
 
-  console.log(segmentData);
   return (
     <Suspense>
       <AppContainer

@@ -8,6 +8,7 @@ function colorByDate(d: Date | undefined): string | undefined {
   const days = daysFromToday(d);
   if (days < 1) return "!fill-black";
   if (days == 1) return "!fill-red-600";
+  if (days < 4) return "!fill-red-400";
   if (days <= 7) return "!fill-orange-400";
   if (days <= 14) return "!fill-amber-400";
 }
@@ -23,7 +24,6 @@ function GymLayout({ segments }: { segments: TSegment[] }) {
       return;
     }
     const seg = segments[selectedSegment];
-    console.log(`#${seg.name}-layer .info`);
     const info = document.querySelector(`#${seg.name}-layer .info`)!;
     const bRect = info.getBoundingClientRect();
     setTooltipPosition({ x: bRect.left, y: bRect.bottom });
@@ -46,6 +46,7 @@ function GymLayout({ segments }: { segments: TSegment[] }) {
   useEffect(() => {
     setDomeReady(true);
   }, []);
+
   return (
     <>
       <g className="big-mat fill-[var(--mat)]">

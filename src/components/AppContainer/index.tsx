@@ -15,7 +15,6 @@ import {
   LAYOUT_DIMS,
   PAN_BORDER,
   PINCH_ZOOM_DAMPER,
-  // SVG_RATIO,
   SVG_VIEWBOX_LANDSCAPE,
   SVG_VIEWBOX_PORTRAIT,
 } from "@/lib/constants";
