@@ -80,7 +80,6 @@ function EditableSegment({
         !zoomFlag &&
         !boulderPointers.length
       ) {
-        console.log(segment.name);
         setTimeout(() => {
           if (!segment.downDate) {
             editDownDate();

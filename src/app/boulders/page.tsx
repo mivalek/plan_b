@@ -9,39 +9,19 @@ import {
   TSegment,
 } from "@/lib/types";
 import { daysFromToday } from "@/lib/utils";
-import { unstable_cache } from "next/cache";
 import { Suspense } from "react";
-import { segment } from "../generated/prisma";
-
-const getCachedBoulders = unstable_cache(
-  async () =>
-    prisma.boulder.findMany({
-      where: { active: true },
-      include: { segment: { select: { downDate: true } } },
-    }),
-  ["boulders"],
-  { tags: ["boulder-cache"] }
-);
-
-const getCachedSegments = unstable_cache(
-  async () =>
-    prisma.segment.findMany({
-      include: { boulders: { select: { id: true } } },
-    }),
-  ["segments"],
-  { tags: ["segment-cache"] }
-);
 
 export default async function BoulderApp() {
-  const data = await getCachedBoulders();
+  const data = await prisma.boulder.findMany({
+    where: { active: true },
+    include: { segment: { select: { downDate: true } } },
+  });
 
   const boulderData = data
     .filter((d) => {
       const segDownDate = d.segment.downDate
         ? new Date(d.segment.downDate)
         : undefined;
-      console.log(d.segmentName);
-      console.log(segDownDate);
       const boulderCreatedDate = new Date(d.createdAt);
       let isActive = segDownDate !== undefined;
       if (segDownDate) {
@@ -50,7 +30,6 @@ export default async function BoulderApp() {
           (1000 * 60 * 60 * 24);
         isActive = diffInDays > 0;
       }
-      console.log(isActive);
       return isActive;
     })
     .map((d) => {
@@ -74,21 +53,25 @@ export default async function BoulderApp() {
     },
   });
 
-  const segmentData: TSegment[] = await getCachedSegments().then((res) =>
-    res.map((s) => {
-      const segDownDate = s.downDate ? new Date(s.downDate) : undefined;
-      const isDown = segDownDate && daysFromToday(segDownDate) <= 0;
-      const segment: TSegment = {
-        id: s.id,
-        name: s.name.toLowerCase() as Segment,
-        room: s.room.toLowerCase() as Room,
-        boulders: s.boulders.flatMap((b) => b.id),
-        upDate: s.upDate && !isDown ? s.upDate : undefined,
-        downDate: segDownDate && !isDown ? segDownDate : undefined,
-      };
-      return segment as TSegment;
+  const segmentData: TSegment[] = await prisma.segment
+    .findMany({
+      include: { boulders: { select: { id: true } } },
     })
-  );
+    .then((res) =>
+      res.map((s) => {
+        const segDownDate = s.downDate ? new Date(s.downDate) : undefined;
+        const isDown = segDownDate && daysFromToday(segDownDate) <= 0;
+        const segment: TSegment = {
+          id: s.id,
+          name: s.name.toLowerCase() as Segment,
+          room: s.room.toLowerCase() as Room,
+          boulders: s.boulders.flatMap((b) => b.id),
+          upDate: s.upDate && !isDown ? s.upDate : undefined,
+          downDate: segDownDate && !isDown ? segDownDate : undefined,
+        };
+        return segment as TSegment;
+      })
+    );
 
   return (
     <Suspense>

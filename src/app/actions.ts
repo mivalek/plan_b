@@ -1,8 +1,8 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
-import { TBoulder, TPosition } from "@/lib/types";
+import { TBoulder } from "@/lib/types";
 import { segment } from "./generated/prisma";
 
 export async function dbCreateOrUpdateBoulder(boulder: TBoulder) {
@@ -58,7 +58,7 @@ export async function dbDeleteBoulder(id: string) {
       id: id,
     },
   });
-  revalidateTag("boulder-cache");
+  revalidatePath("/boulders");
 }
 
 export async function createSetter(formData: FormData) {
@@ -88,7 +88,7 @@ export async function dbUpdateSegmentDates(
       ? { upDate: upDate, downDate: downDate }
       : { downDate: downDate },
   });
-  revalidateTag("segment-cache");
+  revalidatePath("/boulders");
 }
 
 export async function auth(key: string | null) {
