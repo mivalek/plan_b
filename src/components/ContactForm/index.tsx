@@ -2,7 +2,7 @@ import React from "react";
 
 function ContactForm() {
   return (
-    <div className="grow w-full max-w-md mx-auto">
+    <div className="grow w-full max-w-md mx-auto mt-1.5">
       <h3 className="text-xl font-normal m-0 text-end leading-7">
         Got a question?
       </h3>

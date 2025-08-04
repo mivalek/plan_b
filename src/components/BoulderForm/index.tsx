@@ -89,7 +89,6 @@ function BoulderForm({
         id="id"
         defaultValue={boulder?.id}
         readOnly={true}
-        aria-hidden={true}
         tabIndex={-1}
         className="h-0 w-0 absolute focus-visible:outline-none"
       />

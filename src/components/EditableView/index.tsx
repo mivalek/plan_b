@@ -97,9 +97,11 @@ function EditableView({
   return (
     <>
       {segments.map((seg) => {
-        const bldrs = boulders.filter((b) => b.segment === seg.name);
-        if (editedBoulder && editedBoulder.segment === seg.name)
+        let bldrs = boulders.filter((b) => b.segment === seg.name);
+        if (editedBoulder && editedBoulder.segment === seg.name) {
+          bldrs = bldrs.filter((b) => b.id !== editedBoulder.id);
           bldrs.push(editedBoulder);
+        }
         return (
           bldrs && (
             <EditableSegment

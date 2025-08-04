@@ -17,7 +17,6 @@ import Boulder from "../EditableBoulder";
 import {
   getClustersAtCutoff,
   getDraggedBoulderPosition,
-  idToSegment,
   pointerScreenToSVG,
 } from "@/lib/utils";
 import { v4 } from "uuid";
@@ -84,7 +83,7 @@ function EditableSegment({
         setTimeout(() => {
           if (!segment.downDate) {
             editDownDate();
-          } else addBoulder(ev);
+          } else addBoulder(ev, segment.name);
         }, 50);
       } else if (pointer && draggedBoulder) {
         dbUpdateBoulderPosition(draggedBoulder.id, [
@@ -133,7 +132,7 @@ function EditableSegment({
     setEditedSegment(segment);
     setIsSegmentDialogOpen(true);
   }
-  function addBoulder(e: MouseEvent) {
+  function addBoulder(e: MouseEvent, segmentName: Segment) {
     const trgt = e.target as SVGGElement;
     const layoutElement = trgt.parentElement!;
     if (!layoutElement.classList.contains("clickable")) return;
@@ -149,7 +148,7 @@ function EditableSegment({
       holdColors: [],
       difficulty: null,
       position: svgClickCoords,
-      segment: idToSegment(layoutElement.id),
+      segment: segmentName,
       tags: [],
     };
 
