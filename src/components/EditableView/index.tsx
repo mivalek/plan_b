@@ -1,4 +1,10 @@
-import { Location, TBoulder, TCluster, TSetterShort } from "@/lib/types";
+import {
+  Segment,
+  TBoulder,
+  TCluster,
+  TSegment,
+  TSetterShort,
+} from "@/lib/types";
 import { makeClusters } from "@/lib/utils";
 import React, {
   Dispatch,
@@ -7,16 +13,18 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import EditableSegmentBoulders from "../EditableSegmentBoulders";
+import EditableSegment from "../EditableSegment";
 import { createPortal } from "react-dom";
 import SetterForm from "../SetterForm";
 import BoulderForm from "../BoulderForm";
 import Dialog from "../Dialog";
 import { dbDeleteBoulder } from "@/app/actions";
+import SegmentForm from "../SegmentForm";
 
 function EditableView({
   boulderData,
   setters,
+  segmentData,
   circleRadius,
   svgRef,
   draggedBoulder,
@@ -29,6 +37,7 @@ function EditableView({
 }: {
   boulderData: TBoulder[];
   setters: TSetterShort[];
+  segmentData: TSegment[];
   circleRadius: number;
   svgRef: RefObject<SVGSVGElement | null>;
   draggedBoulder: TBoulder | undefined;
@@ -40,19 +49,22 @@ function EditableView({
   panFlag: boolean;
 }) {
   const [boulders, setBoulders] = useState<TBoulder[]>(boulderData);
+  const [segments, setSegments] = useState(segmentData);
   const [editedBoulder, setEditedBoulder] = useState<TBoulder>();
+  const [editedSegment, setEditedSegment] = useState<TSegment>();
   const [isBoulderDialogOpen, setIsBoulderDialogOpen] = useState(false);
   const [isSetterDialogOpen, setIsSetterDialogOpen] = useState(false);
+  const [isSegmentDialogOpen, setIsSegmentDialogOpen] = useState(false);
   const [isNewBoulder, setIsNewBoulder] = useState(false);
 
   const clusters = useMemo(() => {
-    const out: { [key in Location]?: TCluster[] } = {};
-    Object.values(Location).map((l) => {
-      out[l] =
-        !boulders || boulders.length === 1
+    const out: { [key in Segment]?: TCluster[] } = {};
+    segments.map((seg) => {
+      out[seg.name] =
+        !boulderData || boulderData.length === 1
           ? []
           : makeClusters(
-              boulders.filter((b) => b.location === l),
+              boulderData.filter((b) => b.segment === seg.name),
               circleRadius
             );
     });
@@ -84,24 +96,26 @@ function EditableView({
 
   return (
     <>
-      {Object.values(Location).map((l) => {
-        const bldrs = boulders.filter((b) => b.location === l);
-        if (editedBoulder && editedBoulder.location === l)
+      {segments.map((seg) => {
+        const bldrs = boulders.filter((b) => b.segment === seg.name);
+        if (editedBoulder && editedBoulder.segment === seg.name)
           bldrs.push(editedBoulder);
         return (
           bldrs && (
-            <EditableSegmentBoulders
-              key={l}
+            <EditableSegment
+              key={seg.name}
               svgRef={svgRef}
-              id={l}
+              segment={seg}
               boulders={bldrs}
-              clusters={clusters[l]!}
+              clusters={clusters[seg.name]!}
               setBoulders={setBoulders}
               setEditedBoulder={setEditedBoulder}
+              setEditedSegment={setEditedSegment}
               draggedBoulder={draggedBoulder}
               setDraggedBoulder={setDraggedBoulder}
               setIsNewBoulder={setIsNewBoulder}
               setIsBoulderDialogOpen={setIsBoulderDialogOpen}
+              setIsSegmentDialogOpen={setIsSegmentDialogOpen}
               zoomScale={zoomScale}
               setZoomScale={setZoomScale}
               zoomFlag={zoomFlag}
@@ -119,7 +133,7 @@ function EditableView({
             isOpen={isBoulderDialogOpen}
             cleanup={formCleanup}
             closeByAny={false}
-            className="w-[320px]"
+            className="min-w-xs w-xs"
           >
             <BoulderForm
               boulder={editedBoulder}
@@ -141,6 +155,22 @@ function EditableView({
             className="w-[340px]"
           >
             <SetterForm setIsSetterDialogOpen={setIsSetterDialogOpen} />
+          </Dialog>
+
+          <Dialog
+            id="edit-segment-dialog"
+            isOpen={isSegmentDialogOpen}
+            cleanup={() => {
+              setIsSegmentDialogOpen(false);
+            }}
+            closeByAny={true}
+          >
+            <SegmentForm
+              segment={editedSegment}
+              setSegments={setSegments}
+              setEditedSegment={setEditedSegment}
+              setIsDialogOpen={setIsSegmentDialogOpen}
+            />
           </Dialog>
         </>,
         document.getElementById("dialog-container")!

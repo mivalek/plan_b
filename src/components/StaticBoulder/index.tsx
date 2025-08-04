@@ -15,20 +15,10 @@ function Boulder({
   circleRadius: number;
   className: string | undefined;
 }) {
-  // const [layoutSegment, setLayoutSegment] = useState<SVGPathElement | null>();
-
-  // useEffect(() => {
-  //   if (!svgRef.current) return;
-  //   const segment = svgRef.current!.querySelector(
-  //     `#${data.location}`
-  //   ) as SVGPathElement;
-  //   setLayoutSegment(segment);
-  // }, [svgRef, data]);
-
   return (
     <g
       id={data.id}
-      data-parent={data.location}
+      data-parent={data.segment}
       className={twMerge(
         "boulder -rotate-45 transform-content origin-center cursor-pointer",
         className

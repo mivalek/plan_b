@@ -10,7 +10,7 @@ import Boulder from "../StaticBoulder";
 import { getClustersAtCutoff } from "@/lib/utils";
 import Cluster from "../Cluster";
 
-function StaticSegmentBoulders({
+function StaticSegment({
   // id,
   boulders,
   clusters,
@@ -78,4 +78,4 @@ function StaticSegmentBoulders({
   );
 }
 
-export default StaticSegmentBoulders;
+export default StaticSegment;

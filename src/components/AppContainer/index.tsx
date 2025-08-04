@@ -6,6 +6,7 @@ import {
   Difficulty,
   TBoulder,
   TPosition,
+  TSegment,
   TSetterShort,
 } from "@/lib/types";
 import GymLayout from "../GymLayout";
@@ -32,9 +33,11 @@ const allDiffs = Object.entries(Difficulty)
 function AppContainer({
   boulderData,
   setters,
+  segments,
 }: {
   boulderData: TBoulder[];
   setters: TSetterShort[];
+  segments: TSegment[];
 }) {
   const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState<boolean>();
@@ -253,11 +256,12 @@ function AppContainer({
               stroke="none"
               fill="none"
             />
-            <GymLayout />
+            <GymLayout segments={segments} />
             {isAdmin ? (
               <EditableView
                 boulderData={boulderData}
                 setters={setters}
+                segmentData={segments}
                 svgRef={svgRef}
                 circleRadius={circleRadius}
                 draggedBoulder={draggedBoulder}
@@ -280,6 +284,7 @@ function AppContainer({
                     : boulderData
                 }
                 setters={setters}
+                segments={segments}
                 svgRef={svgRef}
                 circleRadius={circleRadius}
                 zoomScale={zoomScale}

@@ -1,4 +1,10 @@
-import { Location, Room, TBoulder, TCluster, TFlatCluster } from "@/lib/types";
+import {
+  Segment,
+  TBoulder,
+  TCluster,
+  TFlatCluster,
+  TSegment,
+} from "@/lib/types";
 import React, {
   Dispatch,
   RefObject,
@@ -11,24 +17,26 @@ import Boulder from "../EditableBoulder";
 import {
   getClustersAtCutoff,
   getDraggedBoulderPosition,
-  idToLocation,
+  idToSegment,
   pointerScreenToSVG,
 } from "@/lib/utils";
 import { v4 } from "uuid";
 import Cluster from "../Cluster";
 import { dbUpdateBoulderPosition } from "@/app/actions";
 
-function EditableSegmentBoulders({
-  id,
+function EditableSegment({
+  segment,
   boulders,
   clusters,
   setBoulders,
   setIsNewBoulder,
   setEditedBoulder,
+  setEditedSegment,
   draggedBoulder,
   setDraggedBoulder,
   svgRef,
   setIsBoulderDialogOpen,
+  setIsSegmentDialogOpen,
   zoomScale,
   setZoomScale,
   zoomFlag,
@@ -36,16 +44,18 @@ function EditableSegmentBoulders({
   panFlag,
   circleRadius,
 }: {
-  id: Location;
+  segment: TSegment;
   boulders: TBoulder[];
   clusters: TCluster[];
   setBoulders: Dispatch<SetStateAction<TBoulder[]>>;
   setIsNewBoulder: Dispatch<SetStateAction<boolean>>;
   setEditedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
+  setEditedSegment: Dispatch<SetStateAction<TSegment | undefined>>;
   draggedBoulder: TBoulder | undefined;
   setDraggedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
   svgRef: RefObject<SVGSVGElement | null>;
   setIsBoulderDialogOpen: Dispatch<SetStateAction<boolean>>;
+  setIsSegmentDialogOpen: Dispatch<SetStateAction<boolean>>;
   zoomScale: number;
   setZoomScale: Dispatch<SetStateAction<number>>;
   zoomFlag: boolean;
@@ -71,7 +81,11 @@ function EditableSegmentBoulders({
         !zoomFlag &&
         !boulderPointers.length
       ) {
-        setTimeout(() => addBoulder(ev), 10);
+        setTimeout(() => {
+          if (!segment.downDate) {
+            editDownDate();
+          } else addBoulder(ev);
+        }, 50);
       } else if (pointer && draggedBoulder) {
         dbUpdateBoulderPosition(draggedBoulder.id, [
           draggedBoulder.position.x,
@@ -114,12 +128,15 @@ function EditableSegmentBoulders({
     },
     [draggedBoulder, pathPoints, setDraggedBoulder]
   );
+
+  function editDownDate() {
+    setEditedSegment(segment);
+    setIsSegmentDialogOpen(true);
+  }
   function addBoulder(e: MouseEvent) {
     const trgt = e.target as SVGGElement;
     const layoutElement = trgt.parentElement!;
     if (!layoutElement.classList.contains("clickable")) return;
-    const room =
-      layoutElement.parentElement?.id === "small-room" ? Room.Small : Room.Big;
     const svgClickCoords = pointerScreenToSVG(
       e.clientX,
       e.clientY,
@@ -132,8 +149,7 @@ function EditableSegmentBoulders({
       holdColors: [],
       difficulty: null,
       position: svgClickCoords,
-      room,
-      location: idToLocation(layoutElement.id),
+      segment: idToSegment(layoutElement.id),
       tags: [],
     };
 
@@ -145,21 +161,20 @@ function EditableSegmentBoulders({
   useEffect(() => {
     if (!svgRef.current) return;
     const layoutSegment = svgRef.current!.querySelector<SVGPathElement>(
-      `#${id}.clickable path`
+      `#${segment.name}.clickable path`
     )!;
-
     const pathLength = layoutSegment.getTotalLength();
     const points = [];
     for (let i = 0; i < pathLength; i++) {
       points.push(layoutSegment.getPointAtLength(i));
     }
     setPathPoints(points);
-  }, [svgRef, id]);
+  }, [svgRef, segment.name]);
 
   useEffect(() => {
     if (!svgRef.current) return;
     const layoutSegment = svgRef.current!.querySelector<SVGGElement>(
-      `#${id}.clickable`
+      `#${segment.name}.clickable`
     )!;
 
     layoutSegment.addEventListener("pointerup", handlePointerUp);
@@ -168,7 +183,7 @@ function EditableSegmentBoulders({
       layoutSegment.removeEventListener("pointerup", handlePointerUp);
       layoutSegment.removeEventListener("pointermove", handlePointerMove);
     };
-  }, [svgRef, id, handlePointerUp, handlePointerMove]);
+  }, [svgRef, segment.name, handlePointerUp, handlePointerMove]);
 
   useEffect(() => {
     if (!zoomFlag) return;
@@ -180,7 +195,7 @@ function EditableSegmentBoulders({
   }, [clusters, circleRadius, zoomScale, zoomFlag]);
 
   return (
-    <g id={id + "-boulders"}>
+    <g id={segment.name + "-boulders"}>
       {boulders.map((b) => {
         const isClustered = clusteredBoulders.some((cluster) =>
           cluster.members.includes(b.id)
@@ -217,4 +232,4 @@ function EditableSegmentBoulders({
   );
 }
 
-export default EditableSegmentBoulders;
+export default EditableSegment;
