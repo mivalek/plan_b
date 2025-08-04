@@ -1,4 +1,9 @@
-import { PrismaClient, Prisma } from "../src/app/generated/prisma";
+import {
+  PrismaClient,
+  Prisma,
+  segment,
+  room,
+} from "../src/app/generated/prisma";
 
 const prisma = new PrismaClient();
 
@@ -12,48 +17,41 @@ const userData: Prisma.UserCreateInput[] = [
 
 const setterData: Prisma.SetterCreateInput[] = [
   {
-    name: "mival",
-    email: "mival@mival.me",
-    boulders: {
-      create: [
-        {
-          id: "sdfgnksdfnvs",
-          difficulty: 0,
-          position: [100, 50],
-          room: "big",
-          location: "slab",
-          holdColors: ["orange", "blue"],
-          tags: [],
-        },
-        {
-          id: "dfsgmljvja",
-          difficulty: 4,
-          position: [110, 54],
-          room: "big",
-          location: "slab",
-          holdColors: ["black"],
-          tags: ["balance"],
-        },
-        {
-          id: "dfkdfvnsdfkokdv",
-          difficulty: 2,
-          position: [300, 54],
-          room: "big",
-          location: "slab",
-          holdColors: ["red"],
-          tags: ["jugs"],
-        },
-        {
-          id: "dfsdkr",
-          difficulty: 5,
-          position: [1500, 440],
-          room: "big",
-          location: "cave",
-          holdColors: ["black"],
-          tags: ["overhang"],
-        },
-      ],
-    },
+    name: "PlanB team",
+    email: "planb@email.me",
+  },
+];
+
+const now = new Date();
+const date = new Date();
+const segmentData: Prisma.SegmentCreateInput[] = [
+  {
+    name: segment.SMALL_BLOCK,
+    room: room.BIG,
+  },
+  {
+    name: segment.LARGE_BLOCK,
+    room: room.BIG,
+  },
+  {
+    name: segment.CAVE,
+    room: room.BIG,
+  },
+  {
+    name: segment.SLAB,
+    room: room.BIG,
+  },
+  {
+    name: segment.BLOCK,
+    room: room.SMALL,
+  },
+  {
+    name: segment.U_WALL,
+    room: room.SMALL,
+  },
+  {
+    name: segment.CORNER,
+    room: room.SMALL,
   },
 ];
 
@@ -64,6 +62,10 @@ export async function main() {
 
   for (const s of setterData) {
     await prisma.setter.create({ data: s });
+  }
+
+  for (const s of segmentData) {
+    await prisma.segment.create({ data: s });
   }
 }
 

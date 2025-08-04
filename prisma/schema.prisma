@@ -55,16 +55,41 @@ model Setter {
 }
 
 model Boulder {
-  id         String      @id
-  name       String?
-  setter     Setter      @relation(fields: [setterId], references: [id])
-  setterId   Int
-  position   Int[]
-  location   String
-  room       String
-  difficulty Int
-  holdColors String[]
-  tags       String[]
-  climbers   MyBoulder[]
-  createdAt  DateTime    @default(now())
+  id          String      @id
+  name        String?
+  setter      Setter      @relation(fields: [setterId], references: [id])
+  setterId    Int
+  position    Int[]
+  segment     Segment     @relation(fields: [segmentName], references: [name])
+  segmentName segment
+  difficulty  Int
+  holdColors  String[]
+  tags        String[]
+  active      Boolean     @default(true)
+  climbers    MyBoulder[]
+  createdAt   DateTime    @default(now())
+}
+
+model Segment {
+  id       Int       @id @default(autoincrement())
+  name     segment   @unique
+  room     room
+  upDate   DateTime?
+  downDate DateTime?
+  boulders Boulder[]
+}
+
+enum room {
+  BIG
+  SMALL
+}
+
+enum segment {
+  LARGE_BLOCK
+  SMALL_BLOCK
+  CAVE
+  SLAB
+  BLOCK
+  U_WALL
+  CORNER
 }

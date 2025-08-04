@@ -89,7 +89,9 @@ function BoulderForm({
         id="id"
         defaultValue={boulder?.id}
         readOnly={true}
-        className="h-0 w-0 absolute"
+        aria-hidden={true}
+        tabIndex={-1}
+        className="h-0 w-0 absolute focus-visible:outline-none"
       />
       <div className="relative">
         <label htmlFor="boulder-name" className="absolute text-xs left-1">

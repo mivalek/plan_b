@@ -6,6 +6,7 @@ import {
   Difficulty,
   TBoulder,
   TPosition,
+  TSegment,
   TSetterShort,
 } from "@/lib/types";
 import GymLayout from "../GymLayout";
@@ -14,7 +15,6 @@ import {
   LAYOUT_DIMS,
   PAN_BORDER,
   PINCH_ZOOM_DAMPER,
-  // SVG_RATIO,
   SVG_VIEWBOX_LANDSCAPE,
   SVG_VIEWBOX_PORTRAIT,
 } from "@/lib/constants";
@@ -32,9 +32,11 @@ const allDiffs = Object.entries(Difficulty)
 function AppContainer({
   boulderData,
   setters,
+  segments,
 }: {
   boulderData: TBoulder[];
   setters: TSetterShort[];
+  segments: TSegment[];
 }) {
   const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState<boolean>();
@@ -120,7 +122,11 @@ function AppContainer({
       className="h-screen"
       onClick={closeNavOnClickOut}
     >
-      <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
+      <Header
+        primary={true}
+        navMenuOpen={navMenuOpen}
+        setNavMenuOpen={setNavMenuOpen}
+      />
       <div
         id="boulder-app"
         className="w-full flex justify-center flex-col lg:flex-row items-center p-4 pt-8 gap-6"
@@ -143,6 +149,7 @@ function AppContainer({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="max-w-7xl"
+            aria-label="interactive gym map"
             onPointerDownCapture={(e) => {
               setZoomFlag(false);
               if (svgPointers.length === 1) {
@@ -253,11 +260,12 @@ function AppContainer({
               stroke="none"
               fill="none"
             />
-            <GymLayout />
+            <GymLayout segments={segments} />
             {isAdmin ? (
               <EditableView
                 boulderData={boulderData}
                 setters={setters}
+                segmentData={segments}
                 svgRef={svgRef}
                 circleRadius={circleRadius}
                 draggedBoulder={draggedBoulder}
@@ -280,6 +288,7 @@ function AppContainer({
                     : boulderData
                 }
                 setters={setters}
+                segments={segments}
                 svgRef={svgRef}
                 circleRadius={circleRadius}
                 zoomScale={zoomScale}

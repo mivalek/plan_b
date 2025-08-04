@@ -44,7 +44,7 @@ function Boulder({
   useEffect(() => {
     if (!svgRef.current) return;
     const segment = svgRef.current!.querySelector(
-      `#${data.location}`
+      `#${data.segment}`
     ) as SVGPathElement;
     setLayoutSegment(segment);
   }, [svgRef, data]);
@@ -52,7 +52,7 @@ function Boulder({
   return (
     <g
       id={data.id}
-      data-parent={data.location}
+      data-parent={data.segment}
       className={twMerge(
         "boulder -rotate-45 transform-content origin-center cursor-pointer",
         className

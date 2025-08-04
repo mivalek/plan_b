@@ -14,8 +14,14 @@ function Filters({
   setDifficultyFilter: Dispatch<SetStateAction<Difficulty[]>>;
 }) {
   return (
-    <div className="filter-container flex flex-col gap-1">
-      <div className="flex justify-between items-center gap-2">
+    <div
+      className="filter-container flex flex-col gap-1"
+      aria-label="difficulty filter"
+    >
+      <div
+        className="flex justify-between items-center gap-2"
+        aria-hidden={true}
+      >
         <div className="text-sm">EASY</div>
         <div className="flex-grow w-full h-[0.5px] bg-[rgb(var(--font-color))]"></div>
         <div className="text-sm lg:hidden">HARD</div>
@@ -32,9 +38,9 @@ function Filters({
             const isBlack = diff === Difficulty.Black;
             const isWhite = diff === Difficulty.White;
             return (
-              <button
+              <label
                 className={twMerge(
-                  "size-10 md:size-8 rounded-full cursor-pointer border-2 border-transparent",
+                  "size-10 md:size-8 rounded-full cursor-pointer border-2 border-transparent flex",
                   isFilteredOut && "grayscale-[60%]",
                   isBlack &&
                     (isFilteredOut
@@ -54,20 +60,10 @@ function Filters({
                         ],
                 }}
                 key={val}
-                onClick={() => {
-                  if (!difficultyFilter.includes(diff)) {
-                    setDifficultyFilter((prev) =>
-                      prev ? [...prev, diff] : [diff]
-                    );
-                  } else {
-                    if (difficultyFilter.length === 1) {
-                      setDifficultyFilter(allDiffs);
-                    } else
-                      setDifficultyFilter((prev) =>
-                        prev!.filter((d) => d !== val)
-                      );
-                  }
-                }}
+                htmlFor={key}
+                aria-label={`${key} difficulty`}
+                role="checkbox"
+                aria-checked={difficultyFilter.includes(diff)}
               >
                 <div className="size-7 md:size-5 bg-[rgb(var(--bg))] rounded-full m-auto flex p-0.5 fill-[rgb(var(--font-color))]">
                   {difficultyFilter.includes(val as Difficulty) && (
@@ -79,7 +75,27 @@ function Filters({
                     </svg>
                   )}
                 </div>
-              </button>
+                <input
+                  type="checkbox"
+                  name={key}
+                  id={key}
+                  className="h-0 w-0 absolute"
+                  onChange={() => {
+                    if (!difficultyFilter.includes(diff)) {
+                      setDifficultyFilter((prev) =>
+                        prev ? [...prev, diff] : [diff]
+                      );
+                    } else {
+                      if (difficultyFilter.length === 1) {
+                        setDifficultyFilter(allDiffs);
+                      } else
+                        setDifficultyFilter((prev) =>
+                          prev!.filter((d) => d !== val)
+                        );
+                    }
+                  }}
+                />
+              </label>
             );
           })}
       </div>

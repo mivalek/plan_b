@@ -1,6 +1,6 @@
 import {
   Difficulty,
-  Location,
+  Segment,
   TBoulder,
   TCluster,
   TFlatCluster,
@@ -51,7 +51,7 @@ export const getDraggedBoulderPosition = (
     const isCollision = detectCollision(
       draggedBoulder.id,
       point,
-      draggedBoulder.location
+      draggedBoulder.segment
     );
     if (isCollision) return null;
     return svgCoords;
@@ -61,7 +61,7 @@ export const getDraggedBoulderPosition = (
     const isCollision = detectCollision(
       draggedBoulder.id,
       closestPoint,
-      draggedBoulder.location
+      draggedBoulder.segment
     );
     if (isCollision) return null;
     return closestPoint;
@@ -232,22 +232,22 @@ export function pointerScreenToSVG(
   };
 }
 
-export function idToLocation(x: string) {
+export function idToSegment(x: string) {
   switch (x) {
     case "cave":
-      return Location.Cave;
+      return Segment.Cave;
     case "slab":
-      return Location.Slab;
+      return Segment.Slab;
     case "small-block":
-      return Location.SmallBlock;
+      return Segment.SmallBlock;
     case "large-block":
-      return Location.LargeBlock;
+      return Segment.LargeBlock;
     case "u-wall":
-      return Location.UWall;
+      return Segment.UWall;
     case "corner":
-      return Location.Corner;
+      return Segment.Corner;
     default:
-      return Location.Block;
+      return Segment.Block;
   }
 }
 
@@ -400,4 +400,24 @@ function getInitialViewBox() {
   return (
     document.querySelector("#viewbox-reference-rect")! as SVGRectElement
   ).getBBox();
+}
+
+export function daysFromToday(date: Date) {
+  const now = new Date();
+  now.setUTCHours(0, 0, 0, 0);
+  return (date.valueOf() - now.valueOf()) / (1000 * 60 * 60 * 24);
+}
+
+export function deadlinePhrase(date: Date | undefined) {
+  if (!date) return;
+  const days = daysFromToday(date);
+  if (days < 0) return;
+  const outDate = date.toLocaleString("en-gb", {
+    day: "2-digit",
+    month: "short",
+  });
+  if (days === 0) return "TODAY!";
+  if (days === 1) return "tomorrow!";
+  if (days < 7) return `in ${days} days`;
+  return outDate;
 }

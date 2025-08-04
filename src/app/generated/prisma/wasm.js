@@ -157,12 +157,20 @@ exports.Prisma.BoulderScalarFieldEnum = {
   name: 'name',
   setterId: 'setterId',
   position: 'position',
-  location: 'location',
-  room: 'room',
+  segmentName: 'segmentName',
   difficulty: 'difficulty',
   holdColors: 'holdColors',
   tags: 'tags',
+  active: 'active',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.SegmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  room: 'room',
+  upDate: 'upDate',
+  downDate: 'downDate'
 };
 
 exports.Prisma.SortOrder = {
@@ -179,14 +187,28 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.segment = exports.$Enums.segment = {
+  LARGE_BLOCK: 'LARGE_BLOCK',
+  SMALL_BLOCK: 'SMALL_BLOCK',
+  CAVE: 'CAVE',
+  SLAB: 'SLAB',
+  BLOCK: 'BLOCK',
+  U_WALL: 'U_WALL',
+  CORNER: 'CORNER'
+};
 
+exports.room = exports.$Enums.room = {
+  BIG: 'BIG',
+  SMALL: 'SMALL'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   MyBoulder: 'MyBoulder',
   Attempt: 'Attempt',
   Setter: 'Setter',
-  Boulder: 'Boulder'
+  Boulder: 'Boulder',
+  Segment: 'Segment'
 };
 
 /**

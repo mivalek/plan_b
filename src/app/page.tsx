@@ -16,9 +16,17 @@ export default function Home() {
 
   return (
     <div id="page-wrapper" onClick={closeNavOnClickOut}>
-      <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
+      <Header
+        primary={true}
+        navMenuOpen={navMenuOpen}
+        setNavMenuOpen={setNavMenuOpen}
+      />
       <div className="parallax">
-        <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
+        <Header
+          primary={false}
+          navMenuOpen={navMenuOpen}
+          setNavMenuOpen={setNavMenuOpen}
+        />
         <div className="hero">
           <h1 className="text-6xl md:text-8xl">
             <div className="relative w-full text-end text-[.5em] text-[rgb(var(--primary))]">
