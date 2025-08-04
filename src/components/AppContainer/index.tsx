@@ -122,7 +122,11 @@ function AppContainer({
       className="h-screen"
       onClick={closeNavOnClickOut}
     >
-      <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
+      <Header
+        primary={true}
+        navMenuOpen={navMenuOpen}
+        setNavMenuOpen={setNavMenuOpen}
+      />
       <div
         id="boulder-app"
         className="w-full flex justify-center flex-col lg:flex-row items-center p-4 pt-8 gap-6"
@@ -145,6 +149,7 @@ function AppContainer({
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="max-w-7xl"
+            aria-label="interactive gym map"
             onPointerDownCapture={(e) => {
               setZoomFlag(false);
               if (svgPointers.length === 1) {

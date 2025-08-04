@@ -20,7 +20,11 @@ function SectionImage({
       <div className="next-image h-screen relative">
         <Image quality={100} fill={true} src={imageUrl} alt="" />
       </div>
-      <Header navMenuOpen={navMenuOpen} setNavMenuOpen={setNavMenuOpen} />
+      <Header
+        primary={false}
+        navMenuOpen={navMenuOpen}
+        setNavMenuOpen={setNavMenuOpen}
+      />
     </div>
   );
 }
