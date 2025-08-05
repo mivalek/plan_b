@@ -98,7 +98,7 @@ function GymLayout({ segments }: { segments: TSegment[] }) {
             }}
           >
             {selectedSegment !== undefined && tooltipPosition && (
-              <div className="bg-[rgb(var(--bg))] text-[rgb(var(--font-color))] text-sm shadow shadow-black/30 rounded-sm px-1 py-2 flex flex-col gap-2">
+              <div className="bg-[rgb(var(--font-color))] text-[rgb(var(--bg))] text-sm shadow shadow-black/30 rounded-sm p-2 flex flex-col gap-2">
                 <div>
                   {segments[selectedSegment].boulders.length + " boulders"}
                 </div>
