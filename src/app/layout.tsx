@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistMono.variable} ${monserrat.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

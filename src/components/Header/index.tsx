@@ -4,7 +4,8 @@ import Logo from "../Logo";
 
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import useTheme from "@/hooks/useTheme";
+import { Theme } from "@/hooks/useTheme";
+import { useTheme } from "@/contexts/ThemeContext";
 
 function Header({
   navMenuOpen,
@@ -15,11 +16,8 @@ function Header({
   primary: boolean;
   setNavMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [theme, setTeme] = useTheme();
-
-  useEffect(() => {
-    window.localStorage.setItem("theme", theme);
-  }, [theme]);
+  const { theme, toggleTheme } = useTheme();
+  console.log(theme);
   return (
     <header aria-hidden={!primary} tabIndex={primary ? 0 : -1}>
       <nav>
@@ -114,10 +112,7 @@ function Header({
               name="theme"
               id="theme-toggle"
               checked={theme === "dark"}
-              onChange={() => {
-                console.log("checkbox change");
-                setTeme((prev) => (prev === "dark" ? "light" : "dark"));
-              }}
+              onChange={toggleTheme}
             ></input>
           </label>
         </div>

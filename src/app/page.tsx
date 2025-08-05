@@ -5,6 +5,7 @@ import ParallaxBackground from "@/components/ParallaxBackground";
 import ParallaxForeground from "@/components/ParallaxForeground";
 import PriceList from "@/components/PriceList";
 import SectionImage from "@/components/SectionImage";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -35,7 +36,8 @@ export default function Home() {
               Welcome to
             </div>
             <div>
-              Plan&nbsp;<span style={{ color: "rgb(var(--primary))" }}>B</span>
+              Plan&nbsp;
+              <span style={{ color: "rgb(var(--primary))" }}>B</span>
             </div>
           </h1>
           <div className="subtitle text-sm sm:text-lg md:text-2xl">

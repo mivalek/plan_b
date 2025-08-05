@@ -1,7 +1,7 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 export default function useTheme(): [Theme, Dispatch<SetStateAction<Theme>>] {
   const [theme, setTheme] = useState<Theme>("dark");
 
