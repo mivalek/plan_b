@@ -188,7 +188,7 @@ function EditableSegment({
     if (!zoomFlag) return;
     const clusteredBldrs = getClustersAtCutoff(
       clusters,
-      circleRadius * zoomScale
+      circleRadius * zoomScale * 2
     );
     setClusteredBoulders(clusteredBldrs);
   }, [clusters, circleRadius, zoomScale, zoomFlag]);

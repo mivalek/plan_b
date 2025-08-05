@@ -337,7 +337,6 @@ export function makeClusters(boulders: TBoulder[], distanceCutoff: number) {
     }
     distances.sort((a, b) => a.dist - b.dist);
     const { a, b, idxA, idxB, dist } = distances[0];
-    if (dist > distanceCutoff) break whileLoop;
 
     // merge 2 closest
     const clusterA = clusters[idxA];

@@ -40,6 +40,7 @@ function Boulder({
     !draggedBoulder || draggedBoulder.id !== data.id
       ? data.position
       : draggedBoulder.position;
+  const innerRadius = Math.ceil(circleRadius * 0.7);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -85,7 +86,7 @@ function Boulder({
     >
       {data.difficulty !== undefined && (
         <circle
-          r={~~(circleRadius * 1.4)}
+          r={circleRadius}
           cx={position.x}
           cy={position.y}
           fill={difficultyToColour(data.difficulty!)}
@@ -93,7 +94,7 @@ function Boulder({
         />
       )}
       <circle
-        r={circleRadius}
+        r={innerRadius}
         cx={position.x}
         cy={position.y}
         fill={
@@ -108,11 +109,11 @@ function Boulder({
       />
       {data.holdColors.length === 2 && (
         <path
-          d={`M ${position.x - circleRadius} ${
+          d={`M ${position.x - innerRadius} ${
             position.y
-          } A ${circleRadius} ${circleRadius} 0 0 0 ${
-            position.x + circleRadius
-          } ${position.y}`}
+          } A ${innerRadius} ${innerRadius} 0 0 0 ${position.x + innerRadius} ${
+            position.y
+          }`}
           fill={
             HOLD_COLORS[
               data.holdColors[1] as keyof typeof HOLD_COLORS

@@ -15,6 +15,7 @@ function Boulder({
   circleRadius: number;
   className: string | undefined;
 }) {
+  const innerRadius = Math.ceil(circleRadius * 0.7);
   return (
     <g
       id={data.id}
@@ -35,7 +36,7 @@ function Boulder({
     >
       {data.difficulty !== undefined && (
         <circle
-          r={~~(circleRadius * 1.4)}
+          r={circleRadius}
           cx={data.position.x}
           cy={data.position.y}
           fill={difficultyToColour(data.difficulty!)}
@@ -43,7 +44,7 @@ function Boulder({
         />
       )}
       <circle
-        r={circleRadius}
+        r={innerRadius}
         cx={data.position.x}
         cy={data.position.y}
         fill={
@@ -58,10 +59,10 @@ function Boulder({
       />
       {data.holdColors.length === 2 && (
         <path
-          d={`M ${data.position.x - circleRadius} ${
+          d={`M ${data.position.x - innerRadius} ${
             data.position.y
-          } A ${circleRadius} ${circleRadius} 0 0 0 ${
-            data.position.x + circleRadius
+          } A ${innerRadius} ${innerRadius} 0 0 0 ${
+            data.position.x + innerRadius
           } ${data.position.y}`}
           fill={
             HOLD_COLORS[
