@@ -80,7 +80,7 @@ export default async function BoulderApp() {
       <AppContainer
         boulderData={boulderData}
         setters={setterData}
-        segments={segmentData}
+        segmentData={segmentData}
       />
     </Suspense>
   );

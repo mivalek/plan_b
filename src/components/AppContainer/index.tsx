@@ -32,13 +32,15 @@ const allDiffs = Object.entries(Difficulty)
 function AppContainer({
   boulderData,
   setters,
-  segments,
+  segmentData,
 }: {
   boulderData: TBoulder[];
   setters: TSetterShort[];
-  segments: TSegment[];
+  segmentData: TSegment[];
 }) {
   const searchParams = useSearchParams();
+
+  const [segments, setSegments] = useState(segmentData);
   const [isAdmin, setIsAdmin] = useState<boolean>();
   const [draggedBoulder, setDraggedBoulder] = useState<TBoulder>();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -261,12 +263,17 @@ function AppContainer({
               stroke="none"
               fill="none"
             />
-            <GymLayout segments={segments} />
+            <GymLayout
+              segments={segments}
+              setSegments={setSegments}
+              isAdmin={isAdmin}
+            />
             {isAdmin ? (
               <EditableView
                 boulderData={boulderData}
                 setters={setters}
-                segmentData={segments}
+                segments={segments}
+                setSegments={setSegments}
                 svgRef={svgRef}
                 circleRadius={circleRadius}
                 draggedBoulder={draggedBoulder}

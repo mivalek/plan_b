@@ -47,6 +47,9 @@ function SegmentForm({
           type="date"
           name="outDate"
           id="segment-outDate"
+          defaultValue={
+            segment?.downDate && segment?.downDate.toISOString().slice(0, 10)
+          }
           min={now.toISOString().slice(0, 10)}
           max={maxDate.toISOString().slice(0, 10)}
           className="bg-slate-200 rounded-sm p-1 w-full "
