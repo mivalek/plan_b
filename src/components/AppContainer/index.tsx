@@ -219,6 +219,7 @@ function AppContainer({
               });
             }}
             onPointerUp={(e) => {
+              document.getElementById("collision-line")?.remove();
               if (svgPointers.length === 1) setZoomFlag(false);
               setPanFlag(false);
               const pointer = svgPointers.find(

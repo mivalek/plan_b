@@ -4,6 +4,7 @@ export const ZOOM_SPEED = 0.1; // (0, 1] percent increase with each zoom event
 export const PINCH_ZOOM_DAMPER = 0.3; // (0,1] multiplies the above for less sensitive pinch-zoom
 export const ZOOM_ANIMATION_DURATION = 300;
 export const MIN_VIEWPORT_WIDTH = 200; // maximum zoom
+export const MAX_ZOOM_SCALE = 0.08; // scale at max zoom
 export const SVG_VIEWBOX_LANDSCAPE = [-50, -200, 2541, 1226] as TViewBox;
 export const SVG_VIEWBOX_PORTRAIT = [-50, -900, 2541, 2626] as TViewBox;
 export const PAN_BORDER = [-50, -50, 2541, 926] as TViewBox;
