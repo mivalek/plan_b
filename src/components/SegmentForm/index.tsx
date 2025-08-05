@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Button from "../ui/Button";
-import { createSetter, dbUpdateSegmentDates } from "@/app/actions";
+import { dbUpdateSegmentDates } from "@/app/actions";
 import { TSegment } from "@/lib/types";
 
 function SegmentForm({
