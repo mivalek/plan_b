@@ -2,6 +2,7 @@
 import ContactForm from "@/components/ContactForm";
 import Header from "@/components/Header";
 import ParallaxBackground from "@/components/ParallaxBackground";
+import ParallaxForeground from "@/components/ParallaxForeground";
 import PriceList from "@/components/PriceList";
 import SectionImage from "@/components/SectionImage";
 import Link from "next/link";
@@ -22,6 +23,7 @@ export default function Home() {
         setNavMenuOpen={setNavMenuOpen}
       />
       <div className="parallax">
+        <ParallaxBackground />
         <Header
           primary={false}
           navMenuOpen={navMenuOpen}
@@ -40,7 +42,7 @@ export default function Home() {
             Thuringia&apos;s largest bouldering gym
           </div>
         </div>
-        <ParallaxBackground />
+        <ParallaxForeground />
       </div>
       <section id="climb">
         <div className="section-content">

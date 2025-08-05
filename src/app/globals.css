@@ -248,12 +248,19 @@ header {
   }
 
   header {
+    z-index: 2;
     height: 0;
     position: sticky;
+    mask: url(/assets/mask.svg);
+    mask-clip: border-box;
+    mask-clip: no-clip;
+
+    nav {
+      background: rgba(var(--secondary), 0.3);
+    }
   }
   .hero {
     position: sticky;
-    z-index: 2;
     height: fit-content;
     top: 0rem;
     translate: 3rem 8rem;
@@ -321,9 +328,16 @@ header {
     --parallax-x: 4;
   }
 
+  .parallax__foreground {
+    z-index: 1;
+    object-position: bottom;
+  }
+
   #foreground {
-    transform: translateY(2px);
     --parallax-y: 0.1;
+
+    display: none;
+    transform: translateY(2px);
     z-index: 999;
     pointer-events: none;
     position: absolute;
@@ -355,11 +369,6 @@ section {
       position: absolute;
       inset: 0;
     }
-    /* header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-    } */
 
     .next-image {
       --scale: 1.05;
@@ -430,7 +439,7 @@ section#celebrate .blurb h2 {
   background-image: url(/assets/heading_bg_4_light.svg);
 }
 
-@media (prefers-color-scheme: dark) {
+html[data-theme="dark"] {
   section .blurb h2 {
     background-image: url(/assets/heading_bg_1_dark.svg);
   }
@@ -743,7 +752,35 @@ dialog {
   }
 }
 
+html[data-theme="light"] {
+  .parallax__foreground.dark {
+    display: none !important;
+  }
+}
+
+html[data-theme="dark"] {
+  .parallax__foreground.light {
+    display: none !important;
+  }
+}
+
 @supports (animation-timeline: view()) {
+  .parallax {
+    header {
+      mask: none;
+
+      nav {
+        background: none;
+      }
+    }
+    #foreground {
+      display: block !important;
+    }
+
+    .parallax__foreground {
+      display: none !important;
+    }
+  }
   .section-image {
     display: none !important;
   }
