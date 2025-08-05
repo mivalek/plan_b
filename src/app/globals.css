@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light dark;
   --mat: #e8e8e8;
   --slab: #e6d9a6;
   --cave: #97a6d2;
@@ -10,7 +11,6 @@
   --corner: #d6a5fc;
   --block: #ffabd2;
   --all-segments: #888;
-  --outside-walls: #000;
   --diff-black: #000;
   --diff-white: #fff;
   --diff-yellow: #d9cc0e;
@@ -18,28 +18,11 @@
   --diff-red: #d01313;
   --diff-blue: #1342d0;
   --diff-purple: #8719e1;
-  --diff-white-filter: #ddd;
-  --diff-black-filter: #000;
-  --diff-white-filter-out: #ccc;
-  --diff-black-filter-out: #444;
-  --bg: 255 255 255;
-  --font-color: 0 0 0;
-  --inverse-color: 20 20 20;
-  --primary: 73, 116, 190;
-  --secondary: 1, 35, 80;
-  --html-backdrop: 0, 0, 0;
-  --logo-color-1: var(--primary);
-  --logo-color-2: var(--secondary);
-  --nav-color-1: var(--secondary);
-  --nav-color-2: var(--secondary);
-  --nav-mobile-menu-color: var(--bg);
-  --blurb-heading-color: var(--bg);
-  --shadow-color: #0008;
-  --theme: light;
   --parallax-x: 0;
   --parallax-y: 0;
   --parallax-scale: 1;
   --button-radius: 1.5rem;
+  --shadow-color: #0008;
 }
 
 @theme inline {
@@ -47,37 +30,56 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: 20 20 20;
-    --font-color: 255 255 255;
-    --inverse-color: 255 255 255;
-    --blurb-heading-color: var(--font-color);
-    --theme: dark;
-    --primary: 220, 120, 20;
-    --secondary: 20, 20, 20;
-    --primary-complement: 20, 130, 230;
-    --outside-walls: #fff;
-    --logo-color-1: var(--inverse-color);
-    --logo-color-2: var(--primary);
-    --nav-color-2: var(--inverse-color);
-    --nav-mobile-menu-color: var(--inverse-color);
-    --diff-white-filter: #fff;
-    --diff-black-filter: #333;
-    --diff-white-filter-out: #bbb;
-    --diff-black-filter-out: #555;
-  }
-}
-
 html {
   background: rgba(var(--html-backdrop), 0.8);
   overscroll-behavior: none;
   scroll-behavior: smooth;
-}
 
-html:has(dialog[open]) {
-  overflow: hidden;
-  overscroll-behavior: none;
+  &[data-theme="light"] {
+    --bg: 255 255 255;
+    --font-color: 0 0 0;
+    --inverse-color: 20 20 20;
+    --primary: 73, 116, 190;
+    --secondary: 1, 35, 80;
+    --html-backdrop: 0, 0, 0;
+    --logo-color-1: var(--primary);
+    --logo-color-2: var(--secondary);
+    --nav-color-1: var(--secondary);
+    --nav-color-2: var(--secondary);
+    --nav-mobile-menu-color: var(--bg);
+    --blurb-heading-color: var(--bg);
+    --outside-walls: #000;
+    --diff-white-filter: #ddd;
+    --diff-black-filter: #000;
+    --diff-white-filter-out: #ccc;
+    --diff-black-filter-out: #444;
+    --theme: light;
+  }
+
+  &[data-theme="dark"] {
+    --bg: 20 20 20;
+    --font-color: 255 255 255;
+    --inverse-color: 255 255 255;
+    --blurb-heading-color: var(--font-color);
+    --primary: 220, 120, 20;
+    --secondary: 20, 20, 20;
+    --primary-complement: 20, 130, 230;
+    --logo-color-1: var(--inverse-color);
+    --logo-color-2: var(--primary);
+    --nav-color-2: var(--inverse-color);
+    --nav-mobile-menu-color: var(--inverse-color);
+    --outside-walls: #fff;
+    --diff-white-filter: #fff;
+    --diff-black-filter: #333;
+    --diff-white-filter-out: #bbb;
+    --diff-black-filter-out: #555;
+    --theme: dark;
+  }
+
+  &:has(dialog[open]) {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
 }
 
 body {

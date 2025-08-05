@@ -1,4 +1,5 @@
 import AppContainer from "@/components/AppContainer";
+import ClientPageWrapper from "@/components/ClientPageWrapper";
 import prisma from "@/lib/prisma";
 import {
   Difficulty,
@@ -14,6 +15,7 @@ import { Suspense } from "react";
 
 export default async function BoulderApp() {
   cookies(); // this disables caching on build
+
   const data = await prisma.boulder.findMany({
     where: { active: true },
     include: { segment: { select: { downDate: true } } },
@@ -76,12 +78,14 @@ export default async function BoulderApp() {
     );
 
   return (
-    <Suspense>
-      <AppContainer
-        boulderData={boulderData}
-        setters={setterData}
-        segmentData={segmentData}
-      />
-    </Suspense>
+    <ClientPageWrapper>
+      <Suspense>
+        <AppContainer
+          boulderData={boulderData}
+          setters={setterData}
+          segmentData={segmentData}
+        />
+      </Suspense>
+    </ClientPageWrapper>
   );
 }
