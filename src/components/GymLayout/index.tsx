@@ -1,8 +1,11 @@
 import { SEGMENT_PATHS } from "@/lib/constants";
 import { TPosition, TSegment } from "@/lib/types";
 import { daysFromToday, deadlinePhrase } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Dialog from "../Dialog";
+import SegmentForm from "../SegmentForm";
+import { Dispatch, SetStateAction } from "react";
 function colorByDate(d: Date | undefined): string | undefined {
   if (!d) return "!fill-black";
   const days = daysFromToday(d);
@@ -13,7 +16,17 @@ function colorByDate(d: Date | undefined): string | undefined {
   if (days <= 14) return "!fill-amber-400";
 }
 
-function GymLayout({ segments }: { segments: TSegment[] }) {
+function GymLayout({
+  isAdmin,
+  segments,
+  setSegments,
+}: {
+  isAdmin: boolean | undefined;
+  segments: TSegment[];
+  setSegments: Dispatch<SetStateAction<TSegment[]>>;
+}) {
+  const [editedSegment, setEditedSegment] = useState<TSegment>();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState<number>();
   const [tooltipPosition, setTooltipPosition] = useState<TPosition>();
   const [domReady, setDomeReady] = useState(false);
@@ -71,8 +84,13 @@ function GymLayout({ segments }: { segments: TSegment[] }) {
                   .map((i) => i + "px")
                   .join(" "),
               }}
-              onPointerEnter={() => setSelectedSegment(i)}
-              onPointerLeave={() => setSelectedSegment(undefined)}
+              onPointerEnter={() => !isAdmin && setSelectedSegment(i)}
+              onPointerLeave={() => !isAdmin && setSelectedSegment(undefined)}
+              onClick={() => {
+                if (!isAdmin) return;
+                setSelectedSegment(i);
+                setIsDialogOpen(true);
+              }}
             >
               <circle cx={320} cy={320} r={250} fill="transparent" />
               <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM288 224C288 206.3 302.3 192 320 192C337.7 192 352 206.3 352 224C352 241.7 337.7 256 320 256C302.3 256 288 241.7 288 224zM280 288L328 288C341.3 288 352 298.7 352 312L352 400L360 400C373.3 400 384 410.7 384 424C384 437.3 373.3 448 360 448L280 448C266.7 448 256 437.3 256 424C256 410.7 266.7 400 280 400L304 400L304 336L280 336C266.7 336 256 325.3 256 312C256 298.7 266.7 288 280 288z" />
@@ -88,30 +106,51 @@ function GymLayout({ segments }: { segments: TSegment[] }) {
         <path d="M1744.5 825V804H1570V741H1548V825H1744.5Z" />
       </g>
       {domReady &&
-        createPortal(
-          <div
-            ref={popupRef}
-            className="absolute w-30 -translate-x-30"
-            style={{
-              top: tooltipPosition ? tooltipPosition.y : "unset",
-              left: tooltipPosition ? tooltipPosition.x : "unset",
-            }}
-          >
-            {selectedSegment !== undefined && tooltipPosition && (
-              <div className="bg-[rgb(var(--bg))] text-[rgb(var(--font-color))] text-sm shadow shadow-black/30 rounded-sm px-1 py-2 flex flex-col gap-2">
-                <div>
-                  {segments[selectedSegment].boulders.length + " boulders"}
-                </div>
-                <div>
-                  Coming down
-                  <br />
-                  {deadlinePhrase(segments[selectedSegment].downDate)}
-                </div>
-              </div>
-            )}
-          </div>,
-          document.getElementById("popup-container")!
-        )}
+        (isAdmin
+          ? createPortal(
+              <Dialog
+                id="edit-segment-info-dialog"
+                isOpen={isDialogOpen}
+                cleanup={() => {
+                  setIsDialogOpen(false);
+                }}
+                closeByAny={true}
+              >
+                <SegmentForm
+                  segment={
+                    selectedSegment ? segments[selectedSegment] : undefined
+                  }
+                  setSegments={setSegments}
+                  setEditedSegment={setEditedSegment}
+                  setIsDialogOpen={setIsDialogOpen}
+                />
+              </Dialog>,
+              document.getElementById("dialog-container")!
+            )
+          : createPortal(
+              <div
+                ref={popupRef}
+                className="absolute w-30 -translate-x-30"
+                style={{
+                  top: tooltipPosition ? tooltipPosition.y : "unset",
+                  left: tooltipPosition ? tooltipPosition.x : "unset",
+                }}
+              >
+                {selectedSegment !== undefined && tooltipPosition && (
+                  <div className="bg-[rgb(var(--font-color))] text-[rgb(var(--bg))] text-sm shadow shadow-black/30 rounded-sm p-2 flex flex-col gap-2">
+                    <div>
+                      {segments[selectedSegment].boulders.length + " boulders"}
+                    </div>
+                    <div>
+                      Coming down
+                      <br />
+                      {deadlinePhrase(segments[selectedSegment].downDate)}
+                    </div>
+                  </div>
+                )}
+              </div>,
+              document.getElementById("popup-container")!
+            ))}
     </>
   );
 }

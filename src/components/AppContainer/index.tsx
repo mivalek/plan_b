@@ -23,7 +23,6 @@ import { auth } from "@/app/actions";
 import EditableView from "../EditableView";
 import StaticView from "../StaticView";
 import Filters from "../Filters";
-import Header from "../Header";
 
 const allDiffs = Object.entries(Difficulty)
   .filter(([key, _]) => isNaN(Number(key)))
@@ -32,13 +31,15 @@ const allDiffs = Object.entries(Difficulty)
 function AppContainer({
   boulderData,
   setters,
-  segments,
+  segmentData,
 }: {
   boulderData: TBoulder[];
   setters: TSetterShort[];
-  segments: TSegment[];
+  segmentData: TSegment[];
 }) {
   const searchParams = useSearchParams();
+
+  const [segments, setSegments] = useState(segmentData);
   const [isAdmin, setIsAdmin] = useState<boolean>();
   const [draggedBoulder, setDraggedBoulder] = useState<TBoulder>();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -53,12 +54,6 @@ function AppContainer({
   const [circleRadius, setCircleRadius] = useState(25);
   const [difficultyFilter, setDifficultyFilter] =
     useState<Difficulty[]>(allDiffs);
-  const [navMenuOpen, setNavMenuOpen] = useState(false);
-
-  function closeNavOnClickOut() {
-    if (!navMenuOpen) return;
-    setNavMenuOpen(false);
-  }
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault();
@@ -117,192 +112,183 @@ function AppContainer({
   }, [searchParams]);
 
   return (
-    <main
-      id="boulder-app-container"
-      className="h-screen"
-      onClick={closeNavOnClickOut}
+    <div
+      id="boulder-app"
+      className="w-full flex justify-center flex-col lg:flex-row items-center p-4 pt-8 gap-6"
     >
-      <Header
-        primary={true}
-        navMenuOpen={navMenuOpen}
-        setNavMenuOpen={setNavMenuOpen}
-      />
+      {!isAdmin && (
+        <Filters
+          difficultyFilter={difficultyFilter}
+          setDifficultyFilter={setDifficultyFilter}
+        />
+      )}
       <div
-        id="boulder-app"
-        className="w-full flex justify-center flex-col lg:flex-row items-center p-4 pt-8 gap-6"
+        id="layout-container"
+        className="max-w-6xl overflow-clip relative flex items-center border border-[rgb(var(--primary))] portrait:justify-center transition-all  duration-300 "
+        ref={svgContainerRef}
       >
-        {!isAdmin && (
-          <Filters
-            difficultyFilter={difficultyFilter}
-            setDifficultyFilter={setDifficultyFilter}
-          />
-        )}
-        <div
-          id="layout-container"
-          className="max-w-6xl overflow-clip relative flex items-center border border-[rgb(var(--primary))] portrait:justify-center transition-all  duration-300 "
-          ref={svgContainerRef}
-        >
-          <svg
-            id="plan-b"
-            ref={svgRef}
-            viewBox={svgViewBox.join(" ")}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="max-w-7xl"
-            aria-label="interactive gym map"
-            onPointerDownCapture={(e) => {
-              setZoomFlag(false);
-              if (svgPointers.length === 1) {
-                // already touching
-                const dist = Math.sqrt(
-                  (svgPointers[0].clientX - e.clientX) ** 2 +
-                    (svgPointers[0].clientY - e.clientY) ** 2
-                );
-                setPinchDistance(dist);
-
-                setZoomOrigin({
-                  x:
-                    (svgPointers[0].nativeEvent.offsetX +
-                      e.nativeEvent.offsetX) /
-                    2,
-                  y:
-                    (svgPointers[0].nativeEvent.offsetY +
-                      e.nativeEvent.offsetY) /
-                    2,
-                });
-              }
-              setSvgPointers((prev) => prev.concat(e));
-            }}
-            onPointerMove={(e) => {
-              if (!e.movementX && e.movementY) return;
-              if (draggedBoulder) return;
-              const idx = svgPointers.findIndex(
-                (p) => p.pointerId === e.pointerId
-              );
-
-              if (idx === -1) return;
-              if (svgPointers.length > 2) return; // no use for 3+ multitouch yet
-
-              if (svgPointers.length === 1) {
-                if (!e.movementX && !e.movementY) return;
-                setPanFlag(true);
-                setZoomFlag(false);
-                panSvg(svgRef.current!, e.movementX, e.movementY);
-                return;
-              }
-              // zoom
-              setPanFlag(false);
-              setZoomFlag(true);
-
+        <svg
+          id="plan-b"
+          ref={svgRef}
+          viewBox={svgViewBox.join(" ")}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="max-w-7xl"
+          aria-label="interactive gym map"
+          onPointerDownCapture={(e) => {
+            setZoomFlag(false);
+            if (svgPointers.length === 1) {
+              // already touching
               const dist = Math.sqrt(
-                (svgPointers[0].clientX - svgPointers[1].clientX) ** 2 +
-                  (svgPointers[0].clientY - svgPointers[1].clientY) ** 2
+                (svgPointers[0].clientX - e.clientX) ** 2 +
+                  (svgPointers[0].clientY - e.clientY) ** 2
               );
-              const delta = dist - pinchDistance;
-              if (!zoomOrigin) return;
-
-              zoomSvg(
-                svgRef.current!,
-                delta,
-                zoomOrigin.x,
-                zoomOrigin.y,
-                PINCH_ZOOM_DAMPER
-              );
-              setZoomScale(
-                1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!))
-              );
-
               setPinchDistance(dist);
-              setSvgPointers((prev) => {
-                prev[idx] = e;
-                return prev;
+
+              setZoomOrigin({
+                x:
+                  (svgPointers[0].nativeEvent.offsetX + e.nativeEvent.offsetX) /
+                  2,
+                y:
+                  (svgPointers[0].nativeEvent.offsetY + e.nativeEvent.offsetY) /
+                  2,
               });
-            }}
-            onPointerUp={(e) => {
-              if (svgPointers.length === 1) setZoomFlag(false);
-              setPanFlag(false);
-              const pointer = svgPointers.find(
-                (p) => p.pointerId === e.pointerId
-              );
-              if (!pointer) return;
-              setSvgPointers((prev) =>
-                prev.filter((p) => p.pointerId !== e.pointerId)
-              );
-            }}
-          >
-            <defs>
-              <MakeSVGGradients />
-            </defs>
-            <rect
-              id="viewbox-reference-rect"
-              x={svgViewBox[0]}
-              y={svgViewBox[1]}
-              width={svgViewBox[2]}
-              height={svgViewBox[3]}
-              stroke="none"
-              fill="none"
+            }
+            setSvgPointers((prev) => prev.concat(e));
+          }}
+          onPointerMove={(e) => {
+            if (!e.movementX && e.movementY) return;
+            if (draggedBoulder) return;
+            const idx = svgPointers.findIndex(
+              (p) => p.pointerId === e.pointerId
+            );
+
+            if (idx === -1) return;
+            if (svgPointers.length > 2) return; // no use for 3+ multitouch yet
+
+            if (svgPointers.length === 1) {
+              if (!e.movementX && !e.movementY) return;
+              setPanFlag(true);
+              setZoomFlag(false);
+              panSvg(svgRef.current!, e.movementX, e.movementY);
+              return;
+            }
+            // zoom
+            setPanFlag(false);
+            setZoomFlag(true);
+
+            const dist = Math.sqrt(
+              (svgPointers[0].clientX - svgPointers[1].clientX) ** 2 +
+                (svgPointers[0].clientY - svgPointers[1].clientY) ** 2
+            );
+            const delta = dist - pinchDistance;
+            if (!zoomOrigin) return;
+
+            zoomSvg(
+              svgRef.current!,
+              delta,
+              zoomOrigin.x,
+              zoomOrigin.y,
+              PINCH_ZOOM_DAMPER
+            );
+            setZoomScale(1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!)));
+
+            setPinchDistance(dist);
+            setSvgPointers((prev) => {
+              prev[idx] = e;
+              return prev;
+            });
+          }}
+          onPointerUp={(e) => {
+            document.getElementById("collision-line")?.remove();
+            if (svgPointers.length === 1) setZoomFlag(false);
+            setPanFlag(false);
+            const pointer = svgPointers.find(
+              (p) => p.pointerId === e.pointerId
+            );
+            if (!pointer) return;
+            setSvgPointers((prev) =>
+              prev.filter((p) => p.pointerId !== e.pointerId)
+            );
+          }}
+        >
+          <defs>
+            <MakeSVGGradients />
+          </defs>
+          <rect
+            id="viewbox-reference-rect"
+            x={svgViewBox[0]}
+            y={svgViewBox[1]}
+            width={svgViewBox[2]}
+            height={svgViewBox[3]}
+            stroke="none"
+            fill="none"
+          />
+          <rect
+            id="pan-border"
+            x={PAN_BORDER[0]}
+            y={PAN_BORDER[1]}
+            width={PAN_BORDER[2]}
+            height={PAN_BORDER[3]}
+            stroke="none"
+            fill="none"
+          />
+          <rect
+            id="zoom-border"
+            x={LAYOUT_DIMS[0]}
+            y={LAYOUT_DIMS[1]}
+            width={LAYOUT_DIMS[2]}
+            height={LAYOUT_DIMS[3]}
+            stroke="none"
+            fill="none"
+          />
+          <GymLayout
+            segments={segments}
+            setSegments={setSegments}
+            isAdmin={isAdmin}
+          />
+          {isAdmin ? (
+            <EditableView
+              boulderData={boulderData}
+              setters={setters}
+              segments={segments}
+              setSegments={setSegments}
+              svgRef={svgRef}
+              circleRadius={circleRadius}
+              draggedBoulder={draggedBoulder}
+              setDraggedBoulder={setDraggedBoulder}
+              zoomScale={zoomScale}
+              setZoomScale={setZoomScale}
+              zoomFlag={zoomFlag}
+              setZoomFlag={setZoomFlag}
+              panFlag={panFlag}
             />
-            <rect
-              id="pan-border"
-              x={PAN_BORDER[0]}
-              y={PAN_BORDER[1]}
-              width={PAN_BORDER[2]}
-              height={PAN_BORDER[3]}
-              stroke="none"
-              fill="none"
+          ) : (
+            <StaticView
+              boulderData={
+                difficultyFilter
+                  ? boulderData.filter(
+                      (b) =>
+                        b.difficulty !== null &&
+                        difficultyFilter.includes(b.difficulty)
+                    )
+                  : boulderData
+              }
+              setters={setters}
+              segments={segments}
+              svgRef={svgRef}
+              circleRadius={circleRadius}
+              zoomScale={zoomScale}
+              setZoomScale={setZoomScale}
+              zoomFlag={zoomFlag}
+              setZoomFlag={setZoomFlag}
             />
-            <rect
-              id="zoom-border"
-              x={LAYOUT_DIMS[0]}
-              y={LAYOUT_DIMS[1]}
-              width={LAYOUT_DIMS[2]}
-              height={LAYOUT_DIMS[3]}
-              stroke="none"
-              fill="none"
-            />
-            <GymLayout segments={segments} />
-            {isAdmin ? (
-              <EditableView
-                boulderData={boulderData}
-                setters={setters}
-                segmentData={segments}
-                svgRef={svgRef}
-                circleRadius={circleRadius}
-                draggedBoulder={draggedBoulder}
-                setDraggedBoulder={setDraggedBoulder}
-                zoomScale={zoomScale}
-                setZoomScale={setZoomScale}
-                zoomFlag={zoomFlag}
-                setZoomFlag={setZoomFlag}
-                panFlag={panFlag}
-              />
-            ) : (
-              <StaticView
-                boulderData={
-                  difficultyFilter
-                    ? boulderData.filter(
-                        (b) =>
-                          b.difficulty !== null &&
-                          difficultyFilter.includes(b.difficulty)
-                      )
-                    : boulderData
-                }
-                setters={setters}
-                segments={segments}
-                svgRef={svgRef}
-                circleRadius={circleRadius}
-                zoomScale={zoomScale}
-                setZoomScale={setZoomScale}
-                zoomFlag={zoomFlag}
-                setZoomFlag={setZoomFlag}
-              />
-            )}
-          </svg>
-        </div>
-        <div id="dialog-container"></div>
-        <div id="popup-container"></div>
+          )}
+        </svg>
       </div>
-    </main>
+      <div id="dialog-container"></div>
+      <div id="popup-container"></div>
+    </div>
   );
 }
 

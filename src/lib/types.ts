@@ -24,10 +24,10 @@ export enum Segment {
 }
 
 export enum CircleRadius {
-  S = 70,
-  M = 45,
-  L = 25,
-  XL = 15,
+  S = 100,
+  M = 64,
+  L = 35,
+  XL = 21,
 }
 export type TViewBox = [number, number, number, number];
 

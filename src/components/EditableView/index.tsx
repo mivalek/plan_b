@@ -24,7 +24,8 @@ import SegmentForm from "../SegmentForm";
 function EditableView({
   boulderData,
   setters,
-  segmentData,
+  segments,
+  setSegments,
   circleRadius,
   svgRef,
   draggedBoulder,
@@ -37,7 +38,8 @@ function EditableView({
 }: {
   boulderData: TBoulder[];
   setters: TSetterShort[];
-  segmentData: TSegment[];
+  segments: TSegment[];
+  setSegments: Dispatch<SetStateAction<TSegment[]>>;
   circleRadius: number;
   svgRef: RefObject<SVGSVGElement | null>;
   draggedBoulder: TBoulder | undefined;
@@ -49,7 +51,6 @@ function EditableView({
   panFlag: boolean;
 }) {
   const [boulders, setBoulders] = useState<TBoulder[]>(boulderData);
-  const [segments, setSegments] = useState(segmentData);
   const [editedBoulder, setEditedBoulder] = useState<TBoulder>();
   const [editedSegment, setEditedSegment] = useState<TSegment>();
   const [isBoulderDialogOpen, setIsBoulderDialogOpen] = useState(false);

@@ -66,14 +66,14 @@ function Cluster({
       <circle
         cx={cluster.position.x}
         cy={cluster.position.y}
-        r={circleRadius * 2 * zoomScale}
+        r={circleRadius * zoomScale}
         fill="white"
       />
       <text
         x={cluster.position.x}
         y={cluster.position.y}
         fill="black"
-        fontSize={circleRadius * 2.2 * zoomScale}
+        fontSize={circleRadius * 1.4 * zoomScale}
         dominantBaseline="central"
         textAnchor="middle"
       >

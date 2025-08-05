@@ -1,4 +1,5 @@
 import {
+  CircleRadius,
   Difficulty,
   Segment,
   TBoulder,
@@ -7,7 +8,7 @@ import {
   TPosition,
   TViewBox,
 } from "./types";
-import { MIN_VIEWPORT_WIDTH, ZOOM_SPEED } from "./constants";
+import { MAX_ZOOM_SCALE, MIN_VIEWPORT_WIDTH, ZOOM_SPEED } from "./constants";
 import { v4 } from "uuid";
 
 export function camelCase(x: string) {
@@ -49,7 +50,7 @@ export const getDraggedBoulderPosition = (
   const point = new DOMPoint(svgCoords.x, svgCoords.y);
   if (layoutSegmentPath.isPointInFill(point)) {
     const isCollision = detectCollision(
-      draggedBoulder.id,
+      draggedBoulder,
       point,
       draggedBoulder.segment
     );
@@ -59,7 +60,7 @@ export const getDraggedBoulderPosition = (
   if (pathPoints.length) {
     const closestPoint = getClosestPointOnPath(svgCoords, pathPoints);
     const isCollision = detectCollision(
-      draggedBoulder.id,
+      draggedBoulder,
       closestPoint,
       draggedBoulder.segment
     );
@@ -281,23 +282,31 @@ export function getMidpoint(a: TPosition, b: TPosition) {
   return { x: a.x + (b.x - a.x) / 2, y: a.y + (b.y - a.y) / 2 } as TPosition;
 }
 export function detectCollision(
-  id: string,
+  boulder: TBoulder,
   nextCoord: DOMPoint,
   parent: string
 ) {
+  document.getElementById("collision-line")?.remove();
   const candidates = document.querySelectorAll<SVGCircleElement>(
     `.boulder[data-parent="${parent}"] .difficulty`
   );
-  const scale = parseFloat(
-    window.getComputedStyle(candidates[0].parentElement!).scale
-  );
-  const r = candidates[0].r.animVal.value;
   for (const b of candidates) {
-    if (b.parentElement!.id === id) continue;
+    if (b.parentElement!.id === boulder.id) continue;
 
     const otherPosition = { x: b.cx.animVal.value, y: b.cy.animVal.value };
     const dist = getDistance(nextCoord, otherPosition);
-    if (dist <= r * scale * 2) {
+
+    if (dist <= CircleRadius.S * MAX_ZOOM_SCALE * 2) {
+      const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
+      line.setAttribute("x1", boulder.position.x.toFixed(1));
+      line.setAttribute("y1", boulder.position.y.toFixed(1));
+      line.setAttribute("x2", otherPosition.x.toFixed(1));
+      line.setAttribute("y2", otherPosition.y.toFixed(1));
+      line.setAttribute("id", "collision-line");
+      document.querySelector("svg#plan-b")?.appendChild(line);
       return true;
     }
   }
@@ -337,7 +346,6 @@ export function makeClusters(boulders: TBoulder[], distanceCutoff: number) {
     }
     distances.sort((a, b) => a.dist - b.dist);
     const { a, b, idxA, idxB, dist } = distances[0];
-    if (dist > distanceCutoff) break whileLoop;
 
     // merge 2 closest
     const clusterA = clusters[idxA];

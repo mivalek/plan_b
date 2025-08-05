@@ -55,7 +55,7 @@ function ParallaxBackground() {
         <g clipPath="url(#clip0_18_409)">
           <path
             d="M1817 952L1961.5 838V1310.5H-93.5V1274L626.5 1259L1523.5 1189.5L1779 1076.5L1817 952Z"
-            fill="rgb(var(--secondary))"
+            fill="rgb(var(--primary))"
             fillOpacity="0.63"
           />
           <path
