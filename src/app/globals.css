@@ -66,6 +66,7 @@ html {
     --primary-complement: 20, 130, 230;
     --logo-color-1: var(--inverse-color);
     --logo-color-2: var(--primary);
+    --nav-color-1: var(--primary);
     --nav-color-2: var(--inverse-color);
     --nav-mobile-menu-color: var(--inverse-color);
     --outside-walls: #fff;
