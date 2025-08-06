@@ -1,12 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { ThemeProvider } from "@/contexts/ThemeProvider";
 
 const monserrat = Montserrat({
   variable: "--font-monserrat",
@@ -27,10 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark">
-      <body
-        className={`${geistMono.variable} ${monserrat.variable} antialiased`}
-      >
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <body className={`${monserrat.variable} antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
