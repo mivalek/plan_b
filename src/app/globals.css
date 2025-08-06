@@ -277,7 +277,7 @@ header {
     position: sticky;
     width: fit-content;
     height: fit-content;
-    top: 10dvh;
+    top: max(6rem, 10dvh);
     margin-left: max(2rem, 2dvw);
     margin-bottom: -100%;
 
