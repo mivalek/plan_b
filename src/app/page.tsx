@@ -29,18 +29,20 @@ export default function Home() {
           navMenuOpen={navMenuOpen}
           setNavMenuOpen={setNavMenuOpen}
         />
-        <div className="hero">
-          <h1 className="text-6xl md:text-8xl">
-            <div className="relative w-full text-end text-[.5em] text-[rgb(var(--primary))]">
-              Welcome to
+        <div className="hero-container w-full h-screen max-w-[1500px] m-auto">
+          <div className="hero">
+            <h1 className="text-6xl md:text-8xl xl:text-[8rem] 2xl:text-[9rem]">
+              <div className="relative w-full text-end text-[.5em] text-[rgb(var(--primary))]">
+                Welcome to
+              </div>
+              <div>
+                Plan&nbsp;
+                <span style={{ color: "rgb(var(--primary))" }}>B</span>
+              </div>
+            </h1>
+            <div className="subtitle text-sm sm:text-lg md:text-2xl xl:text-4xl xl:leading-13 2xl:text-5xl 2xl:leading-15">
+              Thuringia&apos;s largest bouldering gym
             </div>
-            <div>
-              Plan&nbsp;
-              <span style={{ color: "rgb(var(--primary))" }}>B</span>
-            </div>
-          </h1>
-          <div className="subtitle text-sm sm:text-lg md:text-2xl">
-            Thuringia&apos;s largest bouldering gym
           </div>
         </div>
         <ParallaxForeground />
