@@ -644,9 +644,11 @@ dialog {
     #slab-layer {
       translate: -2px -2px;
     }
-
+    #u_wall-layer {
+      translate: 1px 0;
+    }
     #corner-layer {
-      translate: 0px 1px;
+      translate: 1px 3px;
     }
     .clickable {
       &.grabbing {
