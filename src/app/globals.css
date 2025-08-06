@@ -38,11 +38,14 @@ html {
     --bg: 255 255 255;
     --font-color: 0 0 0;
     --inverse-color: 20 20 20;
-    --primary: 73, 116, 190;
-    --secondary: 1, 35, 80;
+    --primary: 41, 126, 203;
+    --secondary: 18, 47, 91;
     --html-backdrop: 0, 0, 0;
-    --logo-color-1: var(--primary);
-    --logo-color-2: var(--secondary);
+    --logo-2: var(--primary);
+    --logo-1: var(--secondary);
+    --logo-color-2: var(--logo-2);
+    --logo-color-1: var(--logo-1);
+    --logo-color-3: 0, 14, 35;
     --nav-color-1: var(--secondary);
     --nav-color-2: var(--secondary);
     --nav-mobile-menu-color: var(--bg);
@@ -62,8 +65,11 @@ html {
     --primary: 220, 120, 20;
     --secondary: 20, 20, 20;
     --primary-complement: 20, 130, 230;
-    --logo-color-1: var(--inverse-color);
-    --logo-color-2: var(--primary);
+    --logo-2: var(--primary);
+    --logo-1: 120, 50, 0;
+    --logo-color-2: var(--logo-2);
+    --logo-color-1: var(--logo-1);
+    --logo-color-3: 0 0 0;
     --nav-color-1: var(--primary);
     --nav-color-2: var(--inverse-color);
     --nav-mobile-menu-color: var(--inverse-color);
@@ -139,7 +145,7 @@ button.btn-primary,
   line-height: 2rem;
 }
 #logo {
-  width: 40px;
+  width: 48px;
   display: flex;
   align-items: center;
 }
@@ -224,8 +230,8 @@ header {
 }
 
 .parallax {
-  --logo-color-1: var(--secondary);
-  --logo-color-2: var(--primary);
+  --logo-color-2: var(--logo-1);
+  --logo-color-1: var(--logo-2);
 
   height: clamp(80dvh, 100dvw, 100dvh);
   z-index: 999;
@@ -353,8 +359,8 @@ section {
   position: relative;
 
   .image-container {
-    --logo-color-1: var(--secondary);
-    --logo-color-2: var(--primary);
+    --logo-color-2: var(--logo-1);
+    --logo-color-1: var(--logo-2);
     height: 300px;
     position: relative;
     z-index: 100;
