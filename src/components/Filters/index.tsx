@@ -19,11 +19,11 @@ function Filters({
       aria-label="difficulty filter"
     >
       <div
-        className="flex justify-between items-center gap-2"
+        className="flex justify-between items-center gap-2 lg:justify-center"
         aria-hidden={true}
       >
         <div className="text-sm">EASY</div>
-        <div className="flex-grow w-full h-[0.5px] bg-[rgb(var(--font-color))]"></div>
+        <div className="flex-grow w-full h-[0.5px] bg-[rgb(var(--font-color))] lg:hidden"></div>
         <div className="text-sm lg:hidden">HARD</div>
       </div>
       <div
