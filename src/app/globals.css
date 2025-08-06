@@ -23,6 +23,29 @@
   --parallax-scale: 1;
   --button-radius: 1.5rem;
   --shadow-color: #0008;
+
+  /* default dark theme */
+  --bg: 20 20 20;
+  --font-color: 255 255 255;
+  --inverse-color: 255 255 255;
+  --blurb-heading-color: var(--font-color);
+  --primary: 220, 120, 20;
+  --secondary: 20, 20, 20;
+  --primary-complement: 20, 130, 230;
+  --logo-2: var(--primary);
+  --logo-1: 120, 50, 0;
+  --logo-3: 0, 0, 0;
+  --logo-color-2: 255, 255, 255;
+  --logo-color-1: var(--logo-2);
+  --logo-color-3: var(--logo-1);
+  --nav-color-1: var(--primary);
+  --nav-color-2: var(--inverse-color);
+  --nav-mobile-menu-color: var(--inverse-color);
+  --outside-walls: #fff;
+  --diff-white-filter: #fff;
+  --diff-black-filter: #333;
+  --diff-white-filter-out: #bbb;
+  --diff-black-filter-out: #555;
 }
 
 @theme inline {
@@ -55,29 +78,6 @@ html {
     --diff-black-filter: #000;
     --diff-white-filter-out: #ccc;
     --diff-black-filter-out: #444;
-  }
-
-  &[data-theme="dark"] {
-    --bg: 20 20 20;
-    --font-color: 255 255 255;
-    --inverse-color: 255 255 255;
-    --blurb-heading-color: var(--font-color);
-    --primary: 220, 120, 20;
-    --secondary: 20, 20, 20;
-    --primary-complement: 20, 130, 230;
-    --logo-2: var(--primary);
-    --logo-1: 120, 50, 0;
-    --logo-color-2: var(--logo-2);
-    --logo-color-1: var(--logo-1);
-    --logo-color-3: 0 0 0;
-    --nav-color-1: var(--primary);
-    --nav-color-2: var(--inverse-color);
-    --nav-mobile-menu-color: var(--inverse-color);
-    --outside-walls: #fff;
-    --diff-white-filter: #fff;
-    --diff-black-filter: #333;
-    --diff-white-filter-out: #bbb;
-    --diff-black-filter-out: #555;
   }
 
   &:has(dialog[open]) {
@@ -427,6 +427,13 @@ section {
       background-size: contain;
       padding: 1em;
     }
+  }
+}
+
+[data-theme="dark"] {
+  .parallax,
+  section .image-container {
+    --logo-color-3: var(--logo-3);
   }
 }
 
