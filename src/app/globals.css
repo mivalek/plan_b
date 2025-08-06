@@ -52,7 +52,6 @@ html {
     --diff-black-filter: #000;
     --diff-white-filter-out: #ccc;
     --diff-black-filter-out: #444;
-    --theme: light;
   }
 
   &[data-theme="dark"] {
@@ -73,7 +72,6 @@ html {
     --diff-black-filter: #333;
     --diff-white-filter-out: #bbb;
     --diff-black-filter-out: #555;
-    --theme: dark;
   }
 
   &:has(dialog[open]) {
@@ -99,7 +97,6 @@ body {
   min-height: 100dvh;
   background: rgb(var(--bg));
   box-shadow: 0 0 5px var(--shadow-color);
-  /* overflow: auto; */
 }
 
 h1,
@@ -172,7 +169,6 @@ header {
     backdrop-filter: blur(30px) grayscale(0.6);
 
     & > * {
-      /* display: flex; */
       align-items: center;
     }
     .nav__right,
@@ -275,8 +271,6 @@ header {
     h1 {
       display: block;
       text-transform: uppercase;
-      /* line-height: 4rem;
-      font-size: 5rem; */
       font-weight: 800;
       position: relative;
       margin-block: 0.5rem;
@@ -285,7 +279,6 @@ header {
     .subtitle {
       color: rgb(var(--blurb-heading-color));
       font-weight: 600;
-      /* font-size: 1.5rem; */
       background: rgb(var(--secondary));
       width: fit-content;
       padding-inline: 0.5em;
@@ -357,7 +350,6 @@ main {
 
 section {
   scroll-margin-top: 2rem;
-  /* padding-bottom: 2rem; */
   position: relative;
 
   .image-container {
@@ -545,7 +537,6 @@ table {
 }
 
 .pricelist-category {
-  /* width: fit-content; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -645,8 +636,6 @@ dialog {
     position: relative;
     filter: drop-shadow(2px 3px 4px #0005);
     width: 100%;
-    /* width: calc(100dvw - 2rem); */
-    /* height: calc((100dvw - 2rem) / var(--svg-ratio)); */
     touch-action: none;
     user-select: none;
     #cave-layer {
