@@ -649,7 +649,16 @@ dialog {
     /* height: calc((100dvw - 2rem) / var(--svg-ratio)); */
     touch-action: none;
     user-select: none;
+    #cave-layer {
+      translate: 1px -4px;
+    }
+    #slab-layer {
+      translate: -2px -2px;
+    }
 
+    #corner-layer {
+      translate: 0px 1px;
+    }
     .clickable {
       &.grabbing {
         cursor: grabbing;
