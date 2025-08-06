@@ -27,7 +27,6 @@
 
 @theme inline {
   --font-sans: var(--font-monserrat);
-  --font-mono: var(--font-geist-mono);
 }
 
 html {
@@ -190,6 +189,12 @@ header {
         height: 2rem;
         width: 2rem;
         fill: rgb(var(--nav-color-2));
+      }
+
+      #theme-toggle {
+        &:hover .icon {
+          fill: rgb(var(--blurb-heading-color));
+        }
       }
     }
 
@@ -716,17 +721,10 @@ dialog {
     scale: 1;
   }
 }
-/* @media (orientation: landscape) {
-  #layout-container svg {
-  }
-} */
 
 @media (orientation: portrait) {
   #layout-container {
-    /* width: calc(100dvw - 2rem); */
     width: 100% svg {
-      /* width: calc(70dvh * var(--svg-ratio));
-      height: 70dvh; */
       width: 100%;
     }
   }

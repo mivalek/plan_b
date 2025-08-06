@@ -5,7 +5,6 @@ import ParallaxBackground from "@/components/ParallaxBackground";
 import ParallaxForeground from "@/components/ParallaxForeground";
 import PriceList from "@/components/PriceList";
 import SectionImage from "@/components/SectionImage";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import Link from "next/link";
 import { useState } from "react";
 
