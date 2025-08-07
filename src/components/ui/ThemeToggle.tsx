@@ -19,6 +19,7 @@ function ThemeToggle() {
       id="theme-toggle"
       htmlFor="theme-toggle-input"
       className="focus-within:outline-2 outline-offset-2 outline-sky-500 cursor-pointer flex px-2 py-1.5 hover:bg-[rgb(var(--primary))]"
+      title="light/dark mode"
     >
       <div id="theme-toggle-label" className="invisible size-0">
         Switch to {theme == "dark" ? "light" : "dark"} mode
