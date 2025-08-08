@@ -1,20 +1,18 @@
 import { HOLD_COLORS } from "@/lib/constants";
 import { TBoulder } from "@/lib/types";
 import { difficultyToColour } from "@/lib/utils";
-import React, { Dispatch, SetStateAction } from "react";
+import { setIsBoulderPopupOpen, useUiStore } from "@/stores/uiStore";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 function Boulder({
   data,
-  setIsPopupOpen,
-  circleRadius,
   className,
 }: {
   data: TBoulder;
-  setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
-  circleRadius: number;
   className: string | undefined;
 }) {
+  const circleRadius = useUiStore((state) => state.circleRadius);
   const innerRadius = Math.ceil(circleRadius * 0.7);
   return (
     <g
@@ -26,10 +24,10 @@ function Boulder({
       )}
       style={{ scale: "var(--boulder-scale)" }}
       onPointerEnter={() => {
-        setIsPopupOpen(true);
+        setIsBoulderPopupOpen(true);
       }}
       onPointerLeave={() => {
-        setIsPopupOpen(false);
+        setIsBoulderPopupOpen(false);
       }}
       // onPointerDown={() => {}}
       // onPointerUp={() => {}}

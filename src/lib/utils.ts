@@ -6,10 +6,18 @@ import {
   TCluster,
   TFlatCluster,
   TPosition,
+  TSegment,
   TViewBox,
 } from "./types";
 import { MAX_ZOOM_SCALE, MIN_VIEWPORT_WIDTH, ZOOM_SPEED } from "./constants";
 import { v4 } from "uuid";
+import { setEditedBoulder, setIsNewBoulder } from "@/stores/boulderStore";
+import {
+  setIsBoulderDialogOpen,
+  setIsSegmentDialogOpen,
+  useUiStore,
+} from "@/stores/uiStore";
+import { setEditedSegment } from "@/stores/segmentStore";
 
 export function camelCase(x: string) {
   return x
@@ -409,4 +417,33 @@ export function deadlinePhrase(date: Date | undefined) {
   if (days === 1) return "tomorrow!";
   if (days < 7) return `in ${days} days`;
   return outDate;
+}
+
+export function editDownDate(segment: TSegment) {
+  setEditedSegment(segment);
+  setIsSegmentDialogOpen(true);
+}
+export function addBoulder(e: MouseEvent, segmentName: Segment) {
+  const trgt = e.target as SVGGElement;
+  const layoutElement = trgt.parentElement!;
+  if (!layoutElement.classList.contains("clickable")) return;
+  const svgClickCoords = pointerScreenToSVG(
+    e.clientX,
+    e.clientY,
+    useUiStore.getState().svgRef.current!
+  );
+
+  const boulder: TBoulder = {
+    id: v4(),
+    setter: undefined,
+    holdColors: [],
+    difficulty: null,
+    position: svgClickCoords,
+    segment: segmentName,
+    tags: [],
+  };
+
+  setEditedBoulder(boulder);
+  setIsNewBoulder(true);
+  setIsBoulderDialogOpen(true);
 }

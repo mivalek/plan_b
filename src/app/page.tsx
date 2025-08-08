@@ -121,6 +121,8 @@ export default function Home() {
         </div>
       </section>
       <div className="divider"></div>
+      <PriceList />
+      <div className="divider"></div>
       <section id="opening-times">
         <div className="section-content">
           <h2>Opening times</h2>
@@ -146,8 +148,6 @@ export default function Home() {
           </table>
         </div>
       </section>
-      <div className="divider"></div>
-      <PriceList />
       <div className="divider"></div>
       <section id="contact">
         <div className="section-content">

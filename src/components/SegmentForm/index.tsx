@@ -1,19 +1,15 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import Button from "../ui/Button";
 import { dbUpdateSegmentDates } from "@/app/actions";
-import { TSegment } from "@/lib/types";
-
-function SegmentForm({
-  segment,
-  setSegments,
+import {
   setEditedSegment,
-  setIsDialogOpen,
-}: {
-  segment: TSegment | undefined;
-  setSegments: Dispatch<SetStateAction<TSegment[]>>;
-  setEditedSegment: Dispatch<SetStateAction<TSegment | undefined>>;
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+  updateSegmentDownDate,
+  useSegmentStore,
+} from "@/stores/segmentStore";
+import { setIsSegmentDialogOpen } from "@/stores/uiStore";
+
+function SegmentForm() {
+  const segment = useSegmentStore((state) => state.editedSegment);
   const now = new Date();
   const maxDate = new Date(now.getFullYear(), now.getMonth() + 3, 0);
   async function handleSubmit(formData: FormData) {
@@ -27,14 +23,9 @@ function SegmentForm({
       new Date(outDate),
       segment!.upDate ? undefined : new Date()
     );
-    setSegments((prev) => {
-      const next = [...prev];
-      const idx = next.findIndex((p) => p.id === segment?.id);
-      next[idx].downDate = new Date(outDate);
-      return next;
-    });
+    updateSegmentDownDate(segment!.id, new Date(outDate));
     setEditedSegment(undefined);
-    setIsDialogOpen(false);
+    setIsSegmentDialogOpen(false);
   }
   const [errorMsg, setErrorMsg] = useState<string>();
   return (
@@ -58,7 +49,7 @@ function SegmentForm({
         <div className="flex justify-around gap-4">
           <Button
             type="reset"
-            onClick={() => setIsDialogOpen(false)}
+            onClick={() => setIsSegmentDialogOpen(false)}
             className="bg-gray-500"
           >
             Cancel

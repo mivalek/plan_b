@@ -1,11 +1,12 @@
 import { SEGMENT_PATHS } from "@/lib/constants";
-import { TPosition, TSegment } from "@/lib/types";
+import { TPosition } from "@/lib/types";
 import { daysFromToday, deadlinePhrase } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Dialog from "../Dialog";
 import SegmentForm from "../SegmentForm";
-import { Dispatch, SetStateAction } from "react";
+import { setEditedSegment, useSegmentStore } from "@/stores/segmentStore";
+import { setIsSegmentDialogOpen, useUiStore } from "@/stores/uiStore";
 function colorByDate(d: Date | undefined): string | undefined {
   if (!d) return "!fill-black";
   const days = daysFromToday(d);
@@ -16,17 +17,9 @@ function colorByDate(d: Date | undefined): string | undefined {
   if (days <= 14) return "!fill-amber-400";
 }
 
-function GymLayout({
-  isAdmin,
-  segments,
-  setSegments,
-}: {
-  isAdmin: boolean | undefined;
-  segments: TSegment[];
-  setSegments: Dispatch<SetStateAction<TSegment[]>>;
-}) {
-  const [editedSegment, setEditedSegment] = useState<TSegment>();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+function GymLayout({ isAdmin }: { isAdmin: boolean | undefined }) {
+  const segments = useSegmentStore((state) => state.segments);
+  const isSegmentDialogOpen = useUiStore((state) => state.isSegmentDialogOpen);
   const [selectedSegment, setSelectedSegment] = useState<number>();
   const [tooltipPosition, setTooltipPosition] = useState<TPosition>();
   const [domReady, setDomeReady] = useState(false);
@@ -48,7 +41,7 @@ function GymLayout({
       popupRef.current.style.translate = "";
       return;
     }
-    const { width, height } = popupRef.current.getBoundingClientRect();
+    const { width } = popupRef.current.getBoundingClientRect();
     if (tooltipPosition.x > width) return;
     const seg = segments[selectedSegment!];
     const info = document.querySelector(`#${seg.name}-layer .info`)!;
@@ -88,8 +81,8 @@ function GymLayout({
               onPointerLeave={() => !isAdmin && setSelectedSegment(undefined)}
               onClick={() => {
                 if (!isAdmin) return;
-                setSelectedSegment(i);
-                setIsDialogOpen(true);
+                setEditedSegment(seg);
+                setIsSegmentDialogOpen(true);
               }}
             >
               <circle cx={320} cy={320} r={250} fill="transparent" />
@@ -110,20 +103,13 @@ function GymLayout({
           ? createPortal(
               <Dialog
                 id="edit-segment-info-dialog"
-                isOpen={isDialogOpen}
+                isOpen={isSegmentDialogOpen}
                 cleanup={() => {
-                  setIsDialogOpen(false);
+                  setIsSegmentDialogOpen(false);
                 }}
                 closeByAny={true}
               >
-                <SegmentForm
-                  segment={
-                    selectedSegment ? segments[selectedSegment] : undefined
-                  }
-                  setSegments={setSegments}
-                  setEditedSegment={setEditedSegment}
-                  setIsDialogOpen={setIsDialogOpen}
-                />
+                <SegmentForm />
               </Dialog>,
               document.getElementById("dialog-container")!
             )
