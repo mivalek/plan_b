@@ -43,14 +43,14 @@ function SegmentForm() {
           }
           min={now.toISOString().slice(0, 10)}
           max={maxDate.toISOString().slice(0, 10)}
-          className="bg-slate-200 rounded-sm p-1 w-full "
+          className="border p-1 w-full "
         />
 
         <div className="flex justify-around gap-4">
           <Button
             type="reset"
             onClick={() => setIsSegmentDialogOpen(false)}
-            className="bg-gray-500"
+            className="border-2 bg-transparent text-[rgb(var(--font-color))]"
           >
             Cancel
           </Button>

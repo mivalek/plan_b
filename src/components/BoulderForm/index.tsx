@@ -86,7 +86,7 @@ function BoulderForm({
           id="boulder-name"
           defaultValue={boulder?.name || ""}
           onChange={(e) => setBoulderProperty("name", e.target.value)}
-          className="bg-slate-200 rounded-sm p-1 mt-4 w-full "
+          className="border p-1 mt-4 w-full "
         />
       </div>
       <div className="mandatory relative">
@@ -101,7 +101,7 @@ function BoulderForm({
             onChange={(e) =>
               setBoulderProperty("setter", Number(e.target.value))
             }
-            className="bg-slate-200 rounded-sm p-1 h-8 grow"
+            className="border p-1 h-8 grow"
           >
             <option value={undefined}>-- Select setter</option>
             {setters.map((setter) => (
@@ -134,7 +134,7 @@ function BoulderForm({
                   style={{ background: val }}
                   className={twMerge(
                     "h-6 w-6 rounded-full block cursor-pointer rotate-45 outline-0 outline-sky-600 outline-offset-2",
-                    key === "white" &&
+                    ["white", "black"].includes(key) &&
                       !boulder?.holdColors?.includes(key) &&
                       " border-gray-400 border",
                     boulder?.holdColors?.includes(key) && "outline-2"
@@ -191,7 +191,7 @@ function BoulderForm({
                     }}
                     className={twMerge(
                       "h-6 w-6 rounded-full block cursor-pointer outline-0 outline-sky-600 outline-offset-2",
-                      key === "White" &&
+                      ["White", "Black"].includes(key) &&
                         val !== boulder?.difficulty &&
                         " border-gray-400 border",
 
@@ -226,8 +226,9 @@ function BoulderForm({
               <label
                 htmlFor={"tag-" + tag.toLowerCase()}
                 className={twMerge(
-                  "rounded-sm  bg-slate-200 cursor-pointer px-1 py-px ",
-                  boulder?.tags.includes(tag) && " outline-sky-600 outline-2"
+                  "border cursor-pointer px-1 py-px ",
+                  boulder?.tags.includes(tag) &&
+                    " text-[rgb(var(--bg))] bg-[rgb(var(--font-color))] border-[rgb(var(--font-color))] border-2"
                 )}
               >
                 <input
@@ -264,7 +265,7 @@ function BoulderForm({
         <Button
           type="button"
           onClick={() => formCleanup("ifNew")}
-          className="bg-gray-500 text-white"
+          className="bg-transparent border-2 text-[rgb(var(--font-color))]"
         >
           Cancel
         </Button>
