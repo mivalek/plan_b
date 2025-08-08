@@ -192,17 +192,27 @@ function AppContainer({
                 (svgPointers[0].clientY - svgPointers[1].clientY) ** 2
             );
             const delta = dist - pinchDistance;
-            if (!zoomOrigin) return;
 
-            zoomSvg(
-              svgRef.current!,
-              delta,
-              zoomOrigin.x,
-              zoomOrigin.y,
-              PINCH_ZOOM_DAMPER
-            );
-            setZoomScale(1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!)));
+            if (Math.abs(delta) > 1) {
+              if (!zoomOrigin) return;
 
+              zoomSvg(
+                svgRef.current!,
+                delta,
+                zoomOrigin.x,
+                zoomOrigin.y,
+                PINCH_ZOOM_DAMPER
+              );
+              setZoomScale(
+                1 / getSVGZoomFactor(getDOMViewBox(svgRef.current!))
+              );
+            } else {
+              // 2-finger pan
+              if (!e.movementX && !e.movementY) return;
+              setPanFlag(true);
+              setZoomFlag(false);
+              panSvg(svgRef.current!, e.movementX, e.movementY);
+            }
             setPinchDistance(dist);
             setSvgPointers((prev) => {
               prev[idx] = e;
