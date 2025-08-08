@@ -1,77 +1,52 @@
-import {
-  Segment,
-  TBoulder,
-  TCluster,
-  TSegment,
-  TSetterShort,
-} from "@/lib/types";
+import { Segment, TCluster } from "@/lib/types";
 import { makeClusters } from "@/lib/utils";
-import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useMemo,
-  useState,
-} from "react";
+import React, { useMemo } from "react";
 import StaticSegment from "../StaticSegment";
+import { useSegmentStore } from "@/stores/segmentStore";
+import { useUiStore } from "@/stores/uiStore";
+import { useShallow } from "zustand/shallow";
+import { useBoulderStore } from "@/stores/boulderStore";
 
-function StaticView({
-  boulderData,
-  setters,
-  segments,
-  circleRadius,
-  svgRef,
-  zoomFlag,
-  setZoomFlag,
-  zoomScale,
-  setZoomScale,
-}: {
-  boulderData: TBoulder[];
-  segments: TSegment[];
-  setters: TSetterShort[];
-  circleRadius: number;
-  svgRef: RefObject<SVGSVGElement | null>;
-  zoomScale: number;
-  setZoomScale: Dispatch<SetStateAction<number>>;
-  zoomFlag: boolean;
-  setZoomFlag: Dispatch<SetStateAction<boolean>>;
-}) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+function StaticView() {
+  const [circleRadius, difficultyFilter] = useUiStore(
+    useShallow((state) => [state.circleRadius, state.difficultyFilter])
+  );
+  const boulders = useBoulderStore((state) => state.boulders);
+  const filteredBoulders = () =>
+    difficultyFilter
+      ? boulders.filter(
+          (b) =>
+            b.difficulty !== null && difficultyFilter.includes(b.difficulty)
+        )
+      : boulders;
 
-  console.log(isPopupOpen, setters);
+  const segments = useSegmentStore((state) => state.segments);
   const clusters = useMemo(() => {
     const out: { [key in Segment]?: TCluster[] } = {};
     segments.map((seg) => {
       out[seg.name] =
-        !boulderData || boulderData.length === 1
+        !filteredBoulders() || filteredBoulders().length === 1
           ? []
           : makeClusters(
-              boulderData.filter((b) => b.segment === seg.name),
+              filteredBoulders().filter((b) => b.segment === seg.name),
               circleRadius
             );
     });
     return out;
-  }, [boulderData, circleRadius]);
+  }, [filteredBoulders(), circleRadius]);
   return (
     <>
       {" "}
       {segments.map((seg) => {
-        const bldrs = boulderData.filter((b) => b.segment === seg.name);
+        const bldrs = filteredBoulders().filter((b) => b.segment === seg.name);
 
         return (
           bldrs && (
             <StaticSegment
               key={seg.name}
-              svgRef={svgRef}
               //   id={l}
               boulders={bldrs}
               clusters={clusters[seg.name]!}
-              setIsPopupOpen={setIsPopupOpen}
-              zoomScale={zoomScale}
-              setZoomScale={setZoomScale}
-              zoomFlag={zoomFlag}
-              setZoomFlag={setZoomFlag}
-              circleRadius={circleRadius}
             />
           )
         );

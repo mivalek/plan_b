@@ -1,54 +1,37 @@
-import { Difficulty, TBoulder, TSetterShort } from "@/lib/types";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { Difficulty, TBoulder } from "@/lib/types";
+import React, { useState } from "react";
 import { HOLD_COLORS, TAGS } from "@/lib/constants";
 import Button from "../ui/Button";
 import { twMerge } from "tailwind-merge";
 import { dbCreateOrUpdateBoulder } from "@/app/actions";
-
-// TODO:
-// function deleteBoulderFromDb() {}
+import {
+  setEditedBoulder,
+  upsertBoulder,
+  useBoulderStore,
+} from "@/stores/boulderStore";
+import { useSetterStore } from "@/stores/setterStore";
+import { setIsSetterDialogOpen } from "@/stores/uiStore";
 
 function BoulderForm({
-  boulder,
-  setters,
-  setBoulders,
-  setEditedBoulder,
-  setIsSetterDialogOpen,
   formCleanup,
 }: {
-  boulder: TBoulder | undefined;
-  setters: TSetterShort[];
-  setEditedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
-  setIsSetterDialogOpen: Dispatch<SetStateAction<boolean>>;
-  setBoulders: Dispatch<SetStateAction<TBoulder[]>>;
   formCleanup: (shouldDelete: "always" | "ifNew" | "never") => void;
 }) {
+  const boulder = useBoulderStore((state) => state.editedBoulder);
+  const setters = useSetterStore((state) => state.setters);
   const [errorMsg, setErrorMsg] = useState<string>();
   function setBoulderProperty<T extends keyof TBoulder>(
     prop: T,
     value: TBoulder[T]
   ) {
-    setEditedBoulder((prev) => {
-      const next = { ...prev! };
-      next[prop] = value;
-      return next;
-    });
+    setEditedBoulder({ ...boulder, [prop]: value } as TBoulder);
   }
 
   async function handleSubmit() {
     if (!validateForm() || !boulder) return;
     try {
       await dbCreateOrUpdateBoulder(boulder);
-      setBoulders((prev) => {
-        const next = [...prev];
-        const idx = next.findIndex((p) => p.id === boulder.id);
-        if (idx === -1) {
-          next.push(boulder);
-        } else {
-          next[idx] = boulder;
-        }
-        return next;
-      });
+      upsertBoulder(boulder);
       formCleanup("never");
     } catch {
       setErrorMsg("Something went wrong");

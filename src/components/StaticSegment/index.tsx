@@ -1,38 +1,29 @@
 import { TBoulder, TCluster, TFlatCluster } from "@/lib/types";
-import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import Boulder from "../StaticBoulder";
 import { getClustersAtCutoff } from "@/lib/utils";
 import Cluster from "../Cluster";
+import { useUiStore } from "@/stores/uiStore";
+import { useShallow } from "zustand/shallow";
 
 function StaticSegment({
   // id,
   boulders,
   clusters,
-  svgRef,
-  setIsPopupOpen,
-  zoomScale,
-  setZoomScale,
-  zoomFlag,
-  setZoomFlag,
-  circleRadius,
 }: {
   // id: Location;
   boulders: TBoulder[];
   clusters: TCluster[];
-  svgRef: RefObject<SVGSVGElement | null>;
-  setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
-  zoomScale: number;
-  setZoomScale: Dispatch<SetStateAction<number>>;
-  zoomFlag: boolean;
-  setZoomFlag: Dispatch<SetStateAction<boolean>>;
-  circleRadius: number;
 }) {
+  const [circleRadius, zoomScale, zoomFlag, panFlag] = useUiStore(
+    useShallow((state) => [
+      state.circleRadius,
+      state.zoomScale,
+      state.zoomFlag,
+      state.panFlag,
+    ])
+  );
+
   const [clusteredBoulders, setClusteredBoulders] = useState<TFlatCluster[]>(
     []
   );
@@ -56,23 +47,12 @@ function StaticSegment({
           <Boulder
             key={b.id}
             data={b}
-            circleRadius={circleRadius}
-            setIsPopupOpen={setIsPopupOpen}
             className={isClustered ? " hidden " : undefined}
           />
         );
       })}
       {clusteredBoulders.map((cluster, i) => (
-        <Cluster
-          key={i}
-          cluster={cluster}
-          svgRef={svgRef}
-          zoomFlag={zoomFlag}
-          setZoomFlag={setZoomFlag}
-          zoomScale={zoomScale}
-          setZoomScale={setZoomScale}
-          circleRadius={circleRadius}
-        />
+        <Cluster key={i} cluster={cluster} />
       ))}
     </g>
   );

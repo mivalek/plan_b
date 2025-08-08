@@ -1,12 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Button from "../ui/Button";
 import { createSetter } from "@/app/actions";
+import { setIsSetterDialogOpen } from "@/stores/uiStore";
 
-function SetterForm({
-  setIsSetterDialogOpen,
-}: {
-  setIsSetterDialogOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+function SetterForm() {
   async function handleSubmit(formData: FormData) {
     let pass = true;
     ["name", "email"].forEach((field) => {

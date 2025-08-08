@@ -1,18 +1,14 @@
 import { HOLD_COLORS } from "@/lib/constants";
 import { Difficulty } from "@/lib/types";
-import React, { Dispatch, SetStateAction } from "react";
+import { setDifficultyFilter, useUiStore } from "@/stores/uiStore";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 const allDiffs = Object.entries(Difficulty)
   .filter(([key, _]) => isNaN(Number(key)))
   .map(([_, val]) => val) as Difficulty[];
-function Filters({
-  difficultyFilter,
-  setDifficultyFilter,
-}: {
-  difficultyFilter: Difficulty[];
-  setDifficultyFilter: Dispatch<SetStateAction<Difficulty[]>>;
-}) {
+function Filters() {
+  const difficultyFilter = useUiStore((state) => state.difficultyFilter);
   return (
     <div
       className="filter-container flex flex-col gap-1"
@@ -82,15 +78,15 @@ function Filters({
                   className="h-0 w-0 absolute"
                   onChange={() => {
                     if (!difficultyFilter.includes(diff)) {
-                      setDifficultyFilter((prev) =>
-                        prev ? [...prev, diff] : [diff]
+                      setDifficultyFilter(
+                        difficultyFilter ? [...difficultyFilter, diff] : [diff]
                       );
                     } else {
                       if (difficultyFilter.length === 1) {
                         setDifficultyFilter(allDiffs);
                       } else
-                        setDifficultyFilter((prev) =>
-                          prev!.filter((d) => d !== val)
+                        setDifficultyFilter(
+                          difficultyFilter!.filter((d) => d !== val)
                         );
                     }
                   }}

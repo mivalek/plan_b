@@ -1,32 +1,15 @@
 import { TFlatCluster, TPosition } from "@/lib/types";
 import { getDOMViewBox, getSVGZoomFactor, zoomSvg } from "@/lib/utils";
-import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { setZoomFlag, setZoomScale, useUiStore } from "@/stores/uiStore";
+import React, { useEffect, useRef, useState } from "react";
+import { useShallow } from "zustand/shallow";
 
-function Cluster({
-  cluster,
-  svgRef,
-  circleRadius,
-  zoomScale,
-  setZoomScale,
-  setZoomFlag,
-}: {
-  cluster: TFlatCluster;
-  svgRef: RefObject<SVGSVGElement | null>;
-  circleRadius: number;
-  zoomScale: number;
-
-  setZoomScale: Dispatch<SetStateAction<number>>;
-  zoomFlag: boolean;
-  setZoomFlag: Dispatch<SetStateAction<boolean>>;
-}) {
+function Cluster({ cluster }: { cluster: TFlatCluster }) {
   const [clusterPointer, setClusterPointer] = useState<TPosition>();
+
+  const [svgRef, circleRadius, zoomScale] = useUiStore(
+    useShallow((state) => [state.svgRef, state.circleRadius, state.zoomScale])
+  );
   const clusterRef = useRef<SVGGElement>(null);
   useEffect(() => {
     if (!clusterPointer || !clusterRef) return;
@@ -41,7 +24,7 @@ function Cluster({
         setClusterPointer(undefined);
       }
     }, 10);
-  }, [clusterPointer, setZoomFlag, setZoomScale, svgRef]);
+  }, [clusterPointer, svgRef]);
   return (
     <g
       className="cluster cursor-pointer"

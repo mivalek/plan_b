@@ -1,14 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { panSvg, zoomSvg, getSVGZoomFactor, getDOMViewBox } from "@/lib/utils";
-import {
-  CircleRadius,
-  Difficulty,
-  TBoulder,
-  TPosition,
-  TSegment,
-  TSetterShort,
-} from "@/lib/types";
+import { CircleRadius, TBoulder, TSegment, TSetterShort } from "@/lib/types";
 import GymLayout from "../GymLayout";
 import MakeSVGGradients from "../MakeSVGGradients";
 import {
@@ -16,17 +9,26 @@ import {
   PAN_BORDER,
   PINCH_ZOOM_DAMPER,
   SVG_VIEWBOX_LANDSCAPE,
-  SVG_VIEWBOX_PORTRAIT,
 } from "@/lib/constants";
 import { useSearchParams } from "next/navigation";
 import { auth } from "@/app/actions";
 import EditableView from "../EditableView";
 import StaticView from "../StaticView";
 import Filters from "../Filters";
-
-const allDiffs = Object.entries(Difficulty)
-  .filter(([key, _]) => isNaN(Number(key)))
-  .map(([_, val]) => val) as Difficulty[];
+import { useBoulderStore } from "@/stores/boulderStore";
+import { useSetterStore } from "@/stores/setterStore";
+import { useSegmentStore } from "@/stores/segmentStore";
+import {
+  setCircleRadius,
+  setPanFlag,
+  setPinchDistance,
+  setSvgViewBox,
+  setZoomFlag,
+  setZoomOrigin,
+  setZoomScale,
+  useUiStore,
+} from "@/stores/uiStore";
+import { useShallow } from "zustand/shallow";
 
 function AppContainer({
   boulderData,
@@ -39,21 +41,34 @@ function AppContainer({
 }) {
   const searchParams = useSearchParams();
 
-  const [segments, setSegments] = useState(segmentData);
   const [isAdmin, setIsAdmin] = useState<boolean>();
-  const [draggedBoulder, setDraggedBoulder] = useState<TBoulder>();
   const svgRef = useRef<SVGSVGElement>(null);
   const svgContainerRef = useRef<HTMLDivElement>(null);
-  const [svgViewBox, setSvgViewBox] = useState(SVG_VIEWBOX_PORTRAIT);
-  const [zoomScale, setZoomScale] = useState(1);
   const [svgPointers, setSvgPointers] = useState<React.PointerEvent[]>([]);
-  const [zoomOrigin, setZoomOrigin] = useState<TPosition>();
-  const [zoomFlag, setZoomFlag] = useState(true);
-  const [pinchDistance, setPinchDistance] = useState(0);
-  const [panFlag, setPanFlag] = useState(false);
-  const [circleRadius, setCircleRadius] = useState(25);
-  const [difficultyFilter, setDifficultyFilter] =
-    useState<Difficulty[]>(allDiffs);
+  const setBoulders = useBoulderStore((state) => state.setBoulders);
+  const draggedBoulder = useBoulderStore((state) => state.draggedBoulder);
+  const setSetters = useSetterStore((state) => state.setSetters);
+  const setSegments = useSegmentStore((state) => state.setSegments);
+  const [setSvgRef, svgViewBox, pinchDistance, zoomOrigin] = useUiStore(
+    useShallow((state) => [
+      state.setSvgRef,
+      state.svgViewBox,
+      state.pinchDistance,
+      state.zoomOrigin,
+    ])
+  );
+  useEffect(() => {
+    setBoulders(boulderData);
+  }, [boulderData]);
+  useEffect(() => {
+    setSetters(setters);
+  }, [setters]);
+  useEffect(() => {
+    setSegments(segmentData);
+  }, [segmentData]);
+  useEffect(() => {
+    setSvgRef(svgRef);
+  }, [svgRef]);
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault();
@@ -116,12 +131,7 @@ function AppContainer({
       id="boulder-app"
       className="w-full flex justify-center flex-col lg:flex-row items-center p-4 pt-8 gap-6"
     >
-      {!isAdmin && (
-        <Filters
-          difficultyFilter={difficultyFilter}
-          setDifficultyFilter={setDifficultyFilter}
-        />
-      )}
+      {!isAdmin && <Filters />}
       <div
         id="layout-container"
         className="max-w-6xl overflow-clip relative flex items-center border border-[rgb(var(--primary))] portrait:justify-center transition-all  duration-300 "
@@ -242,48 +252,8 @@ function AppContainer({
             stroke="none"
             fill="none"
           />
-          <GymLayout
-            segments={segments}
-            setSegments={setSegments}
-            isAdmin={isAdmin}
-          />
-          {isAdmin ? (
-            <EditableView
-              boulderData={boulderData}
-              setters={setters}
-              segments={segments}
-              setSegments={setSegments}
-              svgRef={svgRef}
-              circleRadius={circleRadius}
-              draggedBoulder={draggedBoulder}
-              setDraggedBoulder={setDraggedBoulder}
-              zoomScale={zoomScale}
-              setZoomScale={setZoomScale}
-              zoomFlag={zoomFlag}
-              setZoomFlag={setZoomFlag}
-              panFlag={panFlag}
-            />
-          ) : (
-            <StaticView
-              boulderData={
-                difficultyFilter
-                  ? boulderData.filter(
-                      (b) =>
-                        b.difficulty !== null &&
-                        difficultyFilter.includes(b.difficulty)
-                    )
-                  : boulderData
-              }
-              setters={setters}
-              segments={segments}
-              svgRef={svgRef}
-              circleRadius={circleRadius}
-              zoomScale={zoomScale}
-              setZoomScale={setZoomScale}
-              zoomFlag={zoomFlag}
-              setZoomFlag={setZoomFlag}
-            />
-          )}
+          <GymLayout isAdmin={isAdmin} />
+          {isAdmin ? <EditableView /> : <StaticView />}
         </svg>
       </div>
       <div id="dialog-container"></div>

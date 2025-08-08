@@ -1,40 +1,31 @@
 import { HOLD_COLORS } from "@/lib/constants";
 import { TBoulder } from "@/lib/types";
 import { difficultyToColour } from "@/lib/utils";
-import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import {
+  setDraggedBoulder,
+  setEditedBoulder,
+  useBoulderStore,
+} from "@/stores/boulderStore";
+import { setIsBoulderDialogOpen, useUiStore } from "@/stores/uiStore";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 function Boulder({
   data,
-  svgRef,
-  draggedBoulder,
-  setDraggedBoulder,
-  setEditedBoulder,
-  setIsBoulderDialogOpen,
-  circleRadius,
   pointers,
   setPointers,
   className,
 }: {
   data: TBoulder;
-  svgRef: RefObject<SVGSVGElement | null>;
-  draggedBoulder: TBoulder | undefined;
-  setDraggedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
-  setEditedBoulder: Dispatch<SetStateAction<TBoulder | undefined>>;
-  setIsBoulderDialogOpen: Dispatch<SetStateAction<boolean>>;
-  circleRadius: number;
   pointers: React.PointerEvent<Element>[];
   setPointers: React.Dispatch<
     React.SetStateAction<React.PointerEvent<Element>[]>
   >;
   className: string | undefined;
 }) {
+  const svgRef = useUiStore((state) => state.svgRef);
+  const draggedBoulder = useBoulderStore((state) => state.draggedBoulder);
+  const circleRadius = useUiStore((state) => state.circleRadius);
   const [layoutSegment, setLayoutSegment] = useState<SVGPathElement | null>();
   const position =
     !draggedBoulder || draggedBoulder.id !== data.id
