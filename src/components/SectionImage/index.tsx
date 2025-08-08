@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import Header from "../Header";
 import Image from "next/image";
-import { Theme } from "@/hooks/useTheme";
 
 function SectionImage({
   imageUrl,

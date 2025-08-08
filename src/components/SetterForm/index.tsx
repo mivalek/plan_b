@@ -1,12 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Button from "../ui/Button";
 import { createSetter } from "@/app/actions";
+import { setIsSetterDialogOpen } from "@/stores/uiStore";
 
-function SetterForm({
-  setIsSetterDialogOpen,
-}: {
-  setIsSetterDialogOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+function SetterForm() {
   async function handleSubmit(formData: FormData) {
     let pass = true;
     ["name", "email"].forEach((field) => {
@@ -24,7 +21,9 @@ function SetterForm({
   return (
     <div>
       <form action={handleSubmit} className="flex flex-col gap-4 px-4 py-6">
-        <h2 className="text-center">New setter</h2>
+        <h2 className="text-center !text-[rgba(var(--font-color))]">
+          New setter
+        </h2>
         <div className="mandatory relative">
           <label htmlFor="setter-name" className="absolute text-xs left-1">
             Name
@@ -33,7 +32,7 @@ function SetterForm({
             type="text"
             name="name"
             id="setter-name"
-            className="bg-slate-200 rounded-sm p-1 mt-4 w-full "
+            className="border p-1 mt-4 w-full "
           />
         </div>
         <div className="mandatory relative">
@@ -44,7 +43,7 @@ function SetterForm({
             type="email"
             name="email"
             id="setter-email"
-            className="bg-slate-200 rounded-sm p-1 mt-4 w-full "
+            className="border p-1 mt-4 w-full "
           />
         </div>
 
@@ -52,7 +51,7 @@ function SetterForm({
           <Button
             type="reset"
             onClick={() => setIsSetterDialogOpen(false)}
-            className="bg-gray-500"
+            className="bg-transparent border-2 text-[rgb(var(--font-color))]"
           >
             Cancel
           </Button>

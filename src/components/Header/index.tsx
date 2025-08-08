@@ -45,8 +45,8 @@ function Header({
                 "absolute flex flex-col right-0 items-end border top-full pb-4 md:relative md:flex-row md:items-center md:border-0 transition-all md:pb-0",
                 navMenuOpen ? "right-0" : "-right-full md:right-0"
               )}
-              aria-label="menu"
-              title="menu"
+              // aria-label="menu"
+              // title="menu"
             >
               <li aria-labelledby="boulders-link">
                 <Link id="boulders-link" href="/boulders">
@@ -75,6 +75,7 @@ function Header({
                   className="py-0.5"
                   id="instagram-link"
                   aria-label="instagram"
+                  title="Instagram"
                 >
                   <div id="instagram" className="icon">
                     <svg
